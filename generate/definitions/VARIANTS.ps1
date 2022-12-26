@@ -2,13 +2,49 @@
 $local:VARIANTS_MATRIX = @(
     @{
         package = 'code-server'
-        package_version = '4.8.3'
+        package_version = '4.9.1'
         distro = 'alpine'
         distro_version = '3.15'
         subvariants = @(
             @{ components = @(); tag_as_latest = $true }
         )
     }
+    @{
+        package = 'code-server'
+        package_version = '4.8.3'
+        distro = 'alpine'
+        distro_version = '3.15'
+        subvariants = @(
+            @{ components = @()}
+        )
+    }
+    @{
+        package = 'code-server'
+        package_version = '4.7.1'
+        distro = 'alpine'
+        distro_version = '3.15'
+        subvariants = @(
+            @{ components = @()}
+        )
+    }
+    @{
+        package = 'code-server'
+        package_version = '4.6.1'
+        distro = 'alpine'
+        distro_version = '3.15'
+        subvariants = @(
+            @{ components = @()}
+        )
+    }
+    # @{
+    #     package = 'code-server'
+    #     package_version = '3.12.0'
+    #     distro = 'alpine'
+    #     distro_version = '3.14'
+    #     subvariants = @(
+    #         @{ components = @()}
+    #     )
+    # }
 )
 
 $VARIANTS = @(
@@ -22,20 +58,7 @@ $VARIANTS = @(
                     package_version_semver = "v$( $variant['package_version'] )" -replace '-r\d+', ''   # E.g. Strip out the '-r' in '2.3.0.0-r1'
                     distro = $variant['distro']
                     distro_version = $variant['distro_version']
-                    platforms = & {
-                        if ($variant['distro'] -eq 'alpine') {
-                            $v = $variant['distro_version'] -as [version]
-                            if ($v.Major -eq 3 -and $v.Minor -ge 3 -and $v.Minor -le 5) {
-                              'linux/amd64'
-                            }elseif ($v.Major -eq 3 -and $v.Minor -ge 6 -and $v.Minor -le 13) {
-                              'linux/386,linux/amd64,linux/arm64,linux/s390x'
-                            }elseif ($v.Major -eq 3 -and $v.Minor -ge 14) {
-                              'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
-                            }else {
-                                throw 'Invalid alpine version'
-                            }
-                        }
-                    }
+                    platforms = 'linux/amd64'
                     components = $subVariant['components']
                 }
                 # Docker image tag. E.g. 'v2.3.0.0-alpine-3.6'
