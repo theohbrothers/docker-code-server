@@ -14,6 +14,10 @@ The base image is `alpine`, and not the closed-source [`hashicorp/terraform` ima
 |:-------:|:---------:|
 | `:v4.9.1-alpine-3.15`, `:latest` | [View](variants/v4.9.1-alpine-3.15 ) |
 | `:v4.8.3-alpine-3.15` | [View](variants/v4.8.3-alpine-3.15 ) |
+| `:v4.8.3-pwsh-7.3.1-alpine-3.15` | [View](variants/v4.8.3-pwsh-7.3.1-alpine-3.15 ) |
+| `:v4.8.3-pwsh-7.2.8-alpine-3.15` | [View](variants/v4.8.3-pwsh-7.2.8-alpine-3.15 ) |
+| `:v4.8.3-pwsh-7.1.7-alpine-3.15` | [View](variants/v4.8.3-pwsh-7.1.7-alpine-3.15 ) |
+| `:v4.8.3-pwsh-7.0.13-alpine-3.15` | [View](variants/v4.8.3-pwsh-7.0.13-alpine-3.15 ) |
 | `:v4.7.1-alpine-3.15` | [View](variants/v4.7.1-alpine-3.15 ) |
 | `:v4.6.1-alpine-3.15` | [View](variants/v4.6.1-alpine-3.15 ) |
 
