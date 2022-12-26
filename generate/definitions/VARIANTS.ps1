@@ -16,6 +16,10 @@ $local:VARIANTS_MATRIX = @(
         distro_version = '3.15'
         subvariants = @(
             @{ components = @()}
+            @{ components = @( 'pwsh-7.3.1' )}
+            @{ components = @( 'pwsh-7.2.8' )}
+            @{ components = @( 'pwsh-7.1.7' )}
+            @{ components = @( 'pwsh-7.0.13' )}
         )
     }
     @{
