@@ -57,8 +57,9 @@ $VARIANTS | % {
       uses: actions/cache@v3
       with:
         path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        key: ${{ runner.os }}-buildx-${{ env.VARIANT_TAG }}-${{ github.sha }}
         restore-keys: |
+          ${{ runner.os }}-buildx-${{ env.VARIANT_TAG }}
           ${{ runner.os }}-buildx-
 
     - name: Prepare
@@ -133,7 +134,7 @@ if ($_['_metadata']['base_tag']) {
         secrets: |
           "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
     - name: Build and push (master)
       id: docker_build_master
@@ -163,7 +164,8 @@ if ($_['_metadata']['base_tag']) {
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
         secrets: |
           "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
     - name: Build and push (release)
       id: docker_build_release
@@ -205,6 +207,14 @@ if ( $_['tag_as_latest'] ) {
           "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
+
+    # Temp fix
+    # https://github.com/docker/build-push-action/issues/252
+    # https://github.com/moby/buildkit/issues/1896
+    - name: Move cache
+      run: |
+        rm -rf /tmp/.buildx-cache
+        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
     - name: List docker images
       run: docker images
