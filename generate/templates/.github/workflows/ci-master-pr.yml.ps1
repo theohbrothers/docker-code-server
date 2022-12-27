@@ -27,6 +27,8 @@ $VARIANTS | % {
 }
 @'
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2.11.1
         id: filter
         with:
