@@ -26,6 +26,10 @@ $(
     }
 }) -join ''
 )
+Base variants do not contain additional tools. E.g. ``$( $VARIANTS | ? { $_['tag_as_latest'] } | Select-Object -ExpandProperty tag )``.
+
+Incremental variants contain additional tools. E.g. ``$( $VARIANTS | ? { $_['_metadata']['base_tag'] } | Select-Object -First 1 | Select-Object -ExpandProperty tag )``:
+
 - ``pwsh``: Powershell
 
 

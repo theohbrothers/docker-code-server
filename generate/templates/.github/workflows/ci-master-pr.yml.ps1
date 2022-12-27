@@ -11,37 +11,7 @@ on:
     branches:
     - master
 jobs:
-  # JOB to run change detection
-  changes:
-    runs-on: ubuntu-latest
-    # Set job outputs to values from filter step
-    outputs:
-      # changes: ${{ steps.filter.outputs.changes }}
-
 '@
-$VARIANTS | % {
-@"
-      $( $_['tag'].Replace('.', '-') ): `${{ steps.filter.outputs.$( $_['tag'].Replace('.', '-') ) }}
-
-"@
-}
-@'
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2.11.1
-        id: filter
-        with:
-          token: ${{ github.token }}
-          filters: |
-'@
-$VARIANTS | % {
-@"
-
-            $( $_['tag'].Replace('.', '-') ):
-              - '$( $_['build_dir_rel'] )/**'
-"@
-}
 
 $local:WORKFLOW_JOB_NAMES = $VARIANTS | % { "build-$( $_['tag'].Replace('.', '-') )" }
 $VARIANTS | % {
@@ -49,11 +19,10 @@ $VARIANTS | % {
 
 
   build-$( $_['tag'].Replace('.', '-') ):
-    needs: [changes]
+    needs: [$( if ($_['_metadata']['base_tag']) { "build-$( $_['_metadata']['base_tag'] )".Replace('.', '-') } else {} )]
     runs-on: ubuntu-latest
-    # if: `${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), '$( $_['tag'].Replace('.', '-') )')) }}
-    if: `${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.$( $_['tag'].Replace('.', '-') ) == 'true') }}
     env:
+      BASE_TAG: $( $_['_metadata']['base_tag'] )
       VARIANT_TAG: $( $_['tag'] )
       VARIANT_BUILD_DIR: $( $_['build_dir_rel'] )
 "@
@@ -108,6 +77,7 @@ $VARIANTS | % {
         SHA_SHORT=$( echo "${GITHUB_SHA}" | cut -c1-7 )
 
         # Generate the final tags. E.g. 'master-mytag' and 'master-b29758a-mytag'
+        BASE_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${BASE_TAG}"
         VARIANT_TAG_WITH_REF="${REF}-${VARIANT_TAG}"
         VARIANT_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${VARIANT_TAG}"
 
@@ -117,13 +87,15 @@ $VARIANTS | % {
         # echo "REF=$REF" >> $GITHUB_ENV
         # echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_ENV
         # echo "REF_AND_SHA_SHORT=$REF_AND_SHA_SHORT" >> $GITHUB_ENV
+
+        echo "BASE_TAG_WITH_REF_AND_SHA_SHORT=$BASE_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
         echo "VARIANT_BUILD_DIR=$VARIANT_BUILD_DIR" >> $GITHUB_ENV
         echo "VARIANT_TAG=$VARIANT_TAG" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF=$VARIANT_TAG_WITH_REF" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF_AND_SHA_SHORT=$VARIANT_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
 
     - name: Login to docker registry
-      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+      # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
       run: echo "${DOCKERHUB_REGISTRY_PASSWORD}" | docker login -u "${DOCKERHUB_REGISTRY_USER}" --password-stdin
       env:
         DOCKERHUB_REGISTRY_USER: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
@@ -141,8 +113,20 @@ $VARIANTS | % {
         GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
         context: `${{ env.VARIANT_BUILD_DIR }}
+
+"@
+if ($_['_metadata']['base_tag']) {
+@"
+        build-args: |
+          BASE_IMAGE=`${{ github.repository }}:`${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
+        labels: |
+          BASE_IMAGE=`${{ github.repository }}:`${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
+
+"@
+}
+@"
         platforms: $( $_['_metadata']['platforms'] -join ',' )
-        push: false
+        push: true
         tags: |
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF }}
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
@@ -160,6 +144,18 @@ $VARIANTS | % {
         GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
         context: `${{ env.VARIANT_BUILD_DIR }}
+
+"@
+if ($_['_metadata']['base_tag']) {
+@"
+        build-args: |
+          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF }}-`${{ env.SHA_SHORT }}-$( $_['_metadata']['base_tag'] )
+        labels: |
+          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF }}-`${{ env.SHA_SHORT }}-$( $_['_metadata']['base_tag'] )
+
+"@
+}
+@"
         platforms: $( $_['_metadata']['platforms'] -join ',' )
         push: true
         tags: |
@@ -177,6 +173,18 @@ $VARIANTS | % {
         GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
         context: `${{ env.VARIANT_BUILD_DIR }}
+
+"@
+if ($_['_metadata']['base_tag']) {
+@"
+        build-args: |
+          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF }}-`${{ env.SHA_SHORT }}-$( $_['_metadata']['base_tag'] )
+        labels: |
+          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF }}-`${{ env.SHA_SHORT }}-$( $_['_metadata']['base_tag'] )
+
+"@
+}
+@"
         platforms: $( $_['_metadata']['platforms'] -join ',' )
         push: true
         tags: |

@@ -19,6 +19,10 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 | `:v4.7.1-alpine-3.15` | [View](variants/v4.7.1-alpine-3.15 ) |
 | `:v4.6.1-alpine-3.15` | [View](variants/v4.6.1-alpine-3.15 ) |
 
+Base variants do not contain additional tools. E.g. `v4.9.1-alpine-3.15`.
+
+Incremental variants contain additional tools. E.g. `v4.8.3-pwsh-7.3.1-alpine-3.15`:
+
 - `pwsh`: Powershell
 
 ## Usage
