@@ -104,6 +104,8 @@ $VARIANTS | % {
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
+      env:
+        GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
         context: `${{ env.VARIANT_BUILD_DIR }}
         platforms: $( $_['_metadata']['platforms'] -join ',' )
@@ -111,6 +113,8 @@ $VARIANTS | % {
         tags: |
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF }}
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
+        secrets: |
+          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
 
@@ -119,6 +123,8 @@ $VARIANTS | % {
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
+      env:
+        GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
         context: `${{ env.VARIANT_BUILD_DIR }}
         platforms: $( $_['_metadata']['platforms'] -join ',' )
@@ -126,12 +132,16 @@ $VARIANTS | % {
         tags: |
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF }}
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
+        secrets: |
+          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
         cache-to: type=local,dest=/tmp/.buildx-cache
 
     - name: Build and push (release)
       id: docker_build_release
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
+      env:
+        GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
         context: `${{ env.VARIANT_BUILD_DIR }}
         platforms: $( $_['_metadata']['platforms'] -join ',' )
@@ -140,6 +150,8 @@ $VARIANTS | % {
           `${{ github.repository }}:`${{ env.VARIANT_TAG }}
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF }}
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
+        secrets: |
+          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
 
 "@
 

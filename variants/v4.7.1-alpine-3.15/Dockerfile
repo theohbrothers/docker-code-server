@@ -1,15 +1,19 @@
+# syntax=docker/dockerfile:1
+# The syntax=docker/dockerfile:1 line above is needed for passing secrets to the build
+
 FROM alpine:3.15
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
 
-RUN DEPS='alpine-sdk bash libstdc++ libc6-compat python3' \
+RUN --mount=type=secret,id=GITHUB_TOKEN \
+    DEPS='alpine-sdk bash libstdc++ libc6-compat python3' \
     && apk add --no-cache $DEPS \
     && apk add --no-cache npm nodejs \
     && npm config set python python3 \
-    && npm install --global code-server@4.7.1 --unsafe-perm \
+    && GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ) npm install --global code-server@4.7.1 --unsafe-perm \
     # Fix missing dependencies. See: https://github.com/coder/code-server/issues/5530
-    && cd /usr/local/lib/node_modules/code-server/lib/vscode && npm install --legacy-peer-deps \
+    && cd /usr/local/lib/node_modules/code-server/lib/vscode && GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ) npm install --legacy-peer-deps \
     && code-server --version \
     && apk del $DEPS
 
