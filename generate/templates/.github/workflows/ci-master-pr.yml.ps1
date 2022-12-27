@@ -150,8 +150,6 @@ $VARIANTS | % {
           `${{ github.repository }}:`${{ env.VARIANT_TAG }}
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF }}
           `${{ github.repository }}:`${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
-        secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
 
 "@
 
@@ -162,6 +160,8 @@ if ( $_['tag_as_latest'] ) {
 '@
 }
 @'
+        secrets: |
+          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
 

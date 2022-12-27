@@ -35,7 +35,7 @@ $(
 
 ```sh
 # code-server available at http://127.0.0.1:8080
-docker run --name code-server -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server
+docker run --name code-server -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:latest
 # Login using the password in the config file
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
