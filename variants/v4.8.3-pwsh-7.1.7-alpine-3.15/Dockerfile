@@ -40,6 +40,8 @@ RUN pwsh -c 'Install-Module Pester -Force -Scope AllUsers -MinimumVersion 4.0.0 
 # Install extensions
 USER user
 RUN code-server --install-extension ms-vscode.powershell@2021.12.0
+# Remove the default config file created when extensions are installed
+RUN rm -v ~/.config/code-server/config.yaml
 
 # Restore user
 USER user
