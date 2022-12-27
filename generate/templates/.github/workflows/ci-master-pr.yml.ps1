@@ -206,7 +206,7 @@ if ( $_['tag_as_latest'] ) {
         secrets: |
           "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
