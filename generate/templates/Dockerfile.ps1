@@ -63,7 +63,9 @@ RUN pwsh -version
 RUN pwsh -c 'Install-Module Pester -Force -Scope AllUsers -MinimumVersion 4.0.0 -MaximumVersion 4.10.1 -ErrorAction Stop'
 
 # Install extensions
-RUN su - user -c 'code-server --install-extension panekj.powershell@2021.10.0'
+USER 1000
+RUN code-server --install-extension ms-vscode.powershell@2021.12.0
+
 
 "@
     }
