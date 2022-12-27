@@ -411,9 +411,9 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -432,9 +432,9 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -566,9 +566,9 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -587,9 +587,9 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -721,9 +721,9 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -742,9 +742,9 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -876,9 +876,9 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -897,9 +897,9 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
         push: true
         tags: |
