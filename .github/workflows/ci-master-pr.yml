@@ -10,51 +10,12 @@ on:
     branches:
     - master
 jobs:
-  # JOB to run change detection
-  changes:
-    runs-on: ubuntu-latest
-    # Set job outputs to values from filter step
-    outputs:
-      # changes: ${{ steps.filter.outputs.changes }}
-      v4-9-1-alpine-3-15: ${{ steps.filter.outputs.v4-9-1-alpine-3-15 }}
-      v4-8-3-alpine-3-15: ${{ steps.filter.outputs.v4-8-3-alpine-3-15 }}
-      v4-8-3-pwsh-7-3-1-alpine-3-15: ${{ steps.filter.outputs.v4-8-3-pwsh-7-3-1-alpine-3-15 }}
-      v4-8-3-pwsh-7-2-8-alpine-3-15: ${{ steps.filter.outputs.v4-8-3-pwsh-7-2-8-alpine-3-15 }}
-      v4-8-3-pwsh-7-1-7-alpine-3-15: ${{ steps.filter.outputs.v4-8-3-pwsh-7-1-7-alpine-3-15 }}
-      v4-8-3-pwsh-7-0-13-alpine-3-15: ${{ steps.filter.outputs.v4-8-3-pwsh-7-0-13-alpine-3-15 }}
-      v4-7-1-alpine-3-15: ${{ steps.filter.outputs.v4-7-1-alpine-3-15 }}
-      v4-6-1-alpine-3-15: ${{ steps.filter.outputs.v4-6-1-alpine-3-15 }}
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2.11.1
-        id: filter
-        with:
-          token: ${{ github.token }}
-          filters: |
-            v4-9-1-alpine-3-15:
-              - 'variants/v4.9.1-alpine-3.15/**'
-            v4-8-3-alpine-3-15:
-              - 'variants/v4.8.3-alpine-3.15/**'
-            v4-8-3-pwsh-7-3-1-alpine-3-15:
-              - 'variants/v4.8.3-pwsh-7.3.1-alpine-3.15/**'
-            v4-8-3-pwsh-7-2-8-alpine-3-15:
-              - 'variants/v4.8.3-pwsh-7.2.8-alpine-3.15/**'
-            v4-8-3-pwsh-7-1-7-alpine-3-15:
-              - 'variants/v4.8.3-pwsh-7.1.7-alpine-3.15/**'
-            v4-8-3-pwsh-7-0-13-alpine-3-15:
-              - 'variants/v4.8.3-pwsh-7.0.13-alpine-3.15/**'
-            v4-7-1-alpine-3-15:
-              - 'variants/v4.7.1-alpine-3.15/**'
-            v4-6-1-alpine-3-15:
-              - 'variants/v4.6.1-alpine-3.15/**'
 
   build-v4-9-1-alpine-3-15:
-    needs: [changes]
+    needs: []
     runs-on: ubuntu-latest
-    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-9-1-alpine-3-15')) }}
-    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-9-1-alpine-3-15 == 'true') }}
     env:
+      BASE_TAG: 
       VARIANT_TAG: v4.9.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.9.1-alpine-3.15
     steps:
@@ -106,6 +67,7 @@ jobs:
         SHA_SHORT=$( echo "${GITHUB_SHA}" | cut -c1-7 )
 
         # Generate the final tags. E.g. 'master-mytag' and 'master-b29758a-mytag'
+        BASE_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${BASE_TAG}"
         VARIANT_TAG_WITH_REF="${REF}-${VARIANT_TAG}"
         VARIANT_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${VARIANT_TAG}"
 
@@ -115,13 +77,15 @@ jobs:
         # echo "REF=$REF" >> $GITHUB_ENV
         # echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_ENV
         # echo "REF_AND_SHA_SHORT=$REF_AND_SHA_SHORT" >> $GITHUB_ENV
+
+        echo "BASE_TAG_WITH_REF_AND_SHA_SHORT=$BASE_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
         echo "VARIANT_BUILD_DIR=$VARIANT_BUILD_DIR" >> $GITHUB_ENV
         echo "VARIANT_TAG=$VARIANT_TAG" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF=$VARIANT_TAG_WITH_REF" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF_AND_SHA_SHORT=$VARIANT_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
 
     - name: Login to docker registry
-      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+      # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
       run: echo "${DOCKERHUB_REGISTRY_PASSWORD}" | docker login -u "${DOCKERHUB_REGISTRY_USER}" --password-stdin
       env:
         DOCKERHUB_REGISTRY_USER: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
@@ -137,7 +101,7 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         platforms: linux/amd64
-        push: false
+        push: true
         tags: |
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
@@ -192,11 +156,10 @@ jobs:
       if: always()
 
   build-v4-8-3-alpine-3-15:
-    needs: [changes]
+    needs: []
     runs-on: ubuntu-latest
-    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-alpine-3-15')) }}
-    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-8-3-alpine-3-15 == 'true') }}
     env:
+      BASE_TAG: 
       VARIANT_TAG: v4.8.3-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-alpine-3.15
     steps:
@@ -248,6 +211,7 @@ jobs:
         SHA_SHORT=$( echo "${GITHUB_SHA}" | cut -c1-7 )
 
         # Generate the final tags. E.g. 'master-mytag' and 'master-b29758a-mytag'
+        BASE_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${BASE_TAG}"
         VARIANT_TAG_WITH_REF="${REF}-${VARIANT_TAG}"
         VARIANT_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${VARIANT_TAG}"
 
@@ -257,13 +221,15 @@ jobs:
         # echo "REF=$REF" >> $GITHUB_ENV
         # echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_ENV
         # echo "REF_AND_SHA_SHORT=$REF_AND_SHA_SHORT" >> $GITHUB_ENV
+
+        echo "BASE_TAG_WITH_REF_AND_SHA_SHORT=$BASE_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
         echo "VARIANT_BUILD_DIR=$VARIANT_BUILD_DIR" >> $GITHUB_ENV
         echo "VARIANT_TAG=$VARIANT_TAG" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF=$VARIANT_TAG_WITH_REF" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF_AND_SHA_SHORT=$VARIANT_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
 
     - name: Login to docker registry
-      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+      # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
       run: echo "${DOCKERHUB_REGISTRY_PASSWORD}" | docker login -u "${DOCKERHUB_REGISTRY_USER}" --password-stdin
       env:
         DOCKERHUB_REGISTRY_USER: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
@@ -279,7 +245,7 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         platforms: linux/amd64
-        push: false
+        push: true
         tags: |
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
@@ -333,11 +299,10 @@ jobs:
       if: always()
 
   build-v4-8-3-pwsh-7-3-1-alpine-3-15:
-    needs: [changes]
+    needs: [build-v4-8-3-alpine-3-15]
     runs-on: ubuntu-latest
-    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-3-1-alpine-3-15')) }}
-    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-8-3-pwsh-7-3-1-alpine-3-15 == 'true') }}
     env:
+      BASE_TAG: v4.8.3-alpine-3.15
       VARIANT_TAG: v4.8.3-pwsh-7.3.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.3.1-alpine-3.15
     steps:
@@ -389,6 +354,7 @@ jobs:
         SHA_SHORT=$( echo "${GITHUB_SHA}" | cut -c1-7 )
 
         # Generate the final tags. E.g. 'master-mytag' and 'master-b29758a-mytag'
+        BASE_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${BASE_TAG}"
         VARIANT_TAG_WITH_REF="${REF}-${VARIANT_TAG}"
         VARIANT_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${VARIANT_TAG}"
 
@@ -398,13 +364,15 @@ jobs:
         # echo "REF=$REF" >> $GITHUB_ENV
         # echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_ENV
         # echo "REF_AND_SHA_SHORT=$REF_AND_SHA_SHORT" >> $GITHUB_ENV
+
+        echo "BASE_TAG_WITH_REF_AND_SHA_SHORT=$BASE_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
         echo "VARIANT_BUILD_DIR=$VARIANT_BUILD_DIR" >> $GITHUB_ENV
         echo "VARIANT_TAG=$VARIANT_TAG" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF=$VARIANT_TAG_WITH_REF" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF_AND_SHA_SHORT=$VARIANT_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
 
     - name: Login to docker registry
-      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+      # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
       run: echo "${DOCKERHUB_REGISTRY_PASSWORD}" | docker login -u "${DOCKERHUB_REGISTRY_USER}" --password-stdin
       env:
         DOCKERHUB_REGISTRY_USER: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
@@ -419,8 +387,12 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
-        push: false
+        push: true
         tags: |
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
@@ -438,6 +410,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -455,6 +431,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -474,11 +454,10 @@ jobs:
       if: always()
 
   build-v4-8-3-pwsh-7-2-8-alpine-3-15:
-    needs: [changes]
+    needs: [build-v4-8-3-alpine-3-15]
     runs-on: ubuntu-latest
-    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-2-8-alpine-3-15')) }}
-    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-8-3-pwsh-7-2-8-alpine-3-15 == 'true') }}
     env:
+      BASE_TAG: v4.8.3-alpine-3.15
       VARIANT_TAG: v4.8.3-pwsh-7.2.8-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.2.8-alpine-3.15
     steps:
@@ -530,6 +509,7 @@ jobs:
         SHA_SHORT=$( echo "${GITHUB_SHA}" | cut -c1-7 )
 
         # Generate the final tags. E.g. 'master-mytag' and 'master-b29758a-mytag'
+        BASE_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${BASE_TAG}"
         VARIANT_TAG_WITH_REF="${REF}-${VARIANT_TAG}"
         VARIANT_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${VARIANT_TAG}"
 
@@ -539,13 +519,15 @@ jobs:
         # echo "REF=$REF" >> $GITHUB_ENV
         # echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_ENV
         # echo "REF_AND_SHA_SHORT=$REF_AND_SHA_SHORT" >> $GITHUB_ENV
+
+        echo "BASE_TAG_WITH_REF_AND_SHA_SHORT=$BASE_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
         echo "VARIANT_BUILD_DIR=$VARIANT_BUILD_DIR" >> $GITHUB_ENV
         echo "VARIANT_TAG=$VARIANT_TAG" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF=$VARIANT_TAG_WITH_REF" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF_AND_SHA_SHORT=$VARIANT_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
 
     - name: Login to docker registry
-      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+      # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
       run: echo "${DOCKERHUB_REGISTRY_PASSWORD}" | docker login -u "${DOCKERHUB_REGISTRY_USER}" --password-stdin
       env:
         DOCKERHUB_REGISTRY_USER: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
@@ -560,8 +542,12 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
-        push: false
+        push: true
         tags: |
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
@@ -579,6 +565,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -596,6 +586,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -615,11 +609,10 @@ jobs:
       if: always()
 
   build-v4-8-3-pwsh-7-1-7-alpine-3-15:
-    needs: [changes]
+    needs: [build-v4-8-3-alpine-3-15]
     runs-on: ubuntu-latest
-    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-1-7-alpine-3-15')) }}
-    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-8-3-pwsh-7-1-7-alpine-3-15 == 'true') }}
     env:
+      BASE_TAG: v4.8.3-alpine-3.15
       VARIANT_TAG: v4.8.3-pwsh-7.1.7-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.1.7-alpine-3.15
     steps:
@@ -671,6 +664,7 @@ jobs:
         SHA_SHORT=$( echo "${GITHUB_SHA}" | cut -c1-7 )
 
         # Generate the final tags. E.g. 'master-mytag' and 'master-b29758a-mytag'
+        BASE_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${BASE_TAG}"
         VARIANT_TAG_WITH_REF="${REF}-${VARIANT_TAG}"
         VARIANT_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${VARIANT_TAG}"
 
@@ -680,13 +674,15 @@ jobs:
         # echo "REF=$REF" >> $GITHUB_ENV
         # echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_ENV
         # echo "REF_AND_SHA_SHORT=$REF_AND_SHA_SHORT" >> $GITHUB_ENV
+
+        echo "BASE_TAG_WITH_REF_AND_SHA_SHORT=$BASE_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
         echo "VARIANT_BUILD_DIR=$VARIANT_BUILD_DIR" >> $GITHUB_ENV
         echo "VARIANT_TAG=$VARIANT_TAG" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF=$VARIANT_TAG_WITH_REF" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF_AND_SHA_SHORT=$VARIANT_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
 
     - name: Login to docker registry
-      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+      # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
       run: echo "${DOCKERHUB_REGISTRY_PASSWORD}" | docker login -u "${DOCKERHUB_REGISTRY_USER}" --password-stdin
       env:
         DOCKERHUB_REGISTRY_USER: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
@@ -701,8 +697,12 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
-        push: false
+        push: true
         tags: |
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
@@ -720,6 +720,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -737,6 +741,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -756,11 +764,10 @@ jobs:
       if: always()
 
   build-v4-8-3-pwsh-7-0-13-alpine-3-15:
-    needs: [changes]
+    needs: [build-v4-8-3-alpine-3-15]
     runs-on: ubuntu-latest
-    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-0-13-alpine-3-15')) }}
-    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-8-3-pwsh-7-0-13-alpine-3-15 == 'true') }}
     env:
+      BASE_TAG: v4.8.3-alpine-3.15
       VARIANT_TAG: v4.8.3-pwsh-7.0.13-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.0.13-alpine-3.15
     steps:
@@ -812,6 +819,7 @@ jobs:
         SHA_SHORT=$( echo "${GITHUB_SHA}" | cut -c1-7 )
 
         # Generate the final tags. E.g. 'master-mytag' and 'master-b29758a-mytag'
+        BASE_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${BASE_TAG}"
         VARIANT_TAG_WITH_REF="${REF}-${VARIANT_TAG}"
         VARIANT_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${VARIANT_TAG}"
 
@@ -821,13 +829,15 @@ jobs:
         # echo "REF=$REF" >> $GITHUB_ENV
         # echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_ENV
         # echo "REF_AND_SHA_SHORT=$REF_AND_SHA_SHORT" >> $GITHUB_ENV
+
+        echo "BASE_TAG_WITH_REF_AND_SHA_SHORT=$BASE_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
         echo "VARIANT_BUILD_DIR=$VARIANT_BUILD_DIR" >> $GITHUB_ENV
         echo "VARIANT_TAG=$VARIANT_TAG" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF=$VARIANT_TAG_WITH_REF" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF_AND_SHA_SHORT=$VARIANT_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
 
     - name: Login to docker registry
-      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+      # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
       run: echo "${DOCKERHUB_REGISTRY_PASSWORD}" | docker login -u "${DOCKERHUB_REGISTRY_USER}" --password-stdin
       env:
         DOCKERHUB_REGISTRY_USER: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
@@ -842,8 +852,12 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         platforms: linux/amd64
-        push: false
+        push: true
         tags: |
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
@@ -861,6 +875,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -878,6 +896,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
+        build-args: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
+        labels: |
+          BASE_IMAGE=${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-v4.8.3-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -897,11 +919,10 @@ jobs:
       if: always()
 
   build-v4-7-1-alpine-3-15:
-    needs: [changes]
+    needs: []
     runs-on: ubuntu-latest
-    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-7-1-alpine-3-15')) }}
-    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-7-1-alpine-3-15 == 'true') }}
     env:
+      BASE_TAG: 
       VARIANT_TAG: v4.7.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.7.1-alpine-3.15
     steps:
@@ -953,6 +974,7 @@ jobs:
         SHA_SHORT=$( echo "${GITHUB_SHA}" | cut -c1-7 )
 
         # Generate the final tags. E.g. 'master-mytag' and 'master-b29758a-mytag'
+        BASE_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${BASE_TAG}"
         VARIANT_TAG_WITH_REF="${REF}-${VARIANT_TAG}"
         VARIANT_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${VARIANT_TAG}"
 
@@ -962,13 +984,15 @@ jobs:
         # echo "REF=$REF" >> $GITHUB_ENV
         # echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_ENV
         # echo "REF_AND_SHA_SHORT=$REF_AND_SHA_SHORT" >> $GITHUB_ENV
+
+        echo "BASE_TAG_WITH_REF_AND_SHA_SHORT=$BASE_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
         echo "VARIANT_BUILD_DIR=$VARIANT_BUILD_DIR" >> $GITHUB_ENV
         echo "VARIANT_TAG=$VARIANT_TAG" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF=$VARIANT_TAG_WITH_REF" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF_AND_SHA_SHORT=$VARIANT_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
 
     - name: Login to docker registry
-      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+      # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
       run: echo "${DOCKERHUB_REGISTRY_PASSWORD}" | docker login -u "${DOCKERHUB_REGISTRY_USER}" --password-stdin
       env:
         DOCKERHUB_REGISTRY_USER: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
@@ -984,7 +1008,7 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         platforms: linux/amd64
-        push: false
+        push: true
         tags: |
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
@@ -1038,11 +1062,10 @@ jobs:
       if: always()
 
   build-v4-6-1-alpine-3-15:
-    needs: [changes]
+    needs: []
     runs-on: ubuntu-latest
-    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-6-1-alpine-3-15')) }}
-    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-6-1-alpine-3-15 == 'true') }}
     env:
+      BASE_TAG: 
       VARIANT_TAG: v4.6.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.6.1-alpine-3.15
     steps:
@@ -1094,6 +1117,7 @@ jobs:
         SHA_SHORT=$( echo "${GITHUB_SHA}" | cut -c1-7 )
 
         # Generate the final tags. E.g. 'master-mytag' and 'master-b29758a-mytag'
+        BASE_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${BASE_TAG}"
         VARIANT_TAG_WITH_REF="${REF}-${VARIANT_TAG}"
         VARIANT_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${VARIANT_TAG}"
 
@@ -1103,13 +1127,15 @@ jobs:
         # echo "REF=$REF" >> $GITHUB_ENV
         # echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_ENV
         # echo "REF_AND_SHA_SHORT=$REF_AND_SHA_SHORT" >> $GITHUB_ENV
+
+        echo "BASE_TAG_WITH_REF_AND_SHA_SHORT=$BASE_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
         echo "VARIANT_BUILD_DIR=$VARIANT_BUILD_DIR" >> $GITHUB_ENV
         echo "VARIANT_TAG=$VARIANT_TAG" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF=$VARIANT_TAG_WITH_REF" >> $GITHUB_ENV
         echo "VARIANT_TAG_WITH_REF_AND_SHA_SHORT=$VARIANT_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
 
     - name: Login to docker registry
-      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+      # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
       run: echo "${DOCKERHUB_REGISTRY_PASSWORD}" | docker login -u "${DOCKERHUB_REGISTRY_USER}" --password-stdin
       env:
         DOCKERHUB_REGISTRY_USER: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
@@ -1125,7 +1151,7 @@ jobs:
       with:
         context: ${{ env.VARIANT_BUILD_DIR }}
         platforms: linux/amd64
-        push: false
+        push: true
         tags: |
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}

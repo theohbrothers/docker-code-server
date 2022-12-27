@@ -1,4 +1,8 @@
-@"
+if (!$VARIANT['_metadata']['components']) {
+    #
+    # Base builds
+    #
+    @"
 # syntax=docker/dockerfile:1
 # The syntax=docker/dockerfile:1 line above is needed for passing secrets to the build
 
@@ -25,13 +29,25 @@ RUN adduser -u 1000 --gecos '' -D user
 RUN echo 'user ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/user
 
 ENV LANG=en_US.UTF-8
-
+USER 1000
+WORKDIR /home/user
+CMD [ "code-server", "--bind-addr", "0.0.0.0:8080", "--disable-telemetry", "--disable-update-check" ]
 "@
 
-foreach ($c in $VARIANT['_metadata']['components']) {
-    if ($c -match 'pwsh-([^-]+)') {
-        $v = $matches[1]
-        @"
+}else {
+    @'
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+USER root
+
+'@
+    #
+    # Incremental builds
+    #
+    foreach ($c in $VARIANT['_metadata']['components']) {
+        if ($c -match 'pwsh-([^-]+)') {
+            $v = $matches[1]
+            @"
 # Install pwsh
 # See: https://learn.microsoft.com/en-us/powershell/scripting/install/install-alpine?view=powershell-7.3
 RUN apk add --no-cache \
@@ -72,11 +88,6 @@ RUN code-server --install-extension ms-vscode.powershell@2021.12.0
 
 
 "@
+        }
     }
 }
-
-@"
-USER 1000
-WORKDIR /home/user
-CMD [ "code-server", "--bind-addr", "0.0.0.0:8080", "--disable-telemetry", "--disable-update-check" ]
-"@
