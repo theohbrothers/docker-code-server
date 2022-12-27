@@ -11,7 +11,35 @@ on:
     branches:
     - master
 jobs:
+  # JOB to run change detection
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      # changes: ${{ steps.filter.outputs.changes }}
+
 '@
+$VARIANTS | % {
+@"
+      $( $_['tag'].Replace('.', '-') ): `${{ steps.filter.outputs.$( $_['tag'].Replace('.', '-') ) }}
+
+"@
+}
+@'
+    steps:
+      - uses: dorny/paths-filter@v2.11.1
+        id: filter
+        with:
+          token: ${{ github.token }}
+          filters: |
+'@
+$VARIANTS | % {
+@"
+
+            $( $_['tag'].Replace('.', '-') ):
+              - '$( $_['build_dir_rel'] )/**'
+"@
+}
 
 $local:WORKFLOW_JOB_NAMES = $VARIANTS | % { "build-$( $_['tag'].Replace('.', '-') )" }
 $VARIANTS | % {
@@ -19,7 +47,10 @@ $VARIANTS | % {
 
 
   build-$( $_['tag'].Replace('.', '-') ):
+    needs: [changes]
     runs-on: ubuntu-latest
+    # if: contains(fromJson(needs.changes.outputs.changes), '$( $_['tag'].Replace('.', '-') )')
+    if: `${{ needs.changes.outputs.$( $_['tag'].Replace('.', '-') ) == 'true' }}
     env:
       VARIANT_TAG: $( $_['tag'] )
       VARIANT_BUILD_DIR: $( $_['build_dir_rel'] )
