@@ -58,10 +58,16 @@ RUN code-server --install-extension vscode-icons-team.vscode-icons@11.13.0
 RUN code-server --install-extension redhat.vscode-xml@0.18.0
 # yaml
 RUN code-server --install-extension redhat.vscode-yaml@1.9.1
-# Remove the default config file created when extensions are installed
-RUN rm -v ~/.config/code-server/config.yaml
+
+# Remove the default code-server config file created when extensions are installed
+USER user
+RUN rm -fv ~/.config/code-server/config.yaml
+
+USER root
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 ENV LANG=en_US.UTF-8
 USER user
 WORKDIR /home/user
-CMD [ "code-server", "--bind-addr", "0.0.0.0:8080", "--disable-telemetry", "--disable-update-check" ]
+CMD [ "/docker-entrypoint.sh" ]

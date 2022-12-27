@@ -61,13 +61,6 @@ RUN code-server --install-extension vscode-icons-team.vscode-icons@11.13.0
 RUN code-server --install-extension redhat.vscode-xml@0.18.0
 # yaml
 RUN code-server --install-extension redhat.vscode-yaml@1.9.1
-# Remove the default config file created when extensions are installed
-RUN rm -v ~/.config/code-server/config.yaml
-
-ENV LANG=en_US.UTF-8
-USER user
-WORKDIR /home/user
-CMD [ "code-server", "--bind-addr", "0.0.0.0:8080", "--disable-telemetry", "--disable-update-check" ]
 "@
 }else {
     # Incremental build
@@ -75,14 +68,57 @@ CMD [ "code-server", "--bind-addr", "0.0.0.0:8080", "--disable-telemetry", "--di
 ARG BASE_IMAGE
 FROM $BASE_IMAGE
 
-USER root
-
 
 '@
     foreach ($c in $VARIANT['_metadata']['components']) {
+        if ($c -eq 'docker') {
+@'
+USER root
+
+# Install docker
+RUN apk add --no-cache shadow-uidmap fuse-overlayfs iproute2 iptables ip6tables
+RUN apk add --no-cache docker
+RUN adduser user docker
+
+# Install docker compose v2
+RUN apk add --no-cache docker-cli-compose
+
+# Install docker-compose v1 (deprecated, but for backward compatibility)
+RUN apk add --no-cache docker-compose
+
+'@
+
+        }
+        if ($c -eq 'docker-rootless') {
+@'
+USER root
+
+# Install rootless docker
+# See: https://docs.docker.com/engine/security/rootless/
+RUN apk add --no-cache shadow-uidmap fuse-overlayfs iproute2 iptables ip6tables
+RUN apk add --no-cache bash-completion
+RUN echo user:100000:65536 >/etc/subuid
+RUN echo user:100000:65536 >/etc/subgid
+USER user
+RUN wget -qO- https://get.docker.com/rootless | sh
+ENV XDG_RUNTIME_DIR=/home/user/.docker/run
+ENV PATH=/home/user/bin:$PATH
+ENV DOCKER_HOST=unix:///home/user/.docker/run/docker.sock
+
+USER root
+
+# Install docker compose v2
+RUN apk add --no-cache docker-cli-compose
+
+# Install docker-compose v1 (deprecated, but for backward compatibility)
+RUN apk add --no-cache docker-compose
+'@
+        }
         if ($c -match 'pwsh-([^-]+)') {
             $v = $matches[1]
             @"
+USER root
+
 # Install pwsh
 # See: https://learn.microsoft.com/en-us/powershell/scripting/install/install-alpine?view=powershell-7.3
 RUN apk add --no-cache \
@@ -120,16 +156,24 @@ RUN pwsh -c 'Install-Module Pester -Force -Scope AllUsers -MinimumVersion 4.0.0 
 # Install extensions
 USER user
 RUN code-server --install-extension ms-vscode.powershell@2021.12.0
-
 "@
         }
     }
-@"
-# Remove the default config file created when extensions are installed
-RUN rm -v ~/.config/code-server/config.yaml
-
-# Restore user
-USER user
-
-"@
 }
+
+@"
+
+
+# Remove the default code-server config file created when extensions are installed
+USER user
+RUN rm -fv ~/.config/code-server/config.yaml
+
+USER root
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+ENV LANG=en_US.UTF-8
+USER user
+WORKDIR /home/user
+CMD [ "/docker-entrypoint.sh" ]
+"@

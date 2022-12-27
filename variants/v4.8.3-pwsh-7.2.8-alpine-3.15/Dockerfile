@@ -40,8 +40,16 @@ RUN pwsh -c 'Install-Module Pester -Force -Scope AllUsers -MinimumVersion 4.0.0 
 # Install extensions
 USER user
 RUN code-server --install-extension ms-vscode.powershell@2021.12.0
-# Remove the default config file created when extensions are installed
-RUN rm -v ~/.config/code-server/config.yaml
 
-# Restore user
+# Remove the default code-server config file created when extensions are installed
 USER user
+RUN rm -fv ~/.config/code-server/config.yaml
+
+USER root
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+ENV LANG=en_US.UTF-8
+USER user
+WORKDIR /home/user
+CMD [ "/docker-entrypoint.sh" ]

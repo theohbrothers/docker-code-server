@@ -7,6 +7,8 @@ $local:VARIANTS_MATRIX = @(
         distro_version = '3.15'
         subvariants = @(
             @{ components = @(); tag_as_latest = $true } # Base
+            @{ components = @( 'docker' ) } # Incremental
+            @{ components = @( 'docker-rootless' ) } # Incremental
         )
     }
     @{
@@ -16,6 +18,8 @@ $local:VARIANTS_MATRIX = @(
         distro_version = '3.15'
         subvariants = @(
             @{ components = @() } # Base
+            @{ components = @( 'docker' ) } # Incremental
+            @{ components = @( 'docker-rootless' ) } # Incremental
             @{ components = @( 'pwsh-7.3.1' ) } # Incremental
             @{ components = @( 'pwsh-7.2.8' ) } # Incremental
             @{ components = @( 'pwsh-7.1.7' ) } # Incremental
@@ -29,6 +33,8 @@ $local:VARIANTS_MATRIX = @(
         distro_version = '3.15'
         subvariants = @(
             @{ components = @() } # Base
+            @{ components = @( 'docker' ) } # Incremental
+            @{ components = @( 'docker-rootless' ) } # Incremental
         )
     }
     @{
@@ -38,6 +44,8 @@ $local:VARIANTS_MATRIX = @(
         distro_version = '3.15'
         subvariants = @(
             @{ components = @() } # Base
+            @{ components = @( 'docker' ) } # Incremental
+            @{ components = @( 'docker-rootless' ) } # Incremental
         )
     }
     # @{
@@ -99,8 +107,14 @@ $VARIANTS_SHARED = @{
         templates = @{
             'Dockerfile' = @{
                 common = $true
-                includeHeader = $false
-                includeFooter = $false
+                passes = @(
+                    @{
+                        variables = @{}
+                    }
+                )
+            }
+            'docker-entrypoint.sh' = @{
+                common = $true
                 passes = @(
                     @{
                         variables = @{}
