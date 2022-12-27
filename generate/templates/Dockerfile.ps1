@@ -1,7 +1,5 @@
-if (!$VARIANT['_metadata']['components']) {
-    #
-    # Base builds
-    #
+if (!$VARIANT['_metadata']['base_tag']) {
+    # Base build
     @"
 # syntax=docker/dockerfile:1
 # The syntax=docker/dockerfile:1 line above is needed for passing secrets to the build
@@ -28,22 +26,57 @@ RUN apk add --no-cache sudo
 RUN adduser -u 1000 --gecos '' -D user
 RUN echo 'user ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/user
 
+# Install common extensions
+USER user
+# bookmarks
+RUN code-server --install-extension alefragnani.Bookmarks@13.0.1
+# beautify - code formatter
+RUN code-server --install-extension hookyqr.beautify@1.4.11
+# docker
+RUN code-server --install-extension ms-azuretools.vscode-docker@1.18.0
+# firefox
+RUN code-server --install-extension firefox-devtools.vscode-firefox-debug@2.9.1
+# git
+RUN code-server --install-extension donjayamanne.githistory@0.6.19
+RUN code-server --install-extension eamodio.gitlens@11.6.0
+# jinja
+RUN code-server --install-extension samuelcolvin.jinjahtml@0.16.0
+RUN code-server --install-extension wholroyd.jinja@0.0.8
+# kubernetes
+RUN code-server --install-extension ms-kubernetes-tools.vscode-kubernetes-tools@1.3.11
+# markdown
+RUN code-server --install-extension bierner.markdown-preview-github-styles@0.1.6
+RUN code-server --install-extension DavidAnson.vscode-markdownlint@0.43.2
+# prettier - code formatter
+RUN code-server --install-extension esbenp.prettier-vscode@9.0.0
+# svg
+RUN code-server --install-extension jock.svg@1.4.17
+# terraform
+RUN code-server --install-extension hashicorp.terraform@2.14.0
+# toml
+RUN code-server --install-extension bungcip.better-toml@0.3.2
+# vscode
+RUN code-server --install-extension vscode-icons-team.vscode-icons@11.13.0
+# xml
+RUN code-server --install-extension redhat.vscode-xml@0.18.0
+# yaml
+RUN code-server --install-extension redhat.vscode-yaml@1.9.1
+
 ENV LANG=en_US.UTF-8
-USER 1000
+USER user
 WORKDIR /home/user
 CMD [ "code-server", "--bind-addr", "0.0.0.0:8080", "--disable-telemetry", "--disable-update-check" ]
 "@
-
 }else {
+    # Incremental build
     @'
 ARG BASE_IMAGE
 FROM $BASE_IMAGE
+
 USER root
 
+
 '@
-    #
-    # Incremental builds
-    #
     foreach ($c in $VARIANT['_metadata']['components']) {
         if ($c -match 'pwsh-([^-]+)') {
             $v = $matches[1]
@@ -83,11 +116,16 @@ RUN pwsh -version
 RUN pwsh -c 'Install-Module Pester -Force -Scope AllUsers -MinimumVersion 4.0.0 -MaximumVersion 4.10.1 -ErrorAction Stop'
 
 # Install extensions
-USER 1000
+USER user
 RUN code-server --install-extension ms-vscode.powershell@2021.12.0
-
 
 "@
         }
     }
+@"
+
+# Restore user
+USER user
+
+"@
 }
