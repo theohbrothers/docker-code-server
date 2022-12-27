@@ -51,8 +51,8 @@ $VARIANTS | % {
   build-$( $_['tag'].Replace('.', '-') ):
     needs: [changes]
     runs-on: ubuntu-latest
-    # if: contains(fromJson(needs.changes.outputs.changes), '$( $_['tag'].Replace('.', '-') )')
-    if: `${{ needs.changes.outputs.$( $_['tag'].Replace('.', '-') ) == 'true' }}
+    # if: `${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), '$( $_['tag'].Replace('.', '-') )')) }}
+    if: `${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.$( $_['tag'].Replace('.', '-') ) == 'true') }}
     env:
       VARIANT_TAG: $( $_['tag'] )
       VARIANT_BUILD_DIR: $( $_['build_dir_rel'] )
