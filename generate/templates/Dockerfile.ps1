@@ -20,7 +20,7 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
     && code-server --version \
     && apk del `$DEPS
 
-RUN apk add --no-cache bash ca-certificates curl git git-lfs jq nano openssh-client tree
+RUN apk add --no-cache bash bash-completion ca-certificates curl gnupg git git-lfs jq nano openssh-client openssl tree
 
 RUN apk add --no-cache sudo
 RUN adduser -u 1000 --gecos '' -D user
@@ -96,7 +96,6 @@ USER root
 # Install rootless docker
 # See: https://docs.docker.com/engine/security/rootless/
 RUN apk add --no-cache shadow-uidmap fuse-overlayfs iproute2 iptables ip6tables
-RUN apk add --no-cache bash-completion
 RUN echo user:100000:65536 >/etc/subuid
 RUN echo user:100000:65536 >/etc/subgid
 USER user

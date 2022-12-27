@@ -6,7 +6,6 @@ USER root
 # Install rootless docker
 # See: https://docs.docker.com/engine/security/rootless/
 RUN apk add --no-cache shadow-uidmap fuse-overlayfs iproute2 iptables ip6tables
-RUN apk add --no-cache bash-completion
 RUN echo user:100000:65536 >/etc/subuid
 RUN echo user:100000:65536 >/etc/subgid
 USER user
