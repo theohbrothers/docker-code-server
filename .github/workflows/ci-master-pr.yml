@@ -10,9 +10,48 @@ on:
     branches:
     - master
 jobs:
+  # JOB to run change detection
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      # changes: ${{ steps.filter.outputs.changes }}
+      v4-9-1-alpine-3-15: ${{ steps.filter.outputs.v4-9-1-alpine-3-15 }}
+      v4-8-3-alpine-3-15: ${{ steps.filter.outputs.v4-8-3-alpine-3-15 }}
+      v4-8-3-pwsh-7-3-1-alpine-3-15: ${{ steps.filter.outputs.v4-8-3-pwsh-7-3-1-alpine-3-15 }}
+      v4-8-3-pwsh-7-2-8-alpine-3-15: ${{ steps.filter.outputs.v4-8-3-pwsh-7-2-8-alpine-3-15 }}
+      v4-8-3-pwsh-7-1-7-alpine-3-15: ${{ steps.filter.outputs.v4-8-3-pwsh-7-1-7-alpine-3-15 }}
+      v4-8-3-pwsh-7-0-13-alpine-3-15: ${{ steps.filter.outputs.v4-8-3-pwsh-7-0-13-alpine-3-15 }}
+      v4-7-1-alpine-3-15: ${{ steps.filter.outputs.v4-7-1-alpine-3-15 }}
+      v4-6-1-alpine-3-15: ${{ steps.filter.outputs.v4-6-1-alpine-3-15 }}
+    steps:
+      - uses: dorny/paths-filter@v2.11.1
+        id: filter
+        with:
+          token: ${{ github.token }}
+          filters: |
+            v4-9-1-alpine-3-15:
+              - 'variants/v4.9.1-alpine-3.15/**'
+            v4-8-3-alpine-3-15:
+              - 'variants/v4.8.3-alpine-3.15/**'
+            v4-8-3-pwsh-7-3-1-alpine-3-15:
+              - 'variants/v4.8.3-pwsh-7.3.1-alpine-3.15/**'
+            v4-8-3-pwsh-7-2-8-alpine-3-15:
+              - 'variants/v4.8.3-pwsh-7.2.8-alpine-3.15/**'
+            v4-8-3-pwsh-7-1-7-alpine-3-15:
+              - 'variants/v4.8.3-pwsh-7.1.7-alpine-3.15/**'
+            v4-8-3-pwsh-7-0-13-alpine-3-15:
+              - 'variants/v4.8.3-pwsh-7.0.13-alpine-3.15/**'
+            v4-7-1-alpine-3-15:
+              - 'variants/v4.7.1-alpine-3.15/**'
+            v4-6-1-alpine-3-15:
+              - 'variants/v4.6.1-alpine-3.15/**'
 
   build-v4-9-1-alpine-3-15:
+    needs: [changes]
     runs-on: ubuntu-latest
+    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-9-1-alpine-3-15')
+    if: ${{ needs.changes.outputs.v4-9-1-alpine-3-15 == 'true' }}
     env:
       VARIANT_TAG: v4.9.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.9.1-alpine-3.15
@@ -151,7 +190,10 @@ jobs:
       if: always()
 
   build-v4-8-3-alpine-3-15:
+    needs: [changes]
     runs-on: ubuntu-latest
+    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-alpine-3-15')
+    if: ${{ needs.changes.outputs.v4-8-3-alpine-3-15 == 'true' }}
     env:
       VARIANT_TAG: v4.8.3-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-alpine-3.15
@@ -289,7 +331,10 @@ jobs:
       if: always()
 
   build-v4-8-3-pwsh-7-3-1-alpine-3-15:
+    needs: [changes]
     runs-on: ubuntu-latest
+    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-3-1-alpine-3-15')
+    if: ${{ needs.changes.outputs.v4-8-3-pwsh-7-3-1-alpine-3-15 == 'true' }}
     env:
       VARIANT_TAG: v4.8.3-pwsh-7.3.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.3.1-alpine-3.15
@@ -427,7 +472,10 @@ jobs:
       if: always()
 
   build-v4-8-3-pwsh-7-2-8-alpine-3-15:
+    needs: [changes]
     runs-on: ubuntu-latest
+    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-2-8-alpine-3-15')
+    if: ${{ needs.changes.outputs.v4-8-3-pwsh-7-2-8-alpine-3-15 == 'true' }}
     env:
       VARIANT_TAG: v4.8.3-pwsh-7.2.8-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.2.8-alpine-3.15
@@ -565,7 +613,10 @@ jobs:
       if: always()
 
   build-v4-8-3-pwsh-7-1-7-alpine-3-15:
+    needs: [changes]
     runs-on: ubuntu-latest
+    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-1-7-alpine-3-15')
+    if: ${{ needs.changes.outputs.v4-8-3-pwsh-7-1-7-alpine-3-15 == 'true' }}
     env:
       VARIANT_TAG: v4.8.3-pwsh-7.1.7-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.1.7-alpine-3.15
@@ -703,7 +754,10 @@ jobs:
       if: always()
 
   build-v4-8-3-pwsh-7-0-13-alpine-3-15:
+    needs: [changes]
     runs-on: ubuntu-latest
+    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-0-13-alpine-3-15')
+    if: ${{ needs.changes.outputs.v4-8-3-pwsh-7-0-13-alpine-3-15 == 'true' }}
     env:
       VARIANT_TAG: v4.8.3-pwsh-7.0.13-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.0.13-alpine-3.15
@@ -841,7 +895,10 @@ jobs:
       if: always()
 
   build-v4-7-1-alpine-3-15:
+    needs: [changes]
     runs-on: ubuntu-latest
+    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-7-1-alpine-3-15')
+    if: ${{ needs.changes.outputs.v4-7-1-alpine-3-15 == 'true' }}
     env:
       VARIANT_TAG: v4.7.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.7.1-alpine-3.15
@@ -979,7 +1036,10 @@ jobs:
       if: always()
 
   build-v4-6-1-alpine-3-15:
+    needs: [changes]
     runs-on: ubuntu-latest
+    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-6-1-alpine-3-15')
+    if: ${{ needs.changes.outputs.v4-6-1-alpine-3-15 == 'true' }}
     env:
       VARIANT_TAG: v4.6.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.6.1-alpine-3.15
