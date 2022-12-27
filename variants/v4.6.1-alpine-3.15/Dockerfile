@@ -58,6 +58,8 @@ RUN code-server --install-extension vscode-icons-team.vscode-icons@11.13.0
 RUN code-server --install-extension redhat.vscode-xml@0.18.0
 # yaml
 RUN code-server --install-extension redhat.vscode-yaml@1.9.1
+# Remove the default config file created when extensions are installed
+RUN rm -v ~/.config/code-server/config.yaml
 
 ENV LANG=en_US.UTF-8
 USER user
