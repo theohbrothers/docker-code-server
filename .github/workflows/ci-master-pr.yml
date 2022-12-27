@@ -52,8 +52,8 @@ jobs:
   build-v4-9-1-alpine-3-15:
     needs: [changes]
     runs-on: ubuntu-latest
-    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-9-1-alpine-3-15')
-    if: ${{ needs.changes.outputs.v4-9-1-alpine-3-15 == 'true' }}
+    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-9-1-alpine-3-15')) }}
+    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-9-1-alpine-3-15 == 'true') }}
     env:
       VARIANT_TAG: v4.9.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.9.1-alpine-3.15
@@ -194,8 +194,8 @@ jobs:
   build-v4-8-3-alpine-3-15:
     needs: [changes]
     runs-on: ubuntu-latest
-    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-alpine-3-15')
-    if: ${{ needs.changes.outputs.v4-8-3-alpine-3-15 == 'true' }}
+    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-alpine-3-15')) }}
+    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-8-3-alpine-3-15 == 'true') }}
     env:
       VARIANT_TAG: v4.8.3-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-alpine-3.15
@@ -335,8 +335,8 @@ jobs:
   build-v4-8-3-pwsh-7-3-1-alpine-3-15:
     needs: [changes]
     runs-on: ubuntu-latest
-    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-3-1-alpine-3-15')
-    if: ${{ needs.changes.outputs.v4-8-3-pwsh-7-3-1-alpine-3-15 == 'true' }}
+    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-3-1-alpine-3-15')) }}
+    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-8-3-pwsh-7-3-1-alpine-3-15 == 'true') }}
     env:
       VARIANT_TAG: v4.8.3-pwsh-7.3.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.3.1-alpine-3.15
@@ -476,8 +476,8 @@ jobs:
   build-v4-8-3-pwsh-7-2-8-alpine-3-15:
     needs: [changes]
     runs-on: ubuntu-latest
-    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-2-8-alpine-3-15')
-    if: ${{ needs.changes.outputs.v4-8-3-pwsh-7-2-8-alpine-3-15 == 'true' }}
+    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-2-8-alpine-3-15')) }}
+    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-8-3-pwsh-7-2-8-alpine-3-15 == 'true') }}
     env:
       VARIANT_TAG: v4.8.3-pwsh-7.2.8-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.2.8-alpine-3.15
@@ -617,8 +617,8 @@ jobs:
   build-v4-8-3-pwsh-7-1-7-alpine-3-15:
     needs: [changes]
     runs-on: ubuntu-latest
-    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-1-7-alpine-3-15')
-    if: ${{ needs.changes.outputs.v4-8-3-pwsh-7-1-7-alpine-3-15 == 'true' }}
+    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-1-7-alpine-3-15')) }}
+    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-8-3-pwsh-7-1-7-alpine-3-15 == 'true') }}
     env:
       VARIANT_TAG: v4.8.3-pwsh-7.1.7-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.1.7-alpine-3.15
@@ -758,8 +758,8 @@ jobs:
   build-v4-8-3-pwsh-7-0-13-alpine-3-15:
     needs: [changes]
     runs-on: ubuntu-latest
-    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-0-13-alpine-3-15')
-    if: ${{ needs.changes.outputs.v4-8-3-pwsh-7-0-13-alpine-3-15 == 'true' }}
+    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-8-3-pwsh-7-0-13-alpine-3-15')) }}
+    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-8-3-pwsh-7-0-13-alpine-3-15 == 'true') }}
     env:
       VARIANT_TAG: v4.8.3-pwsh-7.0.13-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.8.3-pwsh-7.0.13-alpine-3.15
@@ -899,8 +899,8 @@ jobs:
   build-v4-7-1-alpine-3-15:
     needs: [changes]
     runs-on: ubuntu-latest
-    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-7-1-alpine-3-15')
-    if: ${{ needs.changes.outputs.v4-7-1-alpine-3-15 == 'true' }}
+    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-7-1-alpine-3-15')) }}
+    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-7-1-alpine-3-15 == 'true') }}
     env:
       VARIANT_TAG: v4.7.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.7.1-alpine-3.15
@@ -1040,8 +1040,8 @@ jobs:
   build-v4-6-1-alpine-3-15:
     needs: [changes]
     runs-on: ubuntu-latest
-    # if: contains(fromJson(needs.changes.outputs.changes), 'v4-6-1-alpine-3-15')
-    if: ${{ needs.changes.outputs.v4-6-1-alpine-3-15 == 'true' }}
+    # if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && contains(fromJson(needs.changes.outputs.changes), 'v4-6-1-alpine-3-15')) }}
+    if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.changes.outputs.v4-6-1-alpine-3-15 == 'true') }}
     env:
       VARIANT_TAG: v4.6.1-alpine-3.15
       VARIANT_BUILD_DIR: variants/v4.6.1-alpine-3.15
