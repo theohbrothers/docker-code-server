@@ -149,9 +149,9 @@ if ($_['_metadata']['base_tag']) {
 if ($_['_metadata']['base_tag']) {
 @"
         build-args: |
-          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF }}-`${{ env.SHA_SHORT }}-$( $_['_metadata']['base_tag'] )
+          BASE_IMAGE=`${{ github.repository }}:`${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         labels: |
-          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF }}-`${{ env.SHA_SHORT }}-$( $_['_metadata']['base_tag'] )
+          BASE_IMAGE=`${{ github.repository }}:`${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
 
 "@
 }
@@ -178,9 +178,9 @@ if ($_['_metadata']['base_tag']) {
 if ($_['_metadata']['base_tag']) {
 @"
         build-args: |
-          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF }}-`${{ env.SHA_SHORT }}-$( $_['_metadata']['base_tag'] )
+          BASE_IMAGE=`${{ github.repository }}:`${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
         labels: |
-          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF }}-`${{ env.SHA_SHORT }}-$( $_['_metadata']['base_tag'] )
+          BASE_IMAGE=`${{ github.repository }}:`${{ env.BASE_TAG_WITH_REF_AND_SHA_SHORT }}
 
 "@
 }
