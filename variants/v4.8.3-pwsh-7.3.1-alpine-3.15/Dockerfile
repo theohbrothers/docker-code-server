@@ -1,6 +1,8 @@
 ARG BASE_IMAGE
 FROM $BASE_IMAGE
+
 USER root
+
 # Install pwsh
 # See: https://learn.microsoft.com/en-us/powershell/scripting/install/install-alpine?view=powershell-7.3
 RUN apk add --no-cache \
@@ -36,6 +38,8 @@ RUN pwsh -version
 RUN pwsh -c 'Install-Module Pester -Force -Scope AllUsers -MinimumVersion 4.0.0 -MaximumVersion 4.10.1 -ErrorAction Stop'
 
 # Install extensions
-USER 1000
+USER user
 RUN code-server --install-extension ms-vscode.powershell@2021.12.0
 
+# Restore user
+USER user
