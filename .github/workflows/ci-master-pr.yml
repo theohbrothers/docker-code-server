@@ -25,6 +25,8 @@ jobs:
       v4-7-1-alpine-3-15: ${{ steps.filter.outputs.v4-7-1-alpine-3-15 }}
       v4-6-1-alpine-3-15: ${{ steps.filter.outputs.v4-6-1-alpine-3-15 }}
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2.11.1
         id: filter
         with:
