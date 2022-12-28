@@ -10,6 +10,7 @@ if ($VARIANT['_metadata']['base_tag']) {
         if ($c -eq 'docker') {
 @'
 echo "Starting dockerd"
+sudo rm -fv /var/run/docker.pid
 sudo dockerd &
 
 '@
