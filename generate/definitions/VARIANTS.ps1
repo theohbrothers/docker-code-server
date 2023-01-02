@@ -114,7 +114,7 @@ $VARIANTS = @(
                             $variant['distro_version']
                         ) -join '-'
                     }
-                    platforms = 'linux/amd64'
+                    platforms ='linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64'
                     components = $subVariant['components']
                 }
                 # Docker image tag. E.g. 'v2.3.0-alpine-3.6'
