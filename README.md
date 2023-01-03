@@ -50,7 +50,7 @@ To run an incremental variant:
 docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.9.1-docker-alpine-3.15
 
 # pwsh
-docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.8.3-pwsh-7.3.1-alpine-3.15
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.8.3-pwsh-7.3.1-alpine-3.15
 ```
 
 `code-server` is now available at http://127.0.0.1:8080. To login, use the password in the config file:
