@@ -25,8 +25,6 @@ RUN echo 'user ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/user
 
 # Install common extensions
 USER user
-# bookmarks
-RUN code-server --install-extension alefragnani.Bookmarks@13.0.1
 # beautify - code formatter
 RUN code-server --install-extension hookyqr.beautify@1.4.11
 # docker
