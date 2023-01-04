@@ -4,10 +4,8 @@
   "extensions.autoUpdate": false,
   "extensions.ignoreRecommendations": true,
   "extensions.showRecommendationsOnlyOnDemand": true,
-
   "telemetry.enableTelemetry": false,
   "telemetry.telemetryLevel": "off",
-
   "workbench.iconTheme": "vscode-icons",
   "workbench.startupEditor": "none",
 
