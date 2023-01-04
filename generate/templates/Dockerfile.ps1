@@ -61,6 +61,10 @@ RUN code-server --install-extension vscode-icons-team.vscode-icons@11.13.0
 RUN code-server --install-extension redhat.vscode-xml@0.18.0
 # yaml
 RUN code-server --install-extension redhat.vscode-yaml@1.9.1
+
+# Add a default settings.json
+USER user
+COPY --chown=1000:1000 settings.json /home/user/.local/share/code-server/User/settings.json
 "@
 }else {
     # Incremental build
