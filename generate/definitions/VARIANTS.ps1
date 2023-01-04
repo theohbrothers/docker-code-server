@@ -121,6 +121,14 @@ $VARIANTS_SHARED = @{
                     }
                 )
             }
+            'settings.json' = @{
+                common = $true
+                passes = @(
+                    @{
+                        variables = @{}
+                    }
+                )
+            }
         }
     }
 }

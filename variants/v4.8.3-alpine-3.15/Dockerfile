@@ -59,6 +59,10 @@ RUN code-server --install-extension redhat.vscode-xml@0.18.0
 # yaml
 RUN code-server --install-extension redhat.vscode-yaml@1.9.1
 
+# Add a default settings.json
+USER user
+COPY --chown=1000:1000 settings.json /home/user/.local/share/code-server/User/settings.json
+
 # Remove the default code-server config file created when extensions are installed
 USER user
 RUN rm -fv ~/.config/code-server/config.yaml

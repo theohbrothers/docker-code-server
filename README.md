@@ -29,7 +29,7 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 
 Base variants do not contain additional tools. E.g. `v4.9.1-alpine-3.15`.
 
-Incremental variants contain additional tools. E.g. `v4.9.1-docker-alpine-3.15`:
+Incremental variants contain additional tools and their `code` extensions. E.g. `v4.9.1-docker-alpine-3.15`:
 
 - `docker`: [docker](https://docs.docker.com/engine/)
 - `docker-rootless`: [Rootless docker](https://docs.docker.com/engine/security/rootless/)
@@ -64,6 +64,7 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 - The default user is named `user` with UID `1000`. To escalate as `root`, use `sudo`.
 - Users should provision their own configuration files at entrypoint. Examples include dot files such as `~/.bash_aliases`, `~/.gitconfig`, and `code` configs such as `~/.local/share/code-server/User/keybindings.json` and `~/.local/share/code-server/User/settings.json`.
 - To ensure `bash-completion` works, ensure `/etc/profile.d/bash_completion.sh` is sourced by `~/.bashrc`. When `exec`ing into the container, use a login shell (E.g. `docker exec -it <container> bash -l`).
+- To install a custom version of a `code` extension, set `"extensions.autoCheckUpdates": true` in `settings.json`. Under `Extensions` view, click the extension's cogwheel and select `Install Another Version...`.
 
 ## Development
 
