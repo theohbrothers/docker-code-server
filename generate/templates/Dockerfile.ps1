@@ -78,7 +78,25 @@ FROM $BASE_IMAGE
 USER root
 
 # Install docker
-RUN apk add --no-cache shadow-uidmap fuse-overlayfs iproute2 iptables ip6tables
+# See: https://github.com/moby/moby/blob/v20.10.22/project/PACKAGERS.md
+# Install docker client dependencies
+RUN apk add --no-cache \
+        ca-certificates \
+        git \
+		openssh-client
+# Install dockerd dependencies
+RUN apk add --no-cache \
+		btrfs-progs \
+		e2fsprogs \
+		e2fsprogs-extra \
+		ip6tables \
+		iptables \
+		openssl \
+        pigz \
+		shadow-uidmap \
+		xfsprogs \
+		xz \
+        zfs
 RUN apk add --no-cache docker
 RUN adduser user docker
 
@@ -87,7 +105,6 @@ RUN apk add --no-cache docker-cli-compose
 
 # Install docker-compose v1 (deprecated, but for backward compatibility)
 RUN apk add --no-cache docker-compose
-
 '@
 
         }
