@@ -25,6 +25,7 @@ RUN apk add --no-cache \
         zfs
 RUN apk add --no-cache docker
 RUN adduser user docker
+VOLUME /var/lib/docker
 
 # Install docker compose v2
 RUN apk add --no-cache docker-cli-compose
