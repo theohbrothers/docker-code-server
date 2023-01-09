@@ -48,8 +48,13 @@ docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/dock
 To run an incremental variant:
 
 ``````sh
-# docker or docker-rootless
+# docker
 docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:$( $VARIANTS | ? { $_['_metadata']['components'] -contains 'docker' } | Select-Object -First 1 | Select-Object -ExpandProperty tag )
+
+# docker-rootless
+docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:$( $VARIANTS | ? { $_['_metadata']['components'] -contains 'docker-rootless' } | Select-Object -First 1 | Select-Object -ExpandProperty tag )
+# The docker-rootless variant executes dockerd in its own user, mount, and network namespaces, see https://docs.docker.com/engine/security/rootless/#tips-for-debugging. To enter the namespace, run:
+docker exec -it code-server sh -c 'nsenter -U --preserve-credentials -n -m -t `$( cat `$XDG_RUNTIME_DIR/docker.pid )'
 
 # pwsh
 docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:$( $VARIANTS | ? { $_['_metadata']['components'] -match 'pwsh' } | Select-Object -First 1 | Select-Object -ExpandProperty tag )
