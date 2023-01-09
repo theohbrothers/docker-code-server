@@ -46,8 +46,13 @@ docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/dock
 To run an incremental variant:
 
 ```sh
-# docker or docker-rootless
+# docker
 docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.9.1-docker-alpine-3.15
+
+# docker-rootless
+docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.9.1-docker-rootless-alpine-3.15
+# The docker-rootless variant executes dockerd in its own user, mount, and network namespaces, see https://docs.docker.com/engine/security/rootless/#tips-for-debugging. To enter the namespace, run:
+docker exec -it code-server sh -c 'nsenter -U --preserve-credentials -n -m -t $( cat $XDG_RUNTIME_DIR/docker.pid )'
 
 # pwsh
 docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.8.3-pwsh-7.3.1-alpine-3.15
