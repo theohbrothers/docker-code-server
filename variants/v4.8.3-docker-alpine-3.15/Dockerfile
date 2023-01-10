@@ -1,11 +1,10 @@
 ARG BASE_IMAGE
 FROM $BASE_IMAGE
 
-USER root
-
 # Install docker
 # See: https://github.com/moby/moby/blob/v20.10.22/project/PACKAGERS.md
 # Install docker client dependencies
+USER root
 RUN apk add --no-cache \
         ca-certificates \
         git \
@@ -26,11 +25,12 @@ RUN apk add --no-cache \
 RUN apk add --no-cache docker
 RUN adduser user docker
 VOLUME /var/lib/docker
-
 # Install docker compose v2
+USER root
 RUN apk add --no-cache docker-cli-compose
 
 # Install docker-compose v1 (deprecated, but for backward compatibility)
+USER root
 RUN apk add --no-cache docker-compose
 
 # Install docker buildx plugin
