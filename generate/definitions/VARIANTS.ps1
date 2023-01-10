@@ -132,3 +132,6 @@ $VARIANTS_SHARED = @{
         }
     }
 }
+
+# Global cache for remote file content
+$global:CACHE = @{}

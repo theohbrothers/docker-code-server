@@ -106,6 +106,8 @@ RUN apk add --no-cache docker-cli-compose
 
 # Install docker-compose v1 (deprecated, but for backward compatibility)
 RUN apk add --no-cache docker-compose
+
+
 '@
 
         }
@@ -131,7 +133,62 @@ RUN apk add --no-cache docker-cli-compose
 
 # Install docker-compose v1 (deprecated, but for backward compatibility)
 RUN apk add --no-cache docker-compose
+
+
 '@
+        }
+        if ($c -eq 'docker'-or $c -eq 'docker-rootless') {
+$DOCKER_BUILDX_VERSION = 'v0.9.1'
+$checksums = $global:CACHE['docker-buildx-checksums'] = if (!$global:CACHE.Contains('docker-buildx-checksums')) {
+    [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/checksums.txt).Content )
+}else {
+    $global:CACHE['docker-buildx-checksums']
+}
+@"
+# Install docker buildx plugin
+USER root
+RUN set -eux; \
+    case "`$( apk --print-arch )" in \
+        'x86_64')  \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-amd64' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-amd64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            ;; \
+        'armhf')  \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v6' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v6' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            ;; \
+		'armv7') \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v7' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v7' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+			;; \
+		'aarch64') \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm64' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+			;; \
+		'ppc64le') \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+			;; \
+		'riscv64') \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+			;; \
+		's390x') \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-s390x' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-s390x' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+			;; \
+        *) \
+            echo "Architecture not supported"; \
+            exit 1; \
+            ;; \
+    esac; \
+    wget -qO- "`$URL" > docker-buildx \
+    && sha256sum docker-buildx | grep "^`$SHA256 " \
+    && mkdir -pv /usr/libexec/docker/cli-plugins \
+    && mv -v docker-buildx /usr/libexec/docker/cli-plugins/docker-buildx \
+    && chmod +x /usr/libexec/docker/cli-plugins/docker-buildx \
+    && docker buildx version
+"@
         }
         if ($c -match 'pwsh-([^-]+)') {
             $v = $matches[1]

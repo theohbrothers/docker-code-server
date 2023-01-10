@@ -37,31 +37,77 @@ Incremental variants contain additional tools and their `code` extensions. E.g. 
 
 ## Usage
 
-To run a base variant:
+### Base variant(s)
 
 ```sh
 docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.9.1-alpine-3.15
+# code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
+docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml
 ```
 
-To run an incremental variant:
+### `docker` variant(s)
 
 ```sh
-# docker
 docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.9.1-docker-alpine-3.15
+# code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
+docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml
+```
 
-# docker-rootless
+To build multi-arch images using [`buildx`](https://docs.docker.com/engine/reference/commandline/buildx/), the host must have kernel >= `4.8`, and must [setup `qemu` in the kernel](https://github.com/docker/setup-qemu-action) on each reboot:
+
+```sh
+docker run --rm --privileged tonistiigi/binfmt:latest --install all
+```
+
+Then, `buildx` multi-arch builds are now available in the container:
+
+```sh
+# Create a builder and use it
+docker buildx create --name mybuilder --driver docker-container
+docker buildx use mybuilder
+docker buildx ls
+docker buildx inspect mybuilder # Should show several platforms
+
+# Build
+docker buildx build .
+```
+
+### `docker-rootless` variant(s)
+
+```sh
 docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.9.1-docker-rootless-alpine-3.15
+# code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
+docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
+
 # The docker-rootless variant executes dockerd in its own user, mount, and network namespaces, see https://docs.docker.com/engine/security/rootless/#tips-for-debugging. To enter the namespace, run:
 docker exec -it code-server sh -c 'nsenter -U --preserve-credentials -n -m -t $( cat $XDG_RUNTIME_DIR/docker.pid )'
-
-# pwsh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.8.3-pwsh-7.3.1-alpine-3.15
 ```
 
-`code-server` is now available at http://127.0.0.1:8080. To login, use the password in the config file:
+To build multi-arch images using [`buildx`](https://docs.docker.com/engine/reference/commandline/buildx/), the host must have kernel >= `4.8`, and must [setup `qemu` in the kernel](https://github.com/docker/setup-qemu-action) on each reboot:
 
 ```sh
-docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
+docker run --rm --privileged tonistiigi/binfmt:latest --install all
+```
+
+Then, `buildx` multi-arch builds are now available in the container:
+
+```sh
+# Create a builder and use it
+docker buildx create --name mybuilder --driver docker-container
+docker buildx use mybuilder
+docker buildx ls
+docker buildx inspect mybuilder # Should show several platforms
+
+# Build
+docker buildx build .
+```
+
+### `pwsh` variant(s)
+
+```sh
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.8.3-pwsh-7.3.1-alpine-3.15
+# code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
+docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml
 ```
 
 ## Notes
