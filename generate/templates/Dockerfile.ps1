@@ -75,11 +75,10 @@ FROM $BASE_IMAGE
     foreach ($c in $VARIANT['_metadata']['components']) {
         if ($c -eq 'docker') {
 @'
-USER root
-
 # Install docker
 # See: https://github.com/moby/moby/blob/v20.10.22/project/PACKAGERS.md
 # Install docker client dependencies
+USER root
 RUN apk add --no-cache \
         ca-certificates \
         git \
@@ -101,22 +100,15 @@ RUN apk add --no-cache docker
 RUN adduser user docker
 VOLUME /var/lib/docker
 
-# Install docker compose v2
-RUN apk add --no-cache docker-cli-compose
-
-# Install docker-compose v1 (deprecated, but for backward compatibility)
-RUN apk add --no-cache docker-compose
-
-
 '@
 
         }
         if ($c -eq 'docker-rootless') {
 @'
-USER root
 
 # Install rootless docker
 # See: https://docs.docker.com/engine/security/rootless/
+USER root
 RUN apk add --no-cache shadow-uidmap fuse-overlayfs iproute2 iptables ip6tables
 RUN echo user:100000:65536 >/etc/subuid
 RUN echo user:100000:65536 >/etc/subgid
@@ -126,18 +118,21 @@ ENV XDG_RUNTIME_DIR=/home/user/.docker/run
 ENV PATH=/home/user/bin:$PATH
 ENV DOCKER_HOST=unix:///home/user/.docker/run/docker.sock
 
-USER root
-
-# Install docker compose v2
-RUN apk add --no-cache docker-cli-compose
-
-# Install docker-compose v1 (deprecated, but for backward compatibility)
-RUN apk add --no-cache docker-compose
-
 
 '@
         }
         if ($c -eq 'docker'-or $c -eq 'docker-rootless') {
+@"
+# Install docker compose v2
+USER root
+RUN apk add --no-cache docker-cli-compose
+
+# Install docker-compose v1 (deprecated, but for backward compatibility)
+USER root
+RUN apk add --no-cache docker-compose
+
+
+"@
 $DOCKER_BUILDX_VERSION = 'v0.9.1'
 $checksums = $global:CACHE['docker-buildx-checksums'] = if (!$global:CACHE.Contains('docker-buildx-checksums')) {
     [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/checksums.txt).Content )

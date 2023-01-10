@@ -1,10 +1,10 @@
 ARG BASE_IMAGE
 FROM $BASE_IMAGE
 
-USER root
 
 # Install rootless docker
 # See: https://docs.docker.com/engine/security/rootless/
+USER root
 RUN apk add --no-cache shadow-uidmap fuse-overlayfs iproute2 iptables ip6tables
 RUN echo user:100000:65536 >/etc/subuid
 RUN echo user:100000:65536 >/etc/subgid
@@ -14,12 +14,12 @@ ENV XDG_RUNTIME_DIR=/home/user/.docker/run
 ENV PATH=/home/user/bin:$PATH
 ENV DOCKER_HOST=unix:///home/user/.docker/run/docker.sock
 
-USER root
-
 # Install docker compose v2
+USER root
 RUN apk add --no-cache docker-cli-compose
 
 # Install docker-compose v1 (deprecated, but for backward compatibility)
+USER root
 RUN apk add --no-cache docker-compose
 
 # Install docker buildx plugin
