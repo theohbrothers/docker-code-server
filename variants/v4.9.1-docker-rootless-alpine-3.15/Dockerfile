@@ -116,15 +116,55 @@ VOLUME /home/user/.local/share/docker
 ENV XDG_RUNTIME_DIR=/run/user/1000
 ENV DOCKER_HOST=unix:///run/user/1000/docker.sock
 
-# Install docker compose v2
-USER root
-RUN apk add --no-cache docker-cli-compose
-
 # Install docker-compose v1 (deprecated, but for backward compatibility)
 USER root
 RUN apk add --no-cache docker-compose
 
-# Install docker buildx plugin
+# Install docker compose v2. See: https://github.com/docker/compose/releases/
+USER root
+RUN set -eux; \
+    case "$( uname -m )" in \
+        'x86_64')  \
+            URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-x86_64; \
+            SHA256=bcfd9ea51dee4c19dccdfaeef0e7956ef68bf14f3d175933742061a7271ef0f5; \
+            ;; \
+        'armhf')  \
+            URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-armv6; \
+            SHA256=a8934600100af88f535eb50b45c7d8d2ac37835221803ba2910e0b167b3af22e; \
+            ;; \
+        'armv7') \
+            URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-armv7; \
+            SHA256=e5b03ac1258ad4243af0ac4afcb1c6cc8c9956b2483a50309cdb38cdb8387e37; \
+            ;; \
+        'aarch64') \
+            URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-aarch64; \
+            SHA256=14d31297794868520cb2e61b543bb1c821aaa484af22b397904314ae8227f6a2; \
+            ;; \
+        'ppc64le') \
+            URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-ppc64le; \
+            SHA256=bdada874a26d382b20ced7c170707a1ebcf9f20d7d6f394b962076968473ca9c; \
+            ;; \
+        'riscv64') \
+            URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-riscv64; \
+            SHA256=9cc1b9c8de313a1e43b8f3dcca47c29eeb87af3de24c67448c463bf882166430; \
+            ;; \
+        's390x') \
+            URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-s390x; \
+            SHA256=cf311824af115d0bece5d5d60a73464912dad07cdd00fdaa469dabbcad60f289; \
+            ;; \
+        *) \
+            echo "Architecture not supported"; \
+            exit 1; \
+            ;; \
+    esac; \
+    wget -qO- "$URL" > docker-compose \
+    && sha256sum docker-compose | grep "^$SHA256 " \
+    && mkdir -pv /usr/libexec/docker/cli-plugins \
+    && mv -v docker-compose /usr/libexec/docker/cli-plugins/docker-compose \
+    && chmod +x /usr/libexec/docker/cli-plugins/docker-compose \
+    && docker compose version
+
+# Install docker buildx plugin. See: https://github.com/docker/buildx
 USER root
 RUN set -eux; \
     case "$( uname -m )" in \
