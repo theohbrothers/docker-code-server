@@ -73,55 +73,137 @@ FROM $BASE_IMAGE
 
 '@
     foreach ($c in $VARIANT['_metadata']['components']) {
-        if ($c -eq 'docker') {
+        if ($c -eq 'docker' -or $c -eq 'docker-rootless') {
+            $DOCKER_VERSION = '20.10.22'
 @'
 # Install docker
 # See: https://github.com/moby/moby/blob/v20.10.22/project/PACKAGERS.md
-# Install docker client dependencies
+# Install docker-cli dependencies
 USER root
 RUN apk add --no-cache \
         ca-certificates \
         git \
-		openssh-client
+        # Workaround for golang 1.15 not producing static binaries. See: https://github.com/containerd/containerd/issues/5824
+        libc6-compat \
+        openssh-client
 # Install dockerd dependencies
 RUN apk add --no-cache \
-		btrfs-progs \
-		e2fsprogs \
-		e2fsprogs-extra \
-		ip6tables \
-		iptables \
-		openssl \
+        btrfs-progs \
+        e2fsprogs \
+        e2fsprogs-extra \
+        ip6tables \
+        iptables \
+        openssl \
         pigz \
-		shadow-uidmap \
-		xfsprogs \
-		xz \
+        shadow-uidmap \
+        xfsprogs \
+        xz \
         zfs
-RUN apk add --no-cache docker
-RUN adduser user docker
+# Add userns-remap support. See: https://docs.docker.com/engine/security/userns-remap/
+RUN set -eux; \
+    addgroup -S dockremap; \
+    adduser -S -G dockremap dockremap; \
+    echo 'dockremap:231072:65536' >> /etc/subuid; \
+    echo 'dockremap:231072:65536' >> /etc/subgid
+
+'@
+@"
+# Install docker
+RUN set -eux; \
+    case "`$( uname -m )" in \
+        'x86_64') \
+            URL='https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz'; \
+            ;; \
+        'armhf') \
+            URL='https://download.docker.com/linux/static/stable/armel/docker-$DOCKER_VERSION.tgz'; \
+            ;; \
+        'armv7') \
+            URL='https://download.docker.com/linux/static/stable/armhf/docker-$DOCKER_VERSION.tgz'; \
+            ;; \
+        'aarch64') \
+            URL='https://download.docker.com/linux/static/stable/aarch64/docker-$DOCKER_VERSION.tgz'; \
+            ;; \
+        # These architectures are no longer supported as of docker 20.10.x
+        # 'ppc64le') \
+        # 	URL='https://download.docker.com/linux/static/stable/ppc64le/docker-$DOCKER_VERSION.tgz'; \
+        # 	;; \
+        # 's390x') \
+        # 	URL='https://download.docker.com/linux/static/stable/s390x/docker-$DOCKER_VERSION.tgz'; \
+        # 	;; \
+        *) \
+            echo "Architecture not supported"; \
+            exit 1; \
+            ;; \
+    esac; \
+    wget -q "`$URL" -O docker.tgz; \
+    tar -xvf docker.tgz --strip-components=1 --no-same-owner --no-same-permissions -C /usr/local/bin; \
+    ls -al /usr/local/bin; \
+    rm -v docker.tgz; \
+    containerd --version; \
+    ctr --version; \
+    docker --version; \
+    dockerd --version; \
+    runc --version
+
+"@
+@'
+# Post-install docker. See: https://docs.docker.com/engine/install/linux-postinstall/
+RUN set -eux; \
+    addgroup docker; \
+    adduser user docker;
 VOLUME /var/lib/docker
 
+
 '@
-
-        }
-        if ($c -eq 'docker-rootless') {
-@'
-
-# Install rootless docker
-# See: https://docs.docker.com/engine/security/rootless/
+            if ($c -eq 'docker-rootless') {
+@"
+# Install rootless docker. See: https://docs.docker.com/engine/security/rootless/
 USER root
-RUN apk add --no-cache shadow-uidmap fuse-overlayfs iproute2 iptables ip6tables
-RUN echo user:100000:65536 >/etc/subuid
-RUN echo user:100000:65536 >/etc/subgid
-USER user
-RUN wget -qO- https://get.docker.com/rootless | sh
-ENV XDG_RUNTIME_DIR=/home/user/.docker/run
-ENV PATH=/home/user/bin:$PATH
-ENV DOCKER_HOST=unix:///home/user/.docker/run/docker.sock
+RUN apk add --no-cache iproute2 fuse-overlayfs
+RUN set -eux; \
+    echo user:100000:65536 >> /etc/subuid; \
+    echo user:100000:65536 >> /etc/subgid
+RUN set -eux; \
+    case "`$( uname -m )" in \
+        'x86_64') \
+            URL='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-$DOCKER_VERSION.tgz'; \
+            ;; \
+        'aarch64') \
+            URL='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-$DOCKER_VERSION.tgz'; \
+            ;; \
+        'armv7') \
+            URL='https://download.docker.com/linux/static/stable/armhf/docker-rootless-extras-$DOCKER_VERSION.tgz'; \
+            ;; \
+        'aarch64') \
+            URL='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-$DOCKER_VERSION.tgz'; \
+            ;; \
+        *) \
+            echo "Architecture not supported"; \
+            exit 1; \
+            ;; \
+    esac; \
+    wget -q "`$URL" -O docker-rootless-extras.tgz; \
+    tar -xvf docker-rootless-extras.tgz --strip-components=1 --no-same-owner --no-same-permissions -C /usr/local/bin \
+        'docker-rootless-extras/rootlesskit' \
+        'docker-rootless-extras/rootlesskit-docker-proxy' \
+        'docker-rootless-extras/vpnkit' \
+    ; \
+    ls -al /usr/local/bin; \
+    rm -v docker-rootless-extras.tgz; \
+    rootlesskit --version; \
+    vpnkit --version
+# Create XDG_RUNTIME_DIR
+RUN mkdir /run/user && chmod 1777 /run/user
+# Create /var/lib/docker
+RUN mkdir -p /home/user/.local/share/docker && chown user:user /home/user/.local/share/docker
+VOLUME /home/user/.local/share/docker
+# Set env vars
+ENV XDG_RUNTIME_DIR=/run/user/1000
+ENV DOCKER_HOST=unix:///run/user/1000/docker.sock
 
 
-'@
-        }
-        if ($c -eq 'docker'-or $c -eq 'docker-rootless') {
+"@
+            }
 @"
 # Install docker compose v2
 USER root
@@ -143,7 +225,7 @@ $checksums = $global:CACHE['docker-buildx-checksums'] = if (!$global:CACHE.Conta
 # Install docker buildx plugin
 USER root
 RUN set -eux; \
-    case "`$( apk --print-arch )" in \
+    case "`$( uname -m )" in \
         'x86_64')  \
             URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-amd64' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
             SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-amd64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
@@ -152,26 +234,26 @@ RUN set -eux; \
             URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v6' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
             SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v6' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
             ;; \
-		'armv7') \
+        'armv7') \
             URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v7' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
             SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v7' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-			;; \
-		'aarch64') \
+            ;; \
+        'aarch64') \
             URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm64' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
             SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-			;; \
-		'ppc64le') \
+            ;; \
+        'ppc64le') \
             URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
             SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-			;; \
-		'riscv64') \
+            ;; \
+        'riscv64') \
             URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
             SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-			;; \
-		's390x') \
+            ;; \
+        's390x') \
             URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-s390x' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
             SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-s390x' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-			;; \
+            ;; \
         *) \
             echo "Architecture not supported"; \
             exit 1; \

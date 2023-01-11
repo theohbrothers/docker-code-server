@@ -1,18 +1,120 @@
 ARG BASE_IMAGE
 FROM $BASE_IMAGE
 
-
-# Install rootless docker
-# See: https://docs.docker.com/engine/security/rootless/
+# Install docker
+# See: https://github.com/moby/moby/blob/v20.10.22/project/PACKAGERS.md
+# Install docker-cli dependencies
 USER root
-RUN apk add --no-cache shadow-uidmap fuse-overlayfs iproute2 iptables ip6tables
-RUN echo user:100000:65536 >/etc/subuid
-RUN echo user:100000:65536 >/etc/subgid
-USER user
-RUN wget -qO- https://get.docker.com/rootless | sh
-ENV XDG_RUNTIME_DIR=/home/user/.docker/run
-ENV PATH=/home/user/bin:$PATH
-ENV DOCKER_HOST=unix:///home/user/.docker/run/docker.sock
+RUN apk add --no-cache \
+        ca-certificates \
+        git \
+        # Workaround for golang 1.15 not producing static binaries. See: https://github.com/containerd/containerd/issues/5824
+        libc6-compat \
+        openssh-client
+# Install dockerd dependencies
+RUN apk add --no-cache \
+        btrfs-progs \
+        e2fsprogs \
+        e2fsprogs-extra \
+        ip6tables \
+        iptables \
+        openssl \
+        pigz \
+        shadow-uidmap \
+        xfsprogs \
+        xz \
+        zfs
+# Add userns-remap support. See: https://docs.docker.com/engine/security/userns-remap/
+RUN set -eux; \
+    addgroup -S dockremap; \
+    adduser -S -G dockremap dockremap; \
+    echo 'dockremap:231072:65536' >> /etc/subuid; \
+    echo 'dockremap:231072:65536' >> /etc/subgid
+# Install docker
+RUN set -eux; \
+    case "$( uname -m )" in \
+        'x86_64') \
+            URL='https://download.docker.com/linux/static/stable/x86_64/docker-20.10.22.tgz'; \
+            ;; \
+        'armhf') \
+            URL='https://download.docker.com/linux/static/stable/armel/docker-20.10.22.tgz'; \
+            ;; \
+        'armv7') \
+            URL='https://download.docker.com/linux/static/stable/armhf/docker-20.10.22.tgz'; \
+            ;; \
+        'aarch64') \
+            URL='https://download.docker.com/linux/static/stable/aarch64/docker-20.10.22.tgz'; \
+            ;; \
+        # These architectures are no longer supported as of docker 20.10.x
+        # 'ppc64le') \
+        # 	URL='https://download.docker.com/linux/static/stable/ppc64le/docker-20.10.22.tgz'; \
+        # 	;; \
+        # 's390x') \
+        # 	URL='https://download.docker.com/linux/static/stable/s390x/docker-20.10.22.tgz'; \
+        # 	;; \
+        *) \
+            echo "Architecture not supported"; \
+            exit 1; \
+            ;; \
+    esac; \
+    wget -q "$URL" -O docker.tgz; \
+    tar -xvf docker.tgz --strip-components=1 --no-same-owner --no-same-permissions -C /usr/local/bin; \
+    ls -al /usr/local/bin; \
+    rm -v docker.tgz; \
+    containerd --version; \
+    ctr --version; \
+    docker --version; \
+    dockerd --version; \
+    runc --version
+# Post-install docker. See: https://docs.docker.com/engine/install/linux-postinstall/
+RUN set -eux; \
+    addgroup docker; \
+    adduser user docker;
+VOLUME /var/lib/docker
+
+# Install rootless docker. See: https://docs.docker.com/engine/security/rootless/
+USER root
+RUN apk add --no-cache iproute2 fuse-overlayfs
+RUN set -eux; \
+    echo user:100000:65536 >> /etc/subuid; \
+    echo user:100000:65536 >> /etc/subgid
+RUN set -eux; \
+    case "$( uname -m )" in \
+        'x86_64') \
+            URL='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-20.10.22.tgz'; \
+            ;; \
+        'aarch64') \
+            URL='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-20.10.22.tgz'; \
+            ;; \
+        'armv7') \
+            URL='https://download.docker.com/linux/static/stable/armhf/docker-rootless-extras-20.10.22.tgz'; \
+            ;; \
+        'aarch64') \
+            URL='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-20.10.22.tgz'; \
+            ;; \
+        *) \
+            echo "Architecture not supported"; \
+            exit 1; \
+            ;; \
+    esac; \
+    wget -q "$URL" -O docker-rootless-extras.tgz; \
+    tar -xvf docker-rootless-extras.tgz --strip-components=1 --no-same-owner --no-same-permissions -C /usr/local/bin \
+        'docker-rootless-extras/rootlesskit' \
+        'docker-rootless-extras/rootlesskit-docker-proxy' \
+        'docker-rootless-extras/vpnkit' \
+    ; \
+    ls -al /usr/local/bin; \
+    rm -v docker-rootless-extras.tgz; \
+    rootlesskit --version; \
+    vpnkit --version
+# Create XDG_RUNTIME_DIR
+RUN mkdir /run/user && chmod 1777 /run/user
+# Create /var/lib/docker
+RUN mkdir -p /home/user/.local/share/docker && chown user:user /home/user/.local/share/docker
+VOLUME /home/user/.local/share/docker
+# Set env vars
+ENV XDG_RUNTIME_DIR=/run/user/1000
+ENV DOCKER_HOST=unix:///run/user/1000/docker.sock
 
 # Install docker compose v2
 USER root
@@ -25,7 +127,7 @@ RUN apk add --no-cache docker-compose
 # Install docker buildx plugin
 USER root
 RUN set -eux; \
-    case "$( apk --print-arch )" in \
+    case "$( uname -m )" in \
         'x86_64')  \
             URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-amd64; \
             SHA256=a7fb95177792ca8ffc7243fad7bf2f33738b8b999a184b6201f002a63c43d136; \
@@ -34,26 +136,26 @@ RUN set -eux; \
             URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-arm-v6; \
             SHA256=159925b4e679eb66e7f0312c7d57a97e68a418c1fa602a00dd8b29b6406768f0; \
             ;; \
-		'armv7') \
+        'armv7') \
             URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-arm-v7; \
             SHA256=ba8e5359ce9ba24fec6da07f73591c1b20ac0797a2248b0ef8088f57ae3340fc; \
-			;; \
-		'aarch64') \
+            ;; \
+        'aarch64') \
             URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-arm64; \
             SHA256=bbf6a76bf9aef9c5759ff225b97ce23a24fc11e4fa3cdcae36e5dcf1de2cffc5; \
-			;; \
-		'ppc64le') \
+            ;; \
+        'ppc64le') \
             URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-ppc64le; \
             SHA256=1b2441886e556c720c1bf12f18f240113cc45f9eb404c0f162166ca1c96c1b60; \
-			;; \
-		'riscv64') \
+            ;; \
+        'riscv64') \
             URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-riscv64; \
             SHA256=c32372dad653fc70eb756b2cffd026e74425e807c01accaeed4559da881ff57c; \
-			;; \
-		's390x') \
+            ;; \
+        's390x') \
             URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-s390x; \
             SHA256=90b0ecf315d741888920dddeac9fe2e141123c4fe79465b7b10fe23521c9c366; \
-			;; \
+            ;; \
         *) \
             echo "Architecture not supported"; \
             exit 1; \
