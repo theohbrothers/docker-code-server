@@ -63,6 +63,8 @@ RUN code-server --install-extension redhat.vscode-yaml@1.9.1
 # Add a default settings.json
 USER user
 COPY --chown=1000:1000 settings.json /home/user/.local/share/code-server/User/settings.json
+
+
 "@
 }else {
     # Incremental build
@@ -75,7 +77,7 @@ FROM $BASE_IMAGE
     foreach ($c in $VARIANT['_metadata']['components']) {
         if ($c -eq 'docker' -or $c -eq 'docker-rootless') {
             $DOCKER_VERSION = '20.10.22'
-@'
+@"
 # Install docker
 # See: https://github.com/moby/moby/blob/v20.10.22/project/PACKAGERS.md
 # Install docker-cli dependencies
@@ -105,9 +107,6 @@ RUN set -eux; \
     adduser -S -G dockremap dockremap; \
     echo 'dockremap:231072:65536' >> /etc/subuid; \
     echo 'dockremap:231072:65536' >> /etc/subgid
-
-'@
-@"
 # Install docker
 RUN set -eux; \
     case "`$( uname -m )" in \
@@ -144,9 +143,6 @@ RUN set -eux; \
     docker --version; \
     dockerd --version; \
     runc --version
-
-"@
-@'
 # Post-install docker. See: https://docs.docker.com/engine/install/linux-postinstall/
 RUN set -eux; \
     addgroup docker; \
@@ -154,7 +150,7 @@ RUN set -eux; \
 VOLUME /var/lib/docker
 
 
-'@
+"@
             if ($c -eq 'docker-rootless') {
 @"
 # Install rootless docker. See: https://docs.docker.com/engine/security/rootless/
@@ -205,16 +201,67 @@ ENV DOCKER_HOST=unix:///run/user/1000/docker.sock
 "@
             }
 @"
-# Install docker compose v2
-USER root
-RUN apk add --no-cache docker-cli-compose
-
 # Install docker-compose v1 (deprecated, but for backward compatibility)
 USER root
 RUN apk add --no-cache docker-compose
 
 
 "@
+
+$DOCKER_COMPOSE_VERSION = 'v2.15.1'
+$checksums = $global:CACHE['docker-compose-checksums'] = if (!$global:CACHE.Contains('docker-compose-checksums')) {
+    [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/checksums.txt).Content )
+}else {
+    $global:CACHE['docker-compose-checksums']
+}
+@"
+# Install docker compose v2. See: https://github.com/docker/compose/releases/
+USER root
+RUN set -eux; \
+    case "`$( uname -m )" in \
+        'x86_64')  \
+            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-x86_64' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-x86_64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            ;; \
+        'armhf')  \
+            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-armv6' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-armv6' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            ;; \
+        'armv7') \
+            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-armv7' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-armv7' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            ;; \
+        'aarch64') \
+            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-aarch64' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-aarch64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            ;; \
+        'ppc64le') \
+            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            ;; \
+        'riscv64') \
+            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            ;; \
+        's390x') \
+            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-s390x' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-s390x' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            ;; \
+        *) \
+            echo "Architecture not supported"; \
+            exit 1; \
+            ;; \
+    esac; \
+    wget -qO- "`$URL" > docker-compose \
+    && sha256sum docker-compose | grep "^`$SHA256 " \
+    && mkdir -pv /usr/libexec/docker/cli-plugins \
+    && mv -v docker-compose /usr/libexec/docker/cli-plugins/docker-compose \
+    && chmod +x /usr/libexec/docker/cli-plugins/docker-compose \
+    && docker compose version
+
+
+"@
+
 $DOCKER_BUILDX_VERSION = 'v0.9.1'
 $checksums = $global:CACHE['docker-buildx-checksums'] = if (!$global:CACHE.Contains('docker-buildx-checksums')) {
     [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/checksums.txt).Content )
@@ -222,7 +269,7 @@ $checksums = $global:CACHE['docker-buildx-checksums'] = if (!$global:CACHE.Conta
     $global:CACHE['docker-buildx-checksums']
 }
 @"
-# Install docker buildx plugin
+# Install docker buildx plugin. See: https://github.com/docker/buildx
 USER root
 RUN set -eux; \
     case "`$( uname -m )" in \
@@ -265,6 +312,8 @@ RUN set -eux; \
     && mv -v docker-buildx /usr/libexec/docker/cli-plugins/docker-buildx \
     && chmod +x /usr/libexec/docker/cli-plugins/docker-buildx \
     && docker buildx version
+
+
 "@
         }
         if ($c -match 'pwsh-([^-]+)') {
@@ -309,14 +358,14 @@ RUN pwsh -c 'Install-Module Pester -Force -Scope AllUsers -MinimumVersion 4.0.0 
 # Install extensions
 USER user
 RUN code-server --install-extension ms-vscode.powershell@2021.12.0
+
+
 "@
         }
     }
 }
 
 @"
-
-
 # Remove the default code-server config file created when extensions are installed
 USER user
 RUN rm -fv ~/.config/code-server/config.yaml
