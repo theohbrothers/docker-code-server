@@ -9,7 +9,8 @@ RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
 RUN --mount=type=secret,id=GITHUB_TOKEN \
     DEPS='alpine-sdk bash libstdc++ libc6-compat python3' \
     && apk add --no-cache $DEPS \
-    && apk add --no-cache npm nodejs \
+    # Constraint to npm 8, or else npm will fail with 'npm ERR! python is not a valid npm option'. See: https://stackoverflow.com/questions/74522956/python-is-not-a-valid-npm-option and https://jubianchi.github.io/semver-check/#/~8/8
+    && apk add --no-cache 'npm~8' 'nodejs~16' \
     && npm config set python python3 \
     && GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ) npm install --global code-server@4.7.1 --unsafe-perm \
     # Fix missing dependencies. See: https://github.com/coder/code-server/issues/5530

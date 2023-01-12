@@ -26,9 +26,9 @@ $(
     }
 }) -join ''
 )
-Base variants do not contain additional tools. E.g. ``$( $VARIANTS | ? { $_['tag_as_latest'] } | Select-Object -ExpandProperty tag )``.
+Base variants include ``npm 8`` and ``nodejs 16`` to run ``code-server``, and basic tools. E.g. ``$( $VARIANTS | ? { $_['tag_as_latest'] } | Select-Object -ExpandProperty tag )``:
 
-Incremental variants contain additional tools and their ``code`` extensions. E.g. ``$( $VARIANTS | ? { $_['_metadata']['base_tag'] } | Select-Object -First 1 | Select-Object -ExpandProperty tag )``:
+Incremental variants include additional tools and their ``code`` extensions. E.g. ``$( $VARIANTS | ? { $_['_metadata']['base_tag'] } | Select-Object -First 1 | Select-Object -ExpandProperty tag )``:
 
 - ``docker``: [docker](https://docs.docker.com/engine/)
 - ``docker-rootless``: [Rootless docker](https://docs.docker.com/engine/security/rootless/)
