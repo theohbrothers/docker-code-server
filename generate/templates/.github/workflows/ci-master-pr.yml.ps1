@@ -11,6 +11,28 @@ on:
     branches:
     - master
 jobs:
+  test-nogitdiff:
+    needs: []
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/powershell:7.2.2-ubuntu-focal
+    steps:
+    - run: |
+        apt-get update && apt-get install -y git
+    - uses: actions/checkout@v3
+    - name: Ignore git permissions
+      run: |
+        git config --global --add safe.directory "$( pwd )"
+    - name: Generate variants
+      run: |
+        pwsh -Command '
+        $ErrorActionPreference = "Stop"
+        Install-Module -Name Generate-DockerImageVariants -Force -Scope CurrentUser -Verbose
+        Generate-DockerImageVariants .
+        '
+    - name: Test - no git diff
+      run: |
+        git diff --exit-code
 '@
 
 $local:WORKFLOW_JOB_NAMES = $VARIANTS | % { "build-$( $_['tag'].Replace('.', '-') )" }
@@ -19,7 +41,7 @@ $VARIANTS | % {
 
 
   build-$( $_['tag'].Replace('.', '-') ):
-    needs: [$( if ($_['_metadata']['base_tag']) { "build-$( $_['_metadata']['base_tag'] )".Replace('.', '-') } else {} )]
+    needs: [test-nogitdiff$( if ($_['_metadata']['base_tag']) { ", build-$( $_['_metadata']['base_tag'] )".Replace('.', '-') } else {} )]
     runs-on: ubuntu-latest
     env:
       BASE_TAG: $( $_['_metadata']['base_tag'] )
@@ -229,7 +251,7 @@ if ( $_['tag_as_latest'] ) {
 
 
   update-draft-release:
-    needs: [$( $local:WORKFLOW_JOB_NAMES -join ', ' )]
+    needs: [test-nogitdiff, $( $local:WORKFLOW_JOB_NAMES -join ', ' )]
 "@
 @'
 
@@ -249,7 +271,7 @@ if ( $_['tag_as_latest'] ) {
 
 
   publish-draft-release:
-    needs: [$( $local:WORKFLOW_JOB_NAMES -join ', ' )]
+    needs: [test-nogitdiff, $( $local:WORKFLOW_JOB_NAMES -join ', ' )]
 "@
 @'
 
