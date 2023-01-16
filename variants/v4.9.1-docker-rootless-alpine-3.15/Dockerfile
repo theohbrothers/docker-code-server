@@ -221,4 +221,5 @@ RUN chmod +x /docker-entrypoint.sh
 ENV LANG=en_US.UTF-8
 USER user
 WORKDIR /home/user
-CMD [ "/docker-entrypoint.sh" ]
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+CMD [ "--bind-addr=0.0.0.0:8080", "--disable-telemetry", "--disable-update-check" ]
