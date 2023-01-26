@@ -15,11 +15,15 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 | `:v4.9.1-docker-rootless-alpine-3.15` | [View](variants/v4.9.1-docker-rootless-alpine-3.15 ) |
 | `:v4.8.3-alpine-3.15` | [View](variants/v4.8.3-alpine-3.15 ) |
 | `:v4.8.3-docker-alpine-3.15` | [View](variants/v4.8.3-docker-alpine-3.15 ) |
+| `:v4.8.3-docker-pwsh-7.3.1-alpine-3.15` | [View](variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.15 ) |
+| `:v4.8.3-docker-pwsh-7.2.8-alpine-3.15` | [View](variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.15 ) |
+| `:v4.8.3-docker-pwsh-7.1.7-alpine-3.15` | [View](variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.15 ) |
+| `:v4.8.3-docker-pwsh-7.0.13-alpine-3.15` | [View](variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.15 ) |
 | `:v4.8.3-docker-rootless-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-alpine-3.15 ) |
-| `:v4.8.3-pwsh-7.3.1-alpine-3.15` | [View](variants/v4.8.3-pwsh-7.3.1-alpine-3.15 ) |
-| `:v4.8.3-pwsh-7.2.8-alpine-3.15` | [View](variants/v4.8.3-pwsh-7.2.8-alpine-3.15 ) |
-| `:v4.8.3-pwsh-7.1.7-alpine-3.15` | [View](variants/v4.8.3-pwsh-7.1.7-alpine-3.15 ) |
-| `:v4.8.3-pwsh-7.0.13-alpine-3.15` | [View](variants/v4.8.3-pwsh-7.0.13-alpine-3.15 ) |
+| `:v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15 ) |
+| `:v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15 ) |
+| `:v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15 ) |
+| `:v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15 ) |
 | `:v4.7.1-alpine-3.15` | [View](variants/v4.7.1-alpine-3.15 ) |
 | `:v4.7.1-docker-alpine-3.15` | [View](variants/v4.7.1-docker-alpine-3.15 ) |
 | `:v4.7.1-docker-rootless-alpine-3.15` | [View](variants/v4.7.1-docker-rootless-alpine-3.15 ) |
@@ -105,7 +109,7 @@ docker buildx build .
 ### `pwsh` variant(s)
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.8.3-pwsh-7.3.1-alpine-3.15
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.8.3-docker-pwsh-7.3.1-alpine-3.15
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml
 ```

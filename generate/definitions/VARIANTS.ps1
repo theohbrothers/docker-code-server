@@ -19,11 +19,15 @@ $local:VARIANTS_MATRIX = @(
         subvariants = @(
             @{ components = @() } # Base
             @{ components = @( 'docker' ) } # Incremental
+            @{ components = @( 'docker', 'pwsh-7.3.1' ) } # Incremental
+            @{ components = @( 'docker', 'pwsh-7.2.8' ) } # Incremental
+            @{ components = @( 'docker', 'pwsh-7.1.7' ) } # Incremental
+            @{ components = @( 'docker', 'pwsh-7.0.13' ) } # Incremental
             @{ components = @( 'docker-rootless' ) } # Incremental
-            @{ components = @( 'pwsh-7.3.1' ) } # Incremental
-            @{ components = @( 'pwsh-7.2.8' ) } # Incremental
-            @{ components = @( 'pwsh-7.1.7' ) } # Incremental
-            @{ components = @( 'pwsh-7.0.13' ) } # Incremental
+            @{ components = @( 'docker-rootless', 'pwsh-7.3.1' ) } # Incremental
+            @{ components = @( 'docker-rootless', 'pwsh-7.2.8' ) } # Incremental
+            @{ components = @( 'docker-rootless', 'pwsh-7.1.7' ) } # Incremental
+            @{ components = @( 'docker-rootless', 'pwsh-7.0.13' ) } # Incremental
         )
     }
     @{
