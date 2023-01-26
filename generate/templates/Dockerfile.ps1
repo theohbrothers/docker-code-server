@@ -77,7 +77,7 @@ FROM $BASE_IMAGE
 '@
     foreach ($c in $VARIANT['_metadata']['components']) {
         if ($c -eq 'docker' -or $c -eq 'docker-rootless') {
-            $DOCKER_VERSION = '20.10.22'
+            $DOCKER_VERSION = '20.10.23'
 @"
 # Install docker
 # See: https://github.com/moby/moby/blob/v20.10.22/project/PACKAGERS.md
