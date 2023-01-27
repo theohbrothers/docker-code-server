@@ -12,13 +12,12 @@ on:
     - master
 jobs:
   test-nogitdiff:
-    needs: []
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/powershell:7.2.2-ubuntu-focal
+      image: mcr.microsoft.com/powershell:7.2.2-alpine-3.14-20220318
     steps:
     - run: |
-        apt-get update && apt-get install -y git
+        apk add --no-cache git
     - uses: actions/checkout@v3
     - name: Ignore git permissions
       run: |
@@ -251,10 +250,7 @@ if ( $_['tag_as_latest'] ) {
 
 
   update-draft-release:
-    needs: [test-nogitdiff, $( $local:WORKFLOW_JOB_NAMES -join ', ' )]
-"@
-@'
-
+    needs: [$( $local:WORKFLOW_JOB_NAMES -join ', ' )]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
@@ -264,17 +260,10 @@ if ( $_['tag_as_latest'] ) {
           config-name: release-drafter.yml
           publish: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-'@
-
-@"
-
+          GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
 
   publish-draft-release:
-    needs: [test-nogitdiff, $( $local:WORKFLOW_JOB_NAMES -join ', ' )]
-"@
-@'
-
+    needs: [$( $local:WORKFLOW_JOB_NAMES -join ', ' )]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -283,9 +272,23 @@ if ( $_['tag_as_latest'] ) {
         with:
           config-name: release-drafter.yml
           publish: true
-          name: ${{ github.ref_name }} # E.g. 'master' or 'v1.2.3'
-          tag: ${{ github.ref_name }} # E.g. 'master' or 'v1.2.3'
+          name: `${{ github.ref_name }} # E.g. 'master' or 'v1.2.3'
+          tag: `${{ github.ref_name }} # E.g. 'master' or 'v1.2.3'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
 
-'@
+  update-dockerhub-description:
+    needs: [$( $local:WORKFLOW_JOB_NAMES -join ', ' )]
+    if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Docker Hub Description
+      uses: peter-evans/dockerhub-description@v3
+      with:
+        username: `${{ secrets.DOCKERHUB_REGISTRY_USER }}
+        password: `${{ secrets.DOCKERHUB_REGISTRY_PASSWORD }}
+        repository: `${{ github.repository }}
+        short-description: `${{ github.event.repository.description }}
+
+"@

@@ -11,13 +11,12 @@ on:
     - master
 jobs:
   test-nogitdiff:
-    needs: []
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/powershell:7.2.2-ubuntu-focal
+      image: mcr.microsoft.com/powershell:7.2.2-alpine-3.14-20220318
     steps:
     - run: |
-        apt-get update && apt-get install -y git
+        apk add --no-cache git
     - uses: actions/checkout@v3
     - name: Ignore git permissions
       run: |
@@ -3287,7 +3286,7 @@ jobs:
       if: always()
 
   update-draft-release:
-    needs: [test-nogitdiff, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
+    needs: [build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
@@ -3300,7 +3299,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-draft-release:
-    needs: [test-nogitdiff, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
+    needs: [build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -3313,3 +3312,17 @@ jobs:
           tag: ${{ github.ref_name }} # E.g. 'master' or 'v1.2.3'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  update-dockerhub-description:
+    needs: [build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
+    if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Docker Hub Description
+      uses: peter-evans/dockerhub-description@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
+        password: ${{ secrets.DOCKERHUB_REGISTRY_PASSWORD }}
+        repository: ${{ github.repository }}
+        short-description: ${{ github.event.repository.description }}
