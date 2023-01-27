@@ -34,23 +34,23 @@ RUN set -eux; \
 RUN set -eux; \
     case "$( uname -m )" in \
         'x86_64') \
-            URL='https://download.docker.com/linux/static/stable/x86_64/docker-20.10.22.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/x86_64/docker-20.10.23.tgz'; \
             ;; \
         'armhf') \
-            URL='https://download.docker.com/linux/static/stable/armel/docker-20.10.22.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/armel/docker-20.10.23.tgz'; \
             ;; \
         'armv7') \
-            URL='https://download.docker.com/linux/static/stable/armhf/docker-20.10.22.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/armhf/docker-20.10.23.tgz'; \
             ;; \
         'aarch64') \
-            URL='https://download.docker.com/linux/static/stable/aarch64/docker-20.10.22.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/aarch64/docker-20.10.23.tgz'; \
             ;; \
         # These architectures are no longer supported as of docker 20.10.x
         # 'ppc64le') \
-        # 	URL='https://download.docker.com/linux/static/stable/ppc64le/docker-20.10.22.tgz'; \
+        # 	URL='https://download.docker.com/linux/static/stable/ppc64le/docker-20.10.23.tgz'; \
         # 	;; \
         # 's390x') \
-        # 	URL='https://download.docker.com/linux/static/stable/s390x/docker-20.10.22.tgz'; \
+        # 	URL='https://download.docker.com/linux/static/stable/s390x/docker-20.10.23.tgz'; \
         # 	;; \
         *) \
             echo "Architecture not supported"; \
@@ -67,7 +67,7 @@ RUN set -eux; \
     dockerd --version; \
     runc --version
 # Install bash completion
-RUN wget -q https://raw.githubusercontent.com/docker/cli/v20.10.22/contrib/completion/bash/docker -O /usr/share/bash-completion/completions/docker
+RUN wget -q https://raw.githubusercontent.com/docker/cli/v20.10.23/contrib/completion/bash/docker -O /usr/share/bash-completion/completions/docker
 # Post-install docker. See: https://docs.docker.com/engine/install/linux-postinstall/
 RUN set -eux; \
     addgroup docker; \
