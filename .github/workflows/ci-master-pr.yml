@@ -3315,7 +3315,7 @@ jobs:
 
   update-dockerhub-description:
     needs: [build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
-    if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
