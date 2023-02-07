@@ -66,6 +66,10 @@ COPY --chown=1000:1000 settings.json /home/user/.local/share/code-server/User/se
 USER user
 RUN rm -fv ~/.config/code-server/config.yaml
 
+# Symlink code to code-server
+USER root
+RUN ln -sfn /usr/local/bin/code-server /usr/local/bin/code
+
 USER root
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
