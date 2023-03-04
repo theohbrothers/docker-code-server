@@ -1,5 +1,5 @@
 if (!$VARIANT['_metadata']['base_tag']) {
-    # Base build
+    # Base image
     @"
 # syntax=docker/dockerfile:1
 # The syntax=docker/dockerfile:1 line above is needed for passing secrets to the build
@@ -21,7 +21,8 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
     && code-server --version \
     && apk del `$DEPS
 
-RUN apk add --no-cache bash bash-completion ca-certificates curl gnupg git git-lfs jq less make nano openssh-client openssl tree yq
+# Install tools
+RUN apk add --no-cache bash bash-completion ca-certificates curl gnupg git git-lfs iotop jq less lsblk make nano openssh-client openssl p7zip rsync tree yq
 
 RUN apk add --no-cache sudo
 RUN adduser -u 1000 --gecos '' -D user
@@ -68,7 +69,7 @@ COPY --chown=1000:1000 settings.json /home/user/.local/share/code-server/User/se
 
 "@
 }else {
-    # Incremental build
+    # Incremental image
     @'
 ARG BASE_IMAGE
 FROM $BASE_IMAGE

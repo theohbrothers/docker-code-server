@@ -18,7 +18,8 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
     && code-server --version \
     && apk del $DEPS
 
-RUN apk add --no-cache bash bash-completion ca-certificates curl gnupg git git-lfs jq less make nano openssh-client openssl tree yq
+# Install tools
+RUN apk add --no-cache bash bash-completion ca-certificates curl gnupg git git-lfs iotop jq less lsblk make nano openssh-client openssl p7zip rsync tree yq
 
 RUN apk add --no-cache sudo
 RUN adduser -u 1000 --gecos '' -D user
