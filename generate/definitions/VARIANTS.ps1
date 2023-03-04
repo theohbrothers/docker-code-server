@@ -2,6 +2,17 @@
 $local:VARIANTS_MATRIX = @(
     @{
         package = 'code-server'
+        package_version = '4.10.1'
+        distro = 'alpine'
+        distro_version = '3.15'
+        subvariants = @(
+            @{ components = @(); tag_as_latest = $true } # Base
+            @{ components = @( 'docker' ) } # Incremental
+            @{ components = @( 'docker-rootless' ) } # Incremental
+        )
+    }
+    @{
+        package = 'code-server'
         package_version = '4.9.1'
         distro = 'alpine'
         distro_version = '3.15'
