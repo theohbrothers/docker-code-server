@@ -166,6 +166,14 @@ RUN set -eux; \
     && chmod +x /usr/libexec/docker/cli-plugins/docker-buildx \
     && docker buildx version
 
+# Install binary tool(s)
+RUN set -eux; \
+    wget https://github.com/GoogleContainerTools/container-diff/releases/download/v0.17.0/container-diff-linux-amd64 -O container-diff; \
+    sha256sum container-diff | grep '^818c219ce9f9670cd5c766b9da5036cf75bbf98bc99eb258f5e8f90e80367c88 '; \
+    mv container-diff /usr/local/bin/container-diff; \
+    chmod +x /usr/local/bin/container-diff; \
+    container-diff version
+
 USER root
 
 # Install pwsh
