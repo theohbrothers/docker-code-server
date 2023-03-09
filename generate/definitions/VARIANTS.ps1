@@ -8,7 +8,9 @@ $local:VARIANTS_MATRIX = @(
         subvariants = @(
             @{ components = @(); tag_as_latest = $true } # Base
             @{ components = @( 'docker' ) } # Incremental
+            @{ components = @( 'docker', 'pwsh-7.2.8' ) } # Incremental
             @{ components = @( 'docker-rootless' ) } # Incremental
+            @{ components = @( 'docker-rootless', 'pwsh-7.2.8' ) } # Incremental
         )
     }
     @{
@@ -17,9 +19,11 @@ $local:VARIANTS_MATRIX = @(
         distro = 'alpine'
         distro_version = '3.15'
         subvariants = @(
-            @{ components = @(); tag_as_latest = $true } # Base
+            @{ components = @(); } # Base
             @{ components = @( 'docker' ) } # Incremental
+            @{ components = @( 'docker', 'pwsh-7.2.8' ) } # Incremental
             @{ components = @( 'docker-rootless' ) } # Incremental
+            @{ components = @( 'docker-rootless', 'pwsh-7.2.8' ) } # Incremental
         )
     }
     @{
