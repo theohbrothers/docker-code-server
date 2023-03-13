@@ -53,7 +53,7 @@ Incremental variants include additional tools and their `code` extensions. E.g. 
 ```sh
 docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.10.1-alpine-3.15
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
-docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml
+docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
 
 ### `docker` variant(s)
@@ -61,7 +61,7 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml
 ```sh
 docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.10.1-docker-alpine-3.15
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
-docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml
+docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
 
 To build multi-arch images using [`buildx`](https://docs.docker.com/engine/reference/commandline/buildx/), the host must have kernel >= `4.8`, and must [setup `qemu` in the kernel](https://github.com/docker/setup-qemu-action) on each reboot:
