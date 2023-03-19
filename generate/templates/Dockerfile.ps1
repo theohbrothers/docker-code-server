@@ -39,6 +39,10 @@ RUN code-server --install-extension firefox-devtools.vscode-firefox-debug@2.9.1
 # git
 RUN code-server --install-extension donjayamanne.githistory@0.6.19
 RUN code-server --install-extension eamodio.gitlens@11.6.0
+# github
+RUN code-server --install-extension github.vscode-pull-request-github@v0.60.0
+# gitlab
+RUN code-server --install-extension gitlab.gitlab-workflow@3.60.0
 # jinja
 RUN code-server --install-extension samuelcolvin.jinjahtml@0.16.0
 RUN code-server --install-extension wholroyd.jinja@0.0.8
