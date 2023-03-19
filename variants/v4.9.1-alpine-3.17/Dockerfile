@@ -11,7 +11,7 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
     && apk add --no-cache $DEPS \
     # May need to constraint to npm 8, or else npm will fail with 'npm ERR! python is not a valid npm option'. See: https://stackoverflow.com/questions/74522956/python-is-not-a-valid-npm-option and https://jubianchi.github.io/semver-check/#/~8/8
     && apk add --no-cache 'npm~9' 'nodejs~18' \
-    && npm config set python3 \
+    # && npm config set python python3 \
     && GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ) npm install --global code-server@4.9.1 --unsafe-perm \
     # Fix missing dependencies. See: https://github.com/coder/code-server/issues/5530
     && cd /usr/local/lib/node_modules/code-server/lib/vscode && GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ) npm install --legacy-peer-deps \
