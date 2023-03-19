@@ -12,9 +12,9 @@ RUN echo "I am running on `$BUILDPLATFORM, building for `$TARGETPLATFORM"
 RUN --mount=type=secret,id=GITHUB_TOKEN \
     DEPS='alpine-sdk bash libstdc++ libc6-compat python3' \
     && apk add --no-cache `$DEPS \
-    # Constraint to npm 8, or else npm will fail with 'npm ERR! `python` is not a valid npm option'. See: https://stackoverflow.com/questions/74522956/python-is-not-a-valid-npm-option and https://jubianchi.github.io/semver-check/#/~8/8
-    && apk add --no-cache 'npm~8' 'nodejs~16' \
-    && npm config set python python3 \
+    # May need to constraint to npm 8, or else npm will fail with 'npm ERR! `python` is not a valid npm option'. See: https://stackoverflow.com/questions/74522956/python-is-not-a-valid-npm-option and https://jubianchi.github.io/semver-check/#/~8/8
+    && apk add --no-cache 'npm~9' 'nodejs~18' \
+    && npm config set python3 \
     && GITHUB_TOKEN=`$( cat /run/secrets/GITHUB_TOKEN ) npm install --global code-server@$( $VARIANT['_metadata']['package_version'] ) --unsafe-perm \
     # Fix missing dependencies. See: https://github.com/coder/code-server/issues/5530
     && cd /usr/local/lib/node_modules/code-server/lib/vscode && GITHUB_TOKEN=`$( cat /run/secrets/GITHUB_TOKEN ) npm install --legacy-peer-deps \

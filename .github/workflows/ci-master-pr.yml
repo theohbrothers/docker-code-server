@@ -32,12 +32,12 @@ jobs:
       run: |
         git diff --exit-code
 
-  build-v4-10-1-alpine-3-15:
+  build-v4-10-1-alpine-3-17:
     needs: [test-nogitdiff]
     runs-on: ubuntu-latest
     env:
       BASEVARIANT: ''
-      VARIANT: v4.10.1-alpine-3.15
+      VARIANT: v4.10.1-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -111,7 +111,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-alpine-3.15
+        context: variants/v4.10.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -129,7 +129,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-alpine-3.15
+        context: variants/v4.10.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -146,7 +146,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-alpine-3.15
+        context: variants/v4.10.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -167,12 +167,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-10-1-docker-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-10-1-alpine-3-15]
+  build-v4-10-1-docker-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-10-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.10.1-alpine-3.15'
-      VARIANT: v4.10.1-docker-alpine-3.15
+      BASEVARIANT: 'v4.10.1-alpine-3.17'
+      VARIANT: v4.10.1-docker-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -246,7 +246,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-alpine-3.15
+        context: variants/v4.10.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -268,7 +268,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-alpine-3.15
+        context: variants/v4.10.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -289,7 +289,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-alpine-3.15
+        context: variants/v4.10.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -313,12 +313,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-10-1-docker-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-10-1-alpine-3-15]
+  build-v4-10-1-docker-pwsh-7-2-8-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-10-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.10.1-alpine-3.15'
-      VARIANT: v4.10.1-docker-pwsh-7.2.8-alpine-3.15
+      BASEVARIANT: 'v4.10.1-alpine-3.17'
+      VARIANT: v4.10.1-docker-pwsh-7.2.8-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -392,7 +392,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.10.1-docker-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -414,7 +414,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.10.1-docker-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -435,7 +435,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.10.1-docker-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -459,12 +459,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-10-1-docker-rootless-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-10-1-alpine-3-15]
+  build-v4-10-1-docker-rootless-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-10-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.10.1-alpine-3.15'
-      VARIANT: v4.10.1-docker-rootless-alpine-3.15
+      BASEVARIANT: 'v4.10.1-alpine-3.17'
+      VARIANT: v4.10.1-docker-rootless-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -538,7 +538,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-rootless-alpine-3.15
+        context: variants/v4.10.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -560,7 +560,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-rootless-alpine-3.15
+        context: variants/v4.10.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -581,7 +581,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-rootless-alpine-3.15
+        context: variants/v4.10.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -605,12 +605,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-10-1-docker-rootless-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-10-1-alpine-3-15]
+  build-v4-10-1-docker-rootless-pwsh-7-2-8-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-10-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.10.1-alpine-3.15'
-      VARIANT: v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.15
+      BASEVARIANT: 'v4.10.1-alpine-3.17'
+      VARIANT: v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -684,7 +684,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -706,7 +706,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -727,7 +727,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -751,12 +751,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-9-1-alpine-3-15:
+  build-v4-9-1-alpine-3-17:
     needs: [test-nogitdiff]
     runs-on: ubuntu-latest
     env:
       BASEVARIANT: ''
-      VARIANT: v4.9.1-alpine-3.15
+      VARIANT: v4.9.1-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -830,7 +830,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-alpine-3.15
+        context: variants/v4.9.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -848,7 +848,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-alpine-3.15
+        context: variants/v4.9.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -865,7 +865,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-alpine-3.15
+        context: variants/v4.9.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -885,12 +885,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-9-1-docker-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-9-1-alpine-3-15]
+  build-v4-9-1-docker-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-9-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.9.1-alpine-3.15'
-      VARIANT: v4.9.1-docker-alpine-3.15
+      BASEVARIANT: 'v4.9.1-alpine-3.17'
+      VARIANT: v4.9.1-docker-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -964,7 +964,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-alpine-3.15
+        context: variants/v4.9.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -986,7 +986,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-alpine-3.15
+        context: variants/v4.9.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1007,7 +1007,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-alpine-3.15
+        context: variants/v4.9.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1031,12 +1031,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-9-1-docker-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-9-1-alpine-3-15]
+  build-v4-9-1-docker-pwsh-7-2-8-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-9-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.9.1-alpine-3.15'
-      VARIANT: v4.9.1-docker-pwsh-7.2.8-alpine-3.15
+      BASEVARIANT: 'v4.9.1-alpine-3.17'
+      VARIANT: v4.9.1-docker-pwsh-7.2.8-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -1110,7 +1110,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.9.1-docker-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1132,7 +1132,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.9.1-docker-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1153,7 +1153,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.9.1-docker-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1177,12 +1177,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-9-1-docker-rootless-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-9-1-alpine-3-15]
+  build-v4-9-1-docker-rootless-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-9-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.9.1-alpine-3.15'
-      VARIANT: v4.9.1-docker-rootless-alpine-3.15
+      BASEVARIANT: 'v4.9.1-alpine-3.17'
+      VARIANT: v4.9.1-docker-rootless-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -1256,7 +1256,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-rootless-alpine-3.15
+        context: variants/v4.9.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1278,7 +1278,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-rootless-alpine-3.15
+        context: variants/v4.9.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1299,7 +1299,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-rootless-alpine-3.15
+        context: variants/v4.9.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1323,12 +1323,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-9-1-docker-rootless-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-9-1-alpine-3-15]
+  build-v4-9-1-docker-rootless-pwsh-7-2-8-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-9-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.9.1-alpine-3.15'
-      VARIANT: v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.15
+      BASEVARIANT: 'v4.9.1-alpine-3.17'
+      VARIANT: v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -1402,7 +1402,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1424,7 +1424,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1445,7 +1445,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1469,12 +1469,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-alpine-3-15:
+  build-v4-8-3-alpine-3-17:
     needs: [test-nogitdiff]
     runs-on: ubuntu-latest
     env:
       BASEVARIANT: ''
-      VARIANT: v4.8.3-alpine-3.15
+      VARIANT: v4.8.3-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -1548,7 +1548,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-alpine-3.15
+        context: variants/v4.8.3-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -1566,7 +1566,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-alpine-3.15
+        context: variants/v4.8.3-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -1583,7 +1583,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-alpine-3.15
+        context: variants/v4.8.3-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -1603,12 +1603,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-docker-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+  build-v4-8-3-docker-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-8-3-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
-      VARIANT: v4.8.3-docker-alpine-3.15
+      BASEVARIANT: 'v4.8.3-alpine-3.17'
+      VARIANT: v4.8.3-docker-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -1682,7 +1682,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-alpine-3.15
+        context: variants/v4.8.3-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1704,7 +1704,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-alpine-3.15
+        context: variants/v4.8.3-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1725,7 +1725,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-alpine-3.15
+        context: variants/v4.8.3-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1749,12 +1749,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+  build-v4-8-3-docker-pwsh-7-3-1-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-8-3-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
-      VARIANT: v4.8.3-docker-pwsh-7.3.1-alpine-3.15
+      BASEVARIANT: 'v4.8.3-alpine-3.17'
+      VARIANT: v4.8.3-docker-pwsh-7.3.1-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -1828,7 +1828,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1850,7 +1850,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1871,7 +1871,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1895,12 +1895,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+  build-v4-8-3-docker-pwsh-7-2-8-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-8-3-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
-      VARIANT: v4.8.3-docker-pwsh-7.2.8-alpine-3.15
+      BASEVARIANT: 'v4.8.3-alpine-3.17'
+      VARIANT: v4.8.3-docker-pwsh-7.2.8-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -1974,7 +1974,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -1996,7 +1996,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2017,7 +2017,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2041,12 +2041,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+  build-v4-8-3-docker-pwsh-7-1-7-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-8-3-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
-      VARIANT: v4.8.3-docker-pwsh-7.1.7-alpine-3.15
+      BASEVARIANT: 'v4.8.3-alpine-3.17'
+      VARIANT: v4.8.3-docker-pwsh-7.1.7-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -2120,7 +2120,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2142,7 +2142,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2163,7 +2163,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2187,12 +2187,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+  build-v4-8-3-docker-pwsh-7-0-13-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-8-3-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
-      VARIANT: v4.8.3-docker-pwsh-7.0.13-alpine-3.15
+      BASEVARIANT: 'v4.8.3-alpine-3.17'
+      VARIANT: v4.8.3-docker-pwsh-7.0.13-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -2266,7 +2266,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2288,7 +2288,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2309,7 +2309,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.15
+        context: variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2333,12 +2333,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-docker-rootless-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+  build-v4-8-3-docker-rootless-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-8-3-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
-      VARIANT: v4.8.3-docker-rootless-alpine-3.15
+      BASEVARIANT: 'v4.8.3-alpine-3.17'
+      VARIANT: v4.8.3-docker-rootless-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -2412,7 +2412,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2434,7 +2434,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2455,7 +2455,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2479,12 +2479,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+  build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-8-3-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
-      VARIANT: v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15
+      BASEVARIANT: 'v4.8.3-alpine-3.17'
+      VARIANT: v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -2558,7 +2558,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2580,7 +2580,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2601,7 +2601,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2625,12 +2625,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+  build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-8-3-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
-      VARIANT: v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15
+      BASEVARIANT: 'v4.8.3-alpine-3.17'
+      VARIANT: v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -2704,7 +2704,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2726,7 +2726,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2747,7 +2747,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2771,12 +2771,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+  build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-8-3-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
-      VARIANT: v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15
+      BASEVARIANT: 'v4.8.3-alpine-3.17'
+      VARIANT: v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -2850,7 +2850,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2872,7 +2872,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2893,7 +2893,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -2917,12 +2917,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+  build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-8-3-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
-      VARIANT: v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15
+      BASEVARIANT: 'v4.8.3-alpine-3.17'
+      VARIANT: v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -2996,7 +2996,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3018,7 +3018,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3039,7 +3039,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3063,12 +3063,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-7-1-alpine-3-15:
+  build-v4-7-1-alpine-3-17:
     needs: [test-nogitdiff]
     runs-on: ubuntu-latest
     env:
       BASEVARIANT: ''
-      VARIANT: v4.7.1-alpine-3.15
+      VARIANT: v4.7.1-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -3142,7 +3142,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.7.1-alpine-3.15
+        context: variants/v4.7.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -3160,7 +3160,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.7.1-alpine-3.15
+        context: variants/v4.7.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -3177,7 +3177,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.7.1-alpine-3.15
+        context: variants/v4.7.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -3197,12 +3197,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-7-1-docker-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-7-1-alpine-3-15]
+  build-v4-7-1-docker-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-7-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.7.1-alpine-3.15'
-      VARIANT: v4.7.1-docker-alpine-3.15
+      BASEVARIANT: 'v4.7.1-alpine-3.17'
+      VARIANT: v4.7.1-docker-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -3276,7 +3276,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.7.1-docker-alpine-3.15
+        context: variants/v4.7.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3298,7 +3298,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.7.1-docker-alpine-3.15
+        context: variants/v4.7.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3319,7 +3319,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.7.1-docker-alpine-3.15
+        context: variants/v4.7.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3343,12 +3343,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-7-1-docker-rootless-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-7-1-alpine-3-15]
+  build-v4-7-1-docker-rootless-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-7-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.7.1-alpine-3.15'
-      VARIANT: v4.7.1-docker-rootless-alpine-3.15
+      BASEVARIANT: 'v4.7.1-alpine-3.17'
+      VARIANT: v4.7.1-docker-rootless-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -3422,7 +3422,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.7.1-docker-rootless-alpine-3.15
+        context: variants/v4.7.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3444,7 +3444,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.7.1-docker-rootless-alpine-3.15
+        context: variants/v4.7.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3465,7 +3465,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.7.1-docker-rootless-alpine-3.15
+        context: variants/v4.7.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3489,12 +3489,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-6-1-alpine-3-15:
+  build-v4-6-1-alpine-3-17:
     needs: [test-nogitdiff]
     runs-on: ubuntu-latest
     env:
       BASEVARIANT: ''
-      VARIANT: v4.6.1-alpine-3.15
+      VARIANT: v4.6.1-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -3568,7 +3568,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.6.1-alpine-3.15
+        context: variants/v4.6.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -3586,7 +3586,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.6.1-alpine-3.15
+        context: variants/v4.6.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -3603,7 +3603,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.6.1-alpine-3.15
+        context: variants/v4.6.1-alpine-3.17
         platforms: linux/amd64
         push: true
         tags: |
@@ -3623,12 +3623,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-6-1-docker-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-6-1-alpine-3-15]
+  build-v4-6-1-docker-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-6-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.6.1-alpine-3.15'
-      VARIANT: v4.6.1-docker-alpine-3.15
+      BASEVARIANT: 'v4.6.1-alpine-3.17'
+      VARIANT: v4.6.1-docker-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -3702,7 +3702,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.6.1-docker-alpine-3.15
+        context: variants/v4.6.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3724,7 +3724,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.6.1-docker-alpine-3.15
+        context: variants/v4.6.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3745,7 +3745,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.6.1-docker-alpine-3.15
+        context: variants/v4.6.1-docker-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3769,12 +3769,12 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-v4-6-1-docker-rootless-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-6-1-alpine-3-15]
+  build-v4-6-1-docker-rootless-alpine-3-17:
+    needs: [test-nogitdiff, build-v4-6-1-alpine-3-17]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.6.1-alpine-3.15'
-      VARIANT: v4.6.1-docker-rootless-alpine-3.15
+      BASEVARIANT: 'v4.6.1-alpine-3.17'
+      VARIANT: v4.6.1-docker-rootless-alpine-3.17
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -3848,7 +3848,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.6.1-docker-rootless-alpine-3.15
+        context: variants/v4.6.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3870,7 +3870,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.6.1-docker-rootless-alpine-3.15
+        context: variants/v4.6.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3891,7 +3891,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.6.1-docker-rootless-alpine-3.15
+        context: variants/v4.6.1-docker-rootless-alpine-3.17
         build-args: |
           BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         labels: |
@@ -3916,7 +3916,7 @@ jobs:
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   update-draft-release:
-    needs: [build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-pwsh-7-2-8-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-10-1-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-pwsh-7-2-8-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-9-1-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
+    needs: [build-v4-10-1-alpine-3-17, build-v4-10-1-docker-alpine-3-17, build-v4-10-1-docker-pwsh-7-2-8-alpine-3-17, build-v4-10-1-docker-rootless-alpine-3-17, build-v4-10-1-docker-rootless-pwsh-7-2-8-alpine-3-17, build-v4-9-1-alpine-3-17, build-v4-9-1-docker-alpine-3-17, build-v4-9-1-docker-pwsh-7-2-8-alpine-3-17, build-v4-9-1-docker-rootless-alpine-3-17, build-v4-9-1-docker-rootless-pwsh-7-2-8-alpine-3-17, build-v4-8-3-alpine-3-17, build-v4-8-3-docker-alpine-3-17, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-17, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-17, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-17, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-17, build-v4-8-3-docker-rootless-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-17, build-v4-7-1-alpine-3-17, build-v4-7-1-docker-alpine-3-17, build-v4-7-1-docker-rootless-alpine-3-17, build-v4-6-1-alpine-3-17, build-v4-6-1-docker-alpine-3-17, build-v4-6-1-docker-rootless-alpine-3-17]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
@@ -3929,7 +3929,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-draft-release:
-    needs: [build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-pwsh-7-2-8-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-10-1-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-pwsh-7-2-8-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-9-1-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
+    needs: [build-v4-10-1-alpine-3-17, build-v4-10-1-docker-alpine-3-17, build-v4-10-1-docker-pwsh-7-2-8-alpine-3-17, build-v4-10-1-docker-rootless-alpine-3-17, build-v4-10-1-docker-rootless-pwsh-7-2-8-alpine-3-17, build-v4-9-1-alpine-3-17, build-v4-9-1-docker-alpine-3-17, build-v4-9-1-docker-pwsh-7-2-8-alpine-3-17, build-v4-9-1-docker-rootless-alpine-3-17, build-v4-9-1-docker-rootless-pwsh-7-2-8-alpine-3-17, build-v4-8-3-alpine-3-17, build-v4-8-3-docker-alpine-3-17, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-17, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-17, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-17, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-17, build-v4-8-3-docker-rootless-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-17, build-v4-7-1-alpine-3-17, build-v4-7-1-docker-alpine-3-17, build-v4-7-1-docker-rootless-alpine-3-17, build-v4-6-1-alpine-3-17, build-v4-6-1-docker-alpine-3-17, build-v4-6-1-docker-rootless-alpine-3-17]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -3944,7 +3944,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   update-dockerhub-description:
-    needs: [build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-pwsh-7-2-8-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-10-1-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-pwsh-7-2-8-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-9-1-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
+    needs: [build-v4-10-1-alpine-3-17, build-v4-10-1-docker-alpine-3-17, build-v4-10-1-docker-pwsh-7-2-8-alpine-3-17, build-v4-10-1-docker-rootless-alpine-3-17, build-v4-10-1-docker-rootless-pwsh-7-2-8-alpine-3-17, build-v4-9-1-alpine-3-17, build-v4-9-1-docker-alpine-3-17, build-v4-9-1-docker-pwsh-7-2-8-alpine-3-17, build-v4-9-1-docker-rootless-alpine-3-17, build-v4-9-1-docker-rootless-pwsh-7-2-8-alpine-3-17, build-v4-8-3-alpine-3-17, build-v4-8-3-docker-alpine-3-17, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-17, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-17, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-17, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-17, build-v4-8-3-docker-rootless-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-17, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-17, build-v4-7-1-alpine-3-17, build-v4-7-1-docker-alpine-3-17, build-v4-7-1-docker-rootless-alpine-3-17, build-v4-6-1-alpine-3-17, build-v4-6-1-docker-alpine-3-17, build-v4-6-1-docker-rootless-alpine-3-17]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
