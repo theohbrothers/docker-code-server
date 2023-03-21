@@ -3,8 +3,22 @@
 
 FROM alpine:3.15
 ARG TARGETPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
 ARG BUILDPLATFORM
-RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
+ARG BUILDOS
+ARG BUILDARCH
+ARG BUILDVARIANT
+RUN set -ex; \
+    echo "TARGETPLATFORM="; \
+    echo "TARGETOS="; \
+    echo "TARGETARCH="; \
+    echo "TARGETVARIANT="; \
+    echo "BUILDPLATFORM="; \
+    echo "BUILDOS="; \
+    echo "BUILDARCH="; \
+    echo "BUILDVARIANT=";
 
 RUN --mount=type=secret,id=GITHUB_TOKEN \
     DEPS='alpine-sdk bash libstdc++ libc6-compat python3' \

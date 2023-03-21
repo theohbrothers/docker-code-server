@@ -6,8 +6,22 @@ if (!$VARIANT['_metadata']['base_tag']) {
 
 FROM $( $VARIANT['_metadata']['distro'] ):$( $VARIANT['_metadata']['distro_version'] )
 ARG TARGETPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
 ARG BUILDPLATFORM
-RUN echo "I am running on `$BUILDPLATFORM, building for `$TARGETPLATFORM"
+ARG BUILDOS
+ARG BUILDARCH
+ARG BUILDVARIANT
+RUN set -ex; \
+    echo "TARGETPLATFORM=$TARGETPLATFORM"; \
+    echo "TARGETOS=$TARGETOS"; \
+    echo "TARGETARCH=$TARGETARCH"; \
+    echo "TARGETVARIANT=$TARGETVARIANT"; \
+    echo "BUILDPLATFORM=$BUILDPLATFORM"; \
+    echo "BUILDOS=$BUILDOS"; \
+    echo "BUILDARCH=$BUILDARCH"; \
+    echo "BUILDVARIANT=$BUILDVARIANT";
 
 RUN --mount=type=secret,id=GITHUB_TOKEN \
     DEPS='alpine-sdk bash libstdc++ libc6-compat python3' \
@@ -74,7 +88,7 @@ COPY --chown=1000:1000 settings.json /home/user/.local/share/code-server/User/se
 "@
 }else {
     # Incremental image
-    @'
+@'
 ARG BASE_IMAGE
 FROM $BASE_IMAGE
 
@@ -332,9 +346,104 @@ RUN set -eux; \
 
 "@
         }
+
+        if ($c -match 'go-([^-]+)') {
+            $v = $matches[1]
+@"
+# Install golang binaries from official golang image
+# See: https://go.dev/dl/
+USER root
+ENV GOLANG_VERSION $v
+ENV PATH=/usr/local/go/bin:`$PATH
+COPY --from=golang:$v-alpine /usr/local/go /usr/local/go
+RUN go version
+
+
+"@
+
+            # Not installing from official binaries. Binaries may not compatible with Alpine (esp go1.20). See: https://github.com/golang/go/issues/18773 and https://github.com/golang/go/issues/38536
+            # $global:CACHE['golang-releases'] = if (!$global:CACHE.Contains('golang-releases')) {
+            #     # Get all golang releases. See: https://github.com/golang/go/issues/23746
+            #     $releases = Invoke-RestMethod 'https://go.dev/dl/?mode=json&include=all'
+            #     # Build a hash for fast retrieval
+            #     # E.g. { "go1.20.2": { release: {}, files: { "linux-amd64": {} } }
+            #     $h = @{}
+            #     $releases | % {
+            #         $h[$_.version] = @{
+            #             release = $_
+            #             files = @{}
+            #         }
+            #         $_.files | % {
+            #             $h[$_.version]['files']["$( $_.os )-$( $_.arch )"] = $_
+            #         }
+            #     }
+            #     $h
+            # }else {
+            #     $global:CACHE['golang-releases']
+            # }
+            # $release = $global:CACHE['golang-releases']["go$v"]
+
+# Not installing from official binaries. Binaries may not compatible with Alpine (esp go1.20). See: https://github.com/golang/go/issues/18773 and https://github.com/golang/go/issues/38536
+# @"
+# RUN set -eux; \
+#     case "`$( uname -m )" in \
+#         'x86_64')  \
+#             URL=https://go.dev/dl/$( $release['files']['linux-amd64'].filename ); \
+#             SHA256=$( $release['files']['linux-amd64'].sha256 ) \
+#             ;; \
+#         'armhf')  \
+#             URL=https://go.dev/dl/$( $release['files']['linux-amd64'].filename ); \
+#             SHA256=$( $release['files']['linux-armv6l'].sha256 ) \
+#             ;; \
+#         'armv7') \
+#             URL=https://go.dev/dl/$( $release['files']['linux-amd64'].filename ); \
+#             SHA256=$( $release['files']['linux-armv6l'].sha256 ) \
+#             ;; \
+#         'aarch64') \
+#             URL=https://go.dev/dl/$( $release['files']['linux-amd64'].filename ); \
+#             SHA256=$( $release['files']['linux-arm64'].sha256 ) \
+#             ;; \
+#         'ppc64le') \
+#             URL=https://go.dev/dl/$( $release['files']['linux-amd64'].filename ); \
+#             SHA256=$( $release['files']['linux-ppc64le'].sha256 ) \
+#             ;; \
+#         's390x') \
+#             URL=https://go.dev/dl/$( $release['files']['linux-amd64'].filename ); \
+#             SHA256=$( $release['files']['linux-s390x'].sha256 ) \
+#             ;; \
+#         *) \
+#             echo "Architecture not supported"; \
+#             exit 1; \
+#             ;; \
+#     esac; \
+#     wget -qO- "`$URL" > go.tar.gz; \
+#     sha256sum go.tar.gz | grep "^`$SHA256 "; \
+#     tar -xzf go.tar.gz -C /usr/local; \
+#     go version; \
+#     rm -fv go.tar.gz;
+
+# "@
+
+@"
+# Install development tools
+RUN set -eux; \
+    export GOBIN=/usr/local/bin; \
+    go install github.com/go-delve/delve/cmd/dlv@v1.20.1; \
+    dlv version; \
+    go install golang.org/x/tools/gopls@v0.11.0; \
+    gopls version; \
+    rm -rf ~/go;
+
+# Install extensions
+USER user
+RUN code-server --install-extension golang.go@0.38.0
+
+
+"@
+        }
         if ($c -match 'pwsh-([^-]+)') {
             $v = $matches[1]
-            @"
+@"
 USER root
 
 # Install pwsh
