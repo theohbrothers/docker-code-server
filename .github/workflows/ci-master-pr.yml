@@ -63,15 +63,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -120,9 +111,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (master)
@@ -141,9 +131,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (release)
@@ -163,18 +152,10 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-11-0-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-11-0-alpine-3-15]
@@ -207,15 +188,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -308,13 +280,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-11-0-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-11-0-alpine-3-15]
@@ -347,15 +312,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -448,13 +404,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-10-1-alpine-3-15:
     needs: [test-nogitdiff]
@@ -487,15 +436,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -544,9 +484,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (master)
@@ -565,9 +504,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (release)
@@ -586,18 +524,10 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-10-1-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-10-1-alpine-3-15]
@@ -630,15 +560,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -731,13 +652,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-10-1-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-10-1-alpine-3-15]
@@ -770,15 +684,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -871,13 +776,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-9-1-alpine-3-15:
     needs: [test-nogitdiff]
@@ -910,15 +808,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -967,9 +856,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (master)
@@ -988,9 +876,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (release)
@@ -1009,18 +896,10 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-9-1-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-9-1-alpine-3-15]
@@ -1053,15 +932,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -1154,13 +1024,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-9-1-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-9-1-alpine-3-15]
@@ -1193,15 +1056,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -1294,13 +1148,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-alpine-3-15:
     needs: [test-nogitdiff]
@@ -1333,15 +1180,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -1390,9 +1228,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (master)
@@ -1411,9 +1248,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (release)
@@ -1432,18 +1268,10 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
@@ -1476,15 +1304,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -1577,13 +1396,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-go-1-17-13-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
@@ -1616,15 +1428,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -1717,13 +1520,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-go-1-18-10-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
@@ -1756,15 +1552,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -1857,13 +1644,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-go-1-19-7-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
@@ -1896,15 +1676,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -1997,13 +1768,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-go-1-20-2-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
@@ -2036,15 +1800,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -2137,13 +1892,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
@@ -2176,15 +1924,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -2277,13 +2016,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-go-1-17-13-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
@@ -2316,15 +2048,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -2417,13 +2140,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-go-1-18-10-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
@@ -2456,15 +2172,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -2557,13 +2264,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-go-1-19-7-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
@@ -2596,15 +2296,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -2697,13 +2388,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-go-1-20-2-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
@@ -2736,15 +2420,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -2837,13 +2512,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-7-1-alpine-3-15:
     needs: [test-nogitdiff]
@@ -2876,15 +2544,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -2933,9 +2592,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (master)
@@ -2954,9 +2612,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (release)
@@ -2975,18 +2632,10 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-7-1-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-7-1-alpine-3-15]
@@ -3019,15 +2668,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -3120,13 +2760,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-7-1-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-7-1-alpine-3-15]
@@ -3159,15 +2792,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -3260,13 +2884,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-6-1-alpine-3-15:
     needs: [test-nogitdiff]
@@ -3299,15 +2916,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -3356,9 +2964,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (master)
@@ -3377,9 +2984,8 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
     - name: Build and push (release)
@@ -3398,18 +3004,10 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-6-1-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-6-1-alpine-3-15]
@@ -3442,15 +3040,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -3543,13 +3132,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-6-1-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-6-1-alpine-3-15]
@@ -3582,15 +3164,6 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -3683,13 +3256,6 @@ jobs:
         cache-to: |
           type=inline
 
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   update-draft-release:
     needs: [build-v4-11-0-alpine-3-15, build-v4-11-0-docker-alpine-3-15, build-v4-11-0-docker-rootless-alpine-3-15, build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-go-1-17-13-alpine-3-15, build-v4-8-3-docker-go-1-18-10-alpine-3-15, build-v4-8-3-docker-go-1-19-7-alpine-3-15, build-v4-8-3-docker-go-1-20-2-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-go-1-17-13-alpine-3-15, build-v4-8-3-docker-rootless-go-1-18-10-alpine-3-15, build-v4-8-3-docker-rootless-go-1-19-7-alpine-3-15, build-v4-8-3-docker-rootless-go-1-20-2-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
