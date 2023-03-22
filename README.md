@@ -12,33 +12,21 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 |:-------:|:---------:|
 | `:v4.10.1-alpine-3.15`, `:latest` | [View](variants/v4.10.1-alpine-3.15) |
 | `:v4.10.1-docker-alpine-3.15` | [View](variants/v4.10.1-docker-alpine-3.15) |
-| `:v4.10.1-docker-pwsh-7.2.8-alpine-3.15` | [View](variants/v4.10.1-docker-pwsh-7.2.8-alpine-3.15) |
 | `:v4.10.1-docker-rootless-alpine-3.15` | [View](variants/v4.10.1-docker-rootless-alpine-3.15) |
-| `:v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.15` | [View](variants/v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.15) |
 | `:v4.9.1-alpine-3.15` | [View](variants/v4.9.1-alpine-3.15) |
 | `:v4.9.1-docker-alpine-3.15` | [View](variants/v4.9.1-docker-alpine-3.15) |
-| `:v4.9.1-docker-pwsh-7.2.8-alpine-3.15` | [View](variants/v4.9.1-docker-pwsh-7.2.8-alpine-3.15) |
 | `:v4.9.1-docker-rootless-alpine-3.15` | [View](variants/v4.9.1-docker-rootless-alpine-3.15) |
-| `:v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.15` | [View](variants/v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.15) |
 | `:v4.8.3-alpine-3.15` | [View](variants/v4.8.3-alpine-3.15) |
 | `:v4.8.3-docker-alpine-3.15` | [View](variants/v4.8.3-docker-alpine-3.15) |
 | `:v4.8.3-docker-go-1.17.13-alpine-3.15` | [View](variants/v4.8.3-docker-go-1.17.13-alpine-3.15) |
 | `:v4.8.3-docker-go-1.18.10-alpine-3.15` | [View](variants/v4.8.3-docker-go-1.18.10-alpine-3.15) |
 | `:v4.8.3-docker-go-1.19.7-alpine-3.15` | [View](variants/v4.8.3-docker-go-1.19.7-alpine-3.15) |
 | `:v4.8.3-docker-go-1.20.2-alpine-3.15` | [View](variants/v4.8.3-docker-go-1.20.2-alpine-3.15) |
-| `:v4.8.3-docker-pwsh-7.3.1-alpine-3.15` | [View](variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.15) |
-| `:v4.8.3-docker-pwsh-7.2.8-alpine-3.15` | [View](variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.15) |
-| `:v4.8.3-docker-pwsh-7.1.7-alpine-3.15` | [View](variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.15) |
-| `:v4.8.3-docker-pwsh-7.0.13-alpine-3.15` | [View](variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.15) |
 | `:v4.8.3-docker-rootless-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-alpine-3.15) |
 | `:v4.8.3-docker-rootless-go-1.17.13-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-go-1.17.13-alpine-3.15) |
 | `:v4.8.3-docker-rootless-go-1.18.10-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-go-1.18.10-alpine-3.15) |
 | `:v4.8.3-docker-rootless-go-1.19.7-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-go-1.19.7-alpine-3.15) |
 | `:v4.8.3-docker-rootless-go-1.20.2-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-go-1.20.2-alpine-3.15) |
-| `:v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15) |
-| `:v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15) |
-| `:v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15) |
-| `:v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15) |
 | `:v4.7.1-alpine-3.15` | [View](variants/v4.7.1-alpine-3.15) |
 | `:v4.7.1-docker-alpine-3.15` | [View](variants/v4.7.1-docker-alpine-3.15) |
 | `:v4.7.1-docker-rootless-alpine-3.15` | [View](variants/v4.7.1-docker-rootless-alpine-3.15) |

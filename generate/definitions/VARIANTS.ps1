@@ -8,9 +8,7 @@ $local:VARIANTS_MATRIX = @(
         subvariants = @(
             @{ components = @(); tag_as_latest = $true } # Base
             @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker', 'pwsh-7.2.8' ) } # Incremental
             @{ components = @( 'docker-rootless' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'pwsh-7.2.8' ) } # Incremental
         )
     }
     @{
@@ -21,9 +19,7 @@ $local:VARIANTS_MATRIX = @(
         subvariants = @(
             @{ components = @(); } # Base
             @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker', 'pwsh-7.2.8' ) } # Incremental
             @{ components = @( 'docker-rootless' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'pwsh-7.2.8' ) } # Incremental
         )
     }
     @{
@@ -39,19 +35,11 @@ $local:VARIANTS_MATRIX = @(
             @{ components = @( 'docker', 'go-1.18.10' ) } # Incremental
             @{ components = @( 'docker', 'go-1.19.7' ) } # Incremental
             @{ components = @( 'docker', 'go-1.20.2' ) } # Incremental
-            @{ components = @( 'docker', 'pwsh-7.3.1' ) } # Incremental
-            @{ components = @( 'docker', 'pwsh-7.2.8' ) } # Incremental
-            @{ components = @( 'docker', 'pwsh-7.1.7' ) } # Incremental
-            @{ components = @( 'docker', 'pwsh-7.0.13' ) } # Incremental
             @{ components = @( 'docker-rootless' ) } # Incremental
             @{ components = @( 'docker-rootless', 'go-1.17.13' ) } # Incremental
             @{ components = @( 'docker-rootless', 'go-1.18.10' ) } # Incremental
             @{ components = @( 'docker-rootless', 'go-1.19.7' ) } # Incremental
             @{ components = @( 'docker-rootless', 'go-1.20.2' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'pwsh-7.3.1' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'pwsh-7.2.8' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'pwsh-7.1.7' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'pwsh-7.0.13' ) } # Incremental
         )
     }
     @{

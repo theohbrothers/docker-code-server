@@ -34,6 +34,39 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
 # Install tools
 RUN apk add --no-cache bash bash-completion ca-certificates curl gnupg git git-lfs iotop jq less lsblk make nano openssh-client openssl p7zip rsync tree yq
 
+# Install pwsh
+# See: https://learn.microsoft.com/en-us/powershell/scripting/install/install-alpine?view=powershell-7.3
+RUN apk add --no-cache \
+    ca-certificates \
+    less \
+    ncurses-terminfo-base \
+    krb5-libs \
+    libgcc \
+    libintl \
+    libssl1.1 \
+    libstdc++ \
+    tzdata \
+    userspace-rcu \
+    zlib \
+    icu-libs \
+    curl
+RUN apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache lttng-ust
+RUN mkdir -p /opt/microsoft/powershell/7 \
+    && curl -sSL https://github.com/PowerShell/PowerShell/releases/download/v7.2.8/powershell-7.2.8-linux-alpine-x64.tar.gz | tar -C /opt/microsoft/powershell/7 -zxf - \
+    && chmod +x /opt/microsoft/powershell/7/pwsh \
+    && ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+# Disable telemetry for powershell 7.0.0 and above and .NET core: https://github.com/PowerShell/PowerShell/issues/16234#issuecomment-942139350
+ENV POWERSHELL_CLI_TELEMETRY_OPTOUT=1
+ENV POWERSHELL_TELEMETRY_OPTOUT=1
+ENV POWERSHELL_UPDATECHECK=Off
+ENV POWERSHELL_UPDATECHECK_OPTOUT=1
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
+ENV DOTNET_TELEMETRY_OPTOUT=1
+ENV COMPlus_EnableDiagnostics=0
+RUN pwsh -version
+# Install pwsh module(s)
+RUN pwsh -c 'Install-Module Pester -Force -Scope AllUsers -MinimumVersion 4.0.0 -MaximumVersion 4.10.1 -ErrorAction Stop'
+
 RUN apk add --no-cache sudo
 RUN adduser -u 1000 --gecos '' -D user
 RUN echo 'user ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/user
@@ -63,6 +96,8 @@ RUN code-server --install-extension bierner.markdown-preview-github-styles@0.1.6
 RUN code-server --install-extension DavidAnson.vscode-markdownlint@0.43.2
 # prettier - code formatter
 RUN code-server --install-extension esbenp.prettier-vscode@9.0.0
+# pwsh
+RUN code-server --install-extension ms-vscode.powershell@2021.12.0
 # svg
 RUN code-server --install-extension jock.svg@1.4.17
 # terraform
@@ -425,52 +460,6 @@ RUN set -eux; \
 # Install extensions
 USER user
 RUN code-server --install-extension golang.go@0.38.0
-
-
-"@
-    }
-    if ($c -match 'pwsh-([^-]+)') {
-        $v = $matches[1]
-@"
-USER root
-
-# Install pwsh
-# See: https://learn.microsoft.com/en-us/powershell/scripting/install/install-alpine?view=powershell-7.3
-RUN apk add --no-cache \
-    ca-certificates \
-    less \
-    ncurses-terminfo-base \
-    krb5-libs \
-    libgcc \
-    libintl \
-    libssl1.1 \
-    libstdc++ \
-    tzdata \
-    userspace-rcu \
-    zlib \
-    icu-libs \
-    curl
-RUN apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache lttng-ust
-RUN mkdir -p /opt/microsoft/powershell/7 \
-    && curl -sSL https://github.com/PowerShell/PowerShell/releases/download/v$v/powershell-$v-linux-alpine-x64.tar.gz | tar -C /opt/microsoft/powershell/7 -zxf - \
-    && chmod +x /opt/microsoft/powershell/7/pwsh \
-    && ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
-# Disable telemetry for powershell 7.0.0 and above and .NET core: https://github.com/PowerShell/PowerShell/issues/16234#issuecomment-942139350
-ENV POWERSHELL_CLI_TELEMETRY_OPTOUT=1
-ENV POWERSHELL_TELEMETRY_OPTOUT=1
-ENV POWERSHELL_UPDATECHECK=Off
-ENV POWERSHELL_UPDATECHECK_OPTOUT=1
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
-ENV DOTNET_TELEMETRY_OPTOUT=1
-ENV COMPlus_EnableDiagnostics=0
-RUN pwsh -version
-
-# Install modules
-RUN pwsh -c 'Install-Module Pester -Force -Scope AllUsers -MinimumVersion 4.0.0 -MaximumVersion 4.10.1 -ErrorAction Stop'
-
-# Install extensions
-USER user
-RUN code-server --install-extension ms-vscode.powershell@2021.12.0
 
 
 "@
