@@ -126,16 +126,17 @@ $VARIANTS | % {
 
 "@
 if ($_['_metadata']['base_tag']) {
-# Incremental - use base image as cache
+# Incremental: If most recent master image exists, use it as cache. If not, use base image (built in earlier [needs] job) as cache
 @'
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
 
 '@
 }else {
-# Base - use my most recent image on master
+# Base: If master image exists, use it as cache. If not, build from scratch
 @'
         cache-from: |
           ${{ github.repository }}:master-${{ env.VARIANT }}
@@ -164,16 +165,17 @@ if ($_['_metadata']['base_tag']) {
 
 "@
 if ($_['_metadata']['base_tag']) {
-# Incremental - use base image as cache
+# Incremental: If most recent master image exists, use it as cache. If not, use base image (built in earlier [needs] job) as cache
 @'
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
 
 '@
 }else {
-# Base - use my most recent image on master
+# Base: If master image exists, use it as cache. If not, build from scratch
 @'
         cache-from: |
           ${{ github.repository }}:master-${{ env.VARIANT }}
@@ -211,16 +213,17 @@ if ( $_['tag_as_latest'] ) {
 
 "@
 if ($_['_metadata']['base_tag']) {
-# Incremental - use base image as cache
+# Incremental: If most recent master image exists, use it as cache. If not, use base image (built in earlier [needs] job) as cache
 @'
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
 
 '@
 }else {
-# Base - use my most recent image on master
+# Base: If master image exists, use it as cache. If not, build from scratch
 @'
         cache-from: |
           ${{ github.repository }}:master-${{ env.VARIANT }}
