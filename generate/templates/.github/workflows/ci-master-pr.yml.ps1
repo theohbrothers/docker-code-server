@@ -73,15 +73,6 @@ $VARIANTS | % {
       id: buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ env.VARIANT }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-${{ env.VARIANT }}-
-          ${{ runner.os }}-buildx-
-
     # This step generates the docker tags
     - name: Prepare
       id: prep
@@ -135,7 +126,7 @@ $VARIANTS | % {
 
 "@
 if ($_['_metadata']['base_tag']) {
-# Use remote image cache and inline cache for incremental builds
+# Incremental - use base image as cache
 @'
         cache-from: |
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
@@ -144,12 +135,11 @@ if ($_['_metadata']['base_tag']) {
 
 '@
 }else {
-# Use local cache for base builds
+# Base - use my most recent image on master
 @'
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
 '@
@@ -174,7 +164,7 @@ if ($_['_metadata']['base_tag']) {
 
 "@
 if ($_['_metadata']['base_tag']) {
-# Use remote image cache and inline cache for incremental builds
+# Incremental - use base image as cache
 @'
         cache-from: |
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
@@ -183,12 +173,11 @@ if ($_['_metadata']['base_tag']) {
 
 '@
 }else {
-# Use local cache for base builds
+# Base - use my most recent image on master
 @'
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
 '@
@@ -210,7 +199,6 @@ if ($_['_metadata']['base_tag']) {
           `${{ github.repository }}:`${{ env.REF_SHA_VARIANT }}
 
 "@
-
 if ( $_['tag_as_latest'] ) {
 @'
           ${{ github.repository }}:latest
@@ -223,7 +211,7 @@ if ( $_['tag_as_latest'] ) {
 
 "@
 if ($_['_metadata']['base_tag']) {
-# Use remote image cache and inline cache for incremental builds
+# Incremental - use base image as cache
 @'
         cache-from: |
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
@@ -232,26 +220,15 @@ if ($_['_metadata']['base_tag']) {
 
 '@
 }else {
-# Use local cache for base builds
+# Base - use my most recent image on master
 @'
         cache-from: |
-          type=local,src=/tmp/.buildx-cache
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
-          type=local,dest=/tmp/.buildx-cache-new,mode=max
           type=inline
 
 '@
 }
-@'
-
-    # Temp fix
-    # https://github.com/docker/build-push-action/issues/252
-    # https://github.com/moby/buildkit/issues/1896
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
-'@
 }
 
 @"
