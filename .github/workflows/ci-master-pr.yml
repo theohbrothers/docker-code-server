@@ -236,6 +236,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -256,6 +257,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -276,6 +278,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -360,6 +363,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -380,6 +384,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -400,6 +405,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -608,6 +614,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -628,6 +635,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -648,6 +656,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -732,6 +741,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -752,6 +762,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -772,6 +783,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -980,6 +992,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1000,6 +1013,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1020,6 +1034,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1104,6 +1119,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1124,6 +1140,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1144,6 +1161,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1352,6 +1370,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1372,6 +1391,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1392,6 +1412,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1476,6 +1497,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1496,6 +1518,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1516,6 +1539,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1600,6 +1624,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1620,6 +1645,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1640,6 +1666,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1724,6 +1751,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1744,6 +1772,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1764,6 +1793,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1848,6 +1878,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1868,6 +1899,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1888,6 +1920,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1972,6 +2005,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -1992,6 +2026,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2012,6 +2047,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2096,6 +2132,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2116,6 +2153,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2136,6 +2174,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2220,6 +2259,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2240,6 +2280,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2260,6 +2301,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2344,6 +2386,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2364,6 +2407,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2384,6 +2428,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2468,6 +2513,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2488,6 +2534,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2508,6 +2555,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2716,6 +2764,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2736,6 +2785,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2756,6 +2806,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2840,6 +2891,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2860,6 +2912,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -2880,6 +2933,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -3088,6 +3142,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -3108,6 +3163,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -3128,6 +3184,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -3212,6 +3269,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -3232,6 +3290,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
@@ -3252,6 +3311,7 @@ jobs:
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
+          ${{ github.repository }}:master-${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         cache-to: |
           type=inline
