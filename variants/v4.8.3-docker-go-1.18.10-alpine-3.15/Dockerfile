@@ -110,10 +110,6 @@ RUN code-server --install-extension redhat.vscode-xml@0.18.0
 # yaml
 RUN code-server --install-extension redhat.vscode-yaml@1.9.1
 
-# Add a default settings.json
-USER user
-COPY --chown=1000:1000 settings.json /home/user/.local/share/code-server/User/settings.json
-
 # Install docker
 # See: https://github.com/moby/moby/blob/v20.10.22/project/PACKAGERS.md
 # Install docker-cli dependencies
@@ -307,6 +303,10 @@ RUN set -eux; \
 # Install extensions
 USER user
 RUN code-server --install-extension golang.go@0.38.0
+
+# Add a default settings.json
+USER user
+COPY --chown=1000:1000 settings.json /home/user/.local/share/code-server/User/settings.json
 
 # Remove the default code-server config file created when extensions are installed
 USER user
