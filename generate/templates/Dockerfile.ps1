@@ -1,9 +1,5 @@
-if (!$VARIANT['_metadata']['base_tag']) {
-    # Base image
-    @"
+@"
 # syntax=docker/dockerfile:1
-# The syntax=docker/dockerfile:1 line above is needed for passing secrets to the build
-
 FROM $( $VARIANT['_metadata']['distro'] ):$( $VARIANT['_metadata']['distro_version'] )
 ARG TARGETPLATFORM
 ARG TARGETOS
@@ -86,17 +82,9 @@ COPY --chown=1000:1000 settings.json /home/user/.local/share/code-server/User/se
 
 
 "@
-}else {
-    # Incremental image
-@'
-ARG BASE_IMAGE
-FROM $BASE_IMAGE
-
-
-'@
-    foreach ($c in $VARIANT['_metadata']['components']) {
-        if ($c -eq 'docker' -or $c -eq 'docker-rootless') {
-            $DOCKER_VERSION = '20.10.23'
+foreach ($c in $VARIANT['_metadata']['components']) {
+    if ($c -eq 'docker' -or $c -eq 'docker-rootless') {
+        $DOCKER_VERSION = '20.10.23'
 @"
 # Install docker
 # See: https://github.com/moby/moby/blob/v20.10.22/project/PACKAGERS.md
@@ -173,7 +161,7 @@ VOLUME /var/lib/docker
 
 
 "@
-            if ($c -eq 'docker-rootless') {
+        if ($c -eq 'docker-rootless') {
 @"
 # Install rootless docker. See: https://docs.docker.com/engine/security/rootless/
 USER root
@@ -221,7 +209,7 @@ ENV DOCKER_HOST=unix:///run/user/1000/docker.sock
 
 
 "@
-            }
+        }
 @"
 # Install docker-compose v1 (deprecated, but for backward compatibility)
 USER root
@@ -345,10 +333,10 @@ RUN set -eux; \
 
 
 "@
-        }
+    }
 
-        if ($c -match 'go-([^-]+)') {
-            $v = $matches[1]
+    if ($c -match 'go-([^-]+)') {
+        $v = $matches[1]
 @"
 # Install golang binaries from official golang image
 # See: https://go.dev/dl/
@@ -440,9 +428,9 @@ RUN code-server --install-extension golang.go@0.38.0
 
 
 "@
-        }
-        if ($c -match 'pwsh-([^-]+)') {
-            $v = $matches[1]
+    }
+    if ($c -match 'pwsh-([^-]+)') {
+        $v = $matches[1]
 @"
 USER root
 
@@ -486,7 +474,6 @@ RUN code-server --install-extension ms-vscode.powershell@2021.12.0
 
 
 "@
-        }
     }
 }
 
