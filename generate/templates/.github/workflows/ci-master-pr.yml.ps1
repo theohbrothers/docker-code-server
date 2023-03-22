@@ -43,7 +43,7 @@ $VARIANTS | % {
     needs: [test-nogitdiff$( if ($_['_metadata']['base_tag']) { ", build-$( $_['_metadata']['base_tag'] )".Replace('.', '-') } else {} )]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: '$( $_['_metadata']['base_tag'] )'
+      BASEVARIANT: $( if ($_['_metadata']['base_tag']) { $_['_metadata']['base_tag'] } else { "''" } )
       VARIANT: $( $_['tag'] )
 "@
 @'
@@ -125,18 +125,6 @@ $VARIANTS | % {
         GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
         context: $( $_['build_dir_rel'] )
-
-"@
-if ($_['_metadata']['base_tag']) {
-@"
-        build-args: |
-          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF_SHA_BASEVARIANT }}
-
-"@
-}
-@"
         platforms: $( $_['_metadata']['platforms'] -join ',' )
         push: true
         tags: |
@@ -144,8 +132,29 @@ if ($_['_metadata']['base_tag']) {
           `${{ github.repository }}:`${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+"@
+if ($_['_metadata']['base_tag']) {
+# Use remote image cache and inline cache for incremental builds
+@'
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
+
+'@
+}else {
+# Use local cache for base builds
+@'
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
+
+'@
+}
+@"
 
     - name: Build and push (master)
       # Run only on master
@@ -155,18 +164,6 @@ if ($_['_metadata']['base_tag']) {
         GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
         context: $( $_['build_dir_rel'] )
-
-"@
-if ($_['_metadata']['base_tag']) {
-@"
-        build-args: |
-          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF_SHA_BASEVARIANT }}
-
-"@
-}
-@"
         platforms: $( $_['_metadata']['platforms'] -join ',' )
         push: true
         tags: |
@@ -174,8 +171,29 @@ if ($_['_metadata']['base_tag']) {
           `${{ github.repository }}:`${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+"@
+if ($_['_metadata']['base_tag']) {
+# Use remote image cache and inline cache for incremental builds
+@'
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
+
+'@
+}else {
+# Use local cache for base builds
+@'
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
+
+'@
+}
+@"
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -184,18 +202,6 @@ if ($_['_metadata']['base_tag']) {
         GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
         context: $( $_['build_dir_rel'] )
-
-"@
-if ($_['_metadata']['base_tag']) {
-@"
-        build-args: |
-          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=`${{ github.repository }}:`${{ env.REF_SHA_BASEVARIANT }}
-
-"@
-}
-@"
         platforms: $( $_['_metadata']['platforms'] -join ',' )
         push: true
         tags: |
@@ -211,11 +217,32 @@ if ( $_['tag_as_latest'] ) {
 
 '@
 }
-@'
+@"
         secrets: |
           "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+"@
+if ($_['_metadata']['base_tag']) {
+# Use remote image cache and inline cache for incremental builds
+@'
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
+
+'@
+}else {
+# Use local cache for base builds
+@'
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
+
+'@
+}
+@'
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -223,7 +250,7 @@ if ( $_['tag_as_latest'] ) {
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 '@
 }
 

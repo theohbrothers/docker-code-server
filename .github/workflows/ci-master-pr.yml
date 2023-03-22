@@ -119,8 +119,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -137,8 +140,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -155,9 +161,12 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
           ${{ github.repository }}:latest
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -165,13 +174,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-10-1-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-10-1-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.10.1-alpine-3.15'
+      BASEVARIANT: v4.10.1-alpine-3.15
       VARIANT: v4.10.1-docker-alpine-3.15
     steps:
     - name: Checkout
@@ -247,10 +256,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -258,8 +263,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -269,10 +276,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -280,8 +283,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -290,10 +295,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -301,9 +302,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -311,13 +314,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-10-1-docker-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-10-1-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-10-1-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.10.1-alpine-3.15'
+      BASEVARIANT: v4.10.1-docker-alpine-3.15
       VARIANT: v4.10.1-docker-pwsh-7.2.8-alpine-3.15
     steps:
     - name: Checkout
@@ -393,10 +396,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -404,8 +403,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -415,10 +416,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -426,8 +423,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -436,10 +435,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -447,9 +442,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -457,13 +454,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-10-1-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-10-1-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.10.1-alpine-3.15'
+      BASEVARIANT: v4.10.1-alpine-3.15
       VARIANT: v4.10.1-docker-rootless-alpine-3.15
     steps:
     - name: Checkout
@@ -539,10 +536,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -550,8 +543,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -561,10 +556,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -572,8 +563,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -582,10 +575,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -593,9 +582,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -603,13 +594,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-10-1-docker-rootless-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-10-1-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-10-1-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.10.1-alpine-3.15'
+      BASEVARIANT: v4.10.1-docker-rootless-alpine-3.15
       VARIANT: v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.15
     steps:
     - name: Checkout
@@ -685,10 +676,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -696,8 +683,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -707,10 +696,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -718,8 +703,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -728,10 +715,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.10.1-docker-rootless-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -739,9 +722,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -749,7 +734,7 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-9-1-alpine-3-15:
     needs: [test-nogitdiff]
@@ -838,8 +823,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -856,8 +844,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -873,9 +864,12 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -883,13 +877,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-9-1-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-9-1-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.9.1-alpine-3.15'
+      BASEVARIANT: v4.9.1-alpine-3.15
       VARIANT: v4.9.1-docker-alpine-3.15
     steps:
     - name: Checkout
@@ -965,10 +959,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -976,8 +966,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -987,10 +979,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -998,8 +986,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -1008,10 +998,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1019,9 +1005,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -1029,13 +1017,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-9-1-docker-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-9-1-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-9-1-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.9.1-alpine-3.15'
+      BASEVARIANT: v4.9.1-docker-alpine-3.15
       VARIANT: v4.9.1-docker-pwsh-7.2.8-alpine-3.15
     steps:
     - name: Checkout
@@ -1111,10 +1099,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1122,8 +1106,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -1133,10 +1119,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1144,8 +1126,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -1154,10 +1138,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1165,9 +1145,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -1175,13 +1157,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-9-1-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-9-1-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.9.1-alpine-3.15'
+      BASEVARIANT: v4.9.1-alpine-3.15
       VARIANT: v4.9.1-docker-rootless-alpine-3.15
     steps:
     - name: Checkout
@@ -1257,10 +1239,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1268,8 +1246,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -1279,10 +1259,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1290,8 +1266,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -1300,10 +1278,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1311,9 +1285,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -1321,13 +1297,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-9-1-docker-rootless-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-9-1-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-9-1-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.9.1-alpine-3.15'
+      BASEVARIANT: v4.9.1-docker-rootless-alpine-3.15
       VARIANT: v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.15
     steps:
     - name: Checkout
@@ -1403,10 +1379,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1414,8 +1386,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -1425,10 +1399,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1436,8 +1406,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -1446,10 +1418,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.9.1-docker-rootless-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1457,9 +1425,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -1467,7 +1437,7 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-alpine-3-15:
     needs: [test-nogitdiff]
@@ -1556,8 +1526,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -1574,8 +1547,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -1591,9 +1567,12 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -1601,13 +1580,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-alpine-3.15
       VARIANT: v4.8.3-docker-alpine-3.15
     steps:
     - name: Checkout
@@ -1683,10 +1662,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1694,8 +1669,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -1705,10 +1682,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1716,8 +1689,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -1726,10 +1701,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1737,9 +1708,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -1747,13 +1720,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-go-1-17-13-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-alpine-3.15
       VARIANT: v4.8.3-docker-go-1.17.13-alpine-3.15
     steps:
     - name: Checkout
@@ -1829,10 +1802,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.17.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1840,8 +1809,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -1851,10 +1822,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.17.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1862,8 +1829,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -1872,10 +1841,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.17.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1883,9 +1848,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -1893,13 +1860,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-go-1-18-10-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-alpine-3.15
       VARIANT: v4.8.3-docker-go-1.18.10-alpine-3.15
     steps:
     - name: Checkout
@@ -1975,10 +1942,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.18.10-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -1986,8 +1949,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -1997,10 +1962,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.18.10-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2008,8 +1969,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -2018,10 +1981,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.18.10-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2029,9 +1988,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -2039,13 +2000,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-go-1-19-7-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-alpine-3.15
       VARIANT: v4.8.3-docker-go-1.19.7-alpine-3.15
     steps:
     - name: Checkout
@@ -2121,10 +2082,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.19.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2132,8 +2089,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -2143,10 +2102,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.19.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2154,8 +2109,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -2164,10 +2121,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.19.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2175,9 +2128,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -2185,13 +2140,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-go-1-20-2-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-alpine-3.15
       VARIANT: v4.8.3-docker-go-1.20.2-alpine-3.15
     steps:
     - name: Checkout
@@ -2267,10 +2222,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.20.2-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2278,8 +2229,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -2289,10 +2242,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.20.2-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2300,8 +2249,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -2310,10 +2261,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-go-1.20.2-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2321,9 +2268,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -2331,13 +2280,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-alpine-3.15
       VARIANT: v4.8.3-docker-pwsh-7.3.1-alpine-3.15
     steps:
     - name: Checkout
@@ -2413,10 +2362,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2424,8 +2369,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -2435,10 +2382,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2446,8 +2389,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -2456,10 +2401,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.3.1-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2467,9 +2408,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -2477,13 +2420,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-alpine-3.15
       VARIANT: v4.8.3-docker-pwsh-7.2.8-alpine-3.15
     steps:
     - name: Checkout
@@ -2559,10 +2502,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2570,8 +2509,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -2581,10 +2522,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2592,8 +2529,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -2602,10 +2541,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2613,9 +2548,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -2623,13 +2560,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-alpine-3.15
       VARIANT: v4.8.3-docker-pwsh-7.1.7-alpine-3.15
     steps:
     - name: Checkout
@@ -2705,10 +2642,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2716,8 +2649,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -2727,10 +2662,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2738,8 +2669,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -2748,10 +2681,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.1.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2759,9 +2688,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -2769,13 +2700,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-alpine-3.15
       VARIANT: v4.8.3-docker-pwsh-7.0.13-alpine-3.15
     steps:
     - name: Checkout
@@ -2851,10 +2782,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2862,8 +2789,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -2873,10 +2802,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2884,8 +2809,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -2894,10 +2821,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-pwsh-7.0.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -2905,9 +2828,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -2915,13 +2840,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-alpine-3.15
       VARIANT: v4.8.3-docker-rootless-alpine-3.15
     steps:
     - name: Checkout
@@ -2997,10 +2922,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3008,8 +2929,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -3019,10 +2942,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3030,8 +2949,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -3040,10 +2961,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3051,9 +2968,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -3061,13 +2980,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-go-1-17-13-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-rootless-alpine-3.15
       VARIANT: v4.8.3-docker-rootless-go-1.17.13-alpine-3.15
     steps:
     - name: Checkout
@@ -3143,10 +3062,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.17.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3154,8 +3069,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -3165,10 +3082,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.17.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3176,8 +3089,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -3186,10 +3101,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.17.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3197,9 +3108,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -3207,13 +3120,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-go-1-18-10-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-rootless-alpine-3.15
       VARIANT: v4.8.3-docker-rootless-go-1.18.10-alpine-3.15
     steps:
     - name: Checkout
@@ -3289,10 +3202,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.18.10-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3300,8 +3209,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -3311,10 +3222,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.18.10-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3322,8 +3229,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -3332,10 +3241,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.18.10-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3343,9 +3248,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -3353,13 +3260,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-go-1-19-7-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-rootless-alpine-3.15
       VARIANT: v4.8.3-docker-rootless-go-1.19.7-alpine-3.15
     steps:
     - name: Checkout
@@ -3435,10 +3342,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.19.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3446,8 +3349,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -3457,10 +3362,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.19.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3468,8 +3369,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -3478,10 +3381,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.19.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3489,9 +3388,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -3499,13 +3400,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-go-1-20-2-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-rootless-alpine-3.15
       VARIANT: v4.8.3-docker-rootless-go-1.20.2-alpine-3.15
     steps:
     - name: Checkout
@@ -3581,10 +3482,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.20.2-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3592,8 +3489,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -3603,10 +3502,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.20.2-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3614,8 +3509,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -3624,10 +3521,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-go-1.20.2-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3635,9 +3528,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -3645,13 +3540,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-rootless-alpine-3.15
       VARIANT: v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15
     steps:
     - name: Checkout
@@ -3727,10 +3622,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3738,8 +3629,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -3749,10 +3642,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3760,8 +3649,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -3770,10 +3661,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.3.1-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3781,9 +3668,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -3791,13 +3680,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-rootless-alpine-3.15
       VARIANT: v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15
     steps:
     - name: Checkout
@@ -3873,10 +3762,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3884,8 +3769,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -3895,10 +3782,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3906,8 +3789,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -3916,10 +3801,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.2.8-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -3927,9 +3808,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -3937,13 +3820,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-rootless-alpine-3.15
       VARIANT: v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15
     steps:
     - name: Checkout
@@ -4019,10 +3902,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4030,8 +3909,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -4041,10 +3922,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4052,8 +3929,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -4062,10 +3941,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.1.7-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4073,9 +3948,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -4083,13 +3960,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15:
-    needs: [test-nogitdiff, build-v4-8-3-alpine-3-15]
+    needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.8.3-alpine-3.15'
+      BASEVARIANT: v4.8.3-docker-rootless-alpine-3.15
       VARIANT: v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15
     steps:
     - name: Checkout
@@ -4165,10 +4042,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4176,8 +4049,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -4187,10 +4062,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4198,8 +4069,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -4208,10 +4081,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.8.3-docker-rootless-pwsh-7.0.13-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4219,9 +4088,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -4229,7 +4100,7 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-7-1-alpine-3-15:
     needs: [test-nogitdiff]
@@ -4318,8 +4189,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -4336,8 +4210,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -4353,9 +4230,12 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -4363,13 +4243,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-7-1-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-7-1-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.7.1-alpine-3.15'
+      BASEVARIANT: v4.7.1-alpine-3.15
       VARIANT: v4.7.1-docker-alpine-3.15
     steps:
     - name: Checkout
@@ -4445,10 +4325,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.7.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4456,8 +4332,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -4467,10 +4345,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.7.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4478,8 +4352,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -4488,10 +4364,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.7.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4499,9 +4371,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -4509,13 +4383,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-7-1-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-7-1-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.7.1-alpine-3.15'
+      BASEVARIANT: v4.7.1-alpine-3.15
       VARIANT: v4.7.1-docker-rootless-alpine-3.15
     steps:
     - name: Checkout
@@ -4591,10 +4465,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.7.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4602,8 +4472,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -4613,10 +4485,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.7.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4624,8 +4492,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -4634,10 +4504,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.7.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4645,9 +4511,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -4655,7 +4523,7 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-6-1-alpine-3-15:
     needs: [test-nogitdiff]
@@ -4744,8 +4612,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -4762,8 +4633,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -4779,9 +4653,12 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          type=local,src=/tmp/.buildx-cache
+        cache-to: |
+          type=local,dest=/tmp/.buildx-cache-new,mode=max
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -4789,13 +4666,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-6-1-docker-alpine-3-15:
     needs: [test-nogitdiff, build-v4-6-1-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.6.1-alpine-3.15'
+      BASEVARIANT: v4.6.1-alpine-3.15
       VARIANT: v4.6.1-docker-alpine-3.15
     steps:
     - name: Checkout
@@ -4871,10 +4748,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.6.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4882,8 +4755,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -4893,10 +4768,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.6.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4904,8 +4775,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -4914,10 +4787,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.6.1-docker-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -4925,9 +4794,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -4935,13 +4806,13 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   build-v4-6-1-docker-rootless-alpine-3-15:
     needs: [test-nogitdiff, build-v4-6-1-alpine-3-15]
     runs-on: ubuntu-latest
     env:
-      BASEVARIANT: 'v4.6.1-alpine-3.15'
+      BASEVARIANT: v4.6.1-alpine-3.15
       VARIANT: v4.6.1-docker-rootless-alpine-3.15
     steps:
     - name: Checkout
@@ -5017,10 +4888,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.6.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -5028,8 +4895,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (master)
       # Run only on master
@@ -5039,10 +4908,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.6.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -5050,8 +4915,10 @@ jobs:
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     - name: Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
@@ -5060,10 +4927,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         context: variants/v4.6.1-docker-rootless-alpine-3.15
-        build-args: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        labels: |
-          BASE_IMAGE=${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
         platforms: linux/amd64
         push: true
         tags: |
@@ -5071,9 +4934,11 @@ jobs:
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
         secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        cache-from: |
+          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+        cache-to: |
+          type=inline
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
@@ -5081,7 +4946,7 @@ jobs:
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        mv -v /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
   update-draft-release:
     needs: [build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-pwsh-7-2-8-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-10-1-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-pwsh-7-2-8-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-9-1-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-go-1-17-13-alpine-3-15, build-v4-8-3-docker-go-1-18-10-alpine-3-15, build-v4-8-3-docker-go-1-19-7-alpine-3-15, build-v4-8-3-docker-go-1-20-2-alpine-3-15, build-v4-8-3-docker-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-pwsh-7-0-13-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-go-1-17-13-alpine-3-15, build-v4-8-3-docker-rootless-go-1-18-10-alpine-3-15, build-v4-8-3-docker-rootless-go-1-19-7-alpine-3-15, build-v4-8-3-docker-rootless-go-1-20-2-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-3-1-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-2-8-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-1-7-alpine-3-15, build-v4-8-3-docker-rootless-pwsh-7-0-13-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]

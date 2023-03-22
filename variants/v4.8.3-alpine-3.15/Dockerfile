@@ -1,6 +1,4 @@
 # syntax=docker/dockerfile:1
-# The syntax=docker/dockerfile:1 line above is needed for passing secrets to the build
-
 FROM alpine:3.15
 ARG TARGETPLATFORM
 ARG TARGETOS

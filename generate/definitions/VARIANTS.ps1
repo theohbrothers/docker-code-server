@@ -95,16 +95,22 @@ $VARIANTS = @(
                 _metadata = @{
                     package = $variant['package']
                     package_version = $variant['package_version']
-                    package_version_semver = "v$( $variant['package_version'] )" -replace '-r\d+', ''   # E.g. Strip out the '-r' in '2.3.0.0-r1'
                     distro = $variant['distro']
                     distro_version = $variant['distro_version']
-                    base_tag = if (!$subVariant['components']) {
-                        # Base
-                        ''
-                    }else {
-                        # Incremental
+                    base_tag = if ($subVariant['components'].Count -eq 0) {
+                        '' # Base image has no base
+                    }elseif ($subVariant['components'].Count -eq 1) {
+                        # 1st incremental should point to base
                         @(
-                            "v$( $variant['package_version'] )" -replace '-r\d+', ''    # E.g. Strip out the '-r' in '2.3.0.0-r1'
+                            "v$( $variant['package_version'] )"
+                            $variant['distro']
+                            $variant['distro_version']
+                        ) -join '-'
+                    }else {
+                        # 2nd or greater incremental should point to prior incremental
+                        @(
+                            "v$( $variant['package_version'] )"
+                            $subVariant['components'][0..($subVariant['components'].Count - 2)]
                             $variant['distro']
                             $variant['distro_version']
                         ) -join '-'
@@ -112,9 +118,9 @@ $VARIANTS = @(
                     platforms = 'linux/amd64'
                     components = $subVariant['components']
                 }
-                # Docker image tag. E.g. 'v2.3.0.0-alpine-3.6'
+                # Docker image tag. E.g. 'v2.3.0-alpine-3.6'
                 tag = @(
-                        "v$( $variant['package_version'] )" -replace '-r\d+', ''    # E.g. Strip out the '-r' in '2.3.0.0-r1'
+                        "v$( $variant['package_version'] )"
                         $subVariant['components'] | ? { $_ }
                         $variant['distro']
                         $variant['distro_version']
