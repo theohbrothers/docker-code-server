@@ -126,10 +126,11 @@ $VARIANTS | % {
 
 "@
 if ($_['_metadata']['base_tag']) {
-# Incremental - use base image as cache
+# Incremental - use base image and my most image on master as cache
 @'
         cache-from: |
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
           type=inline
 
@@ -164,10 +165,11 @@ if ($_['_metadata']['base_tag']) {
 
 "@
 if ($_['_metadata']['base_tag']) {
-# Incremental - use base image as cache
+# Incremental - use base image and my most image on master as cache
 @'
         cache-from: |
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
           type=inline
 
@@ -211,10 +213,11 @@ if ( $_['tag_as_latest'] ) {
 
 "@
 if ($_['_metadata']['base_tag']) {
-# Incremental - use base image as cache
+# Incremental - use base image and my most image on master as cache
 @'
         cache-from: |
           ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
+          ${{ github.repository }}:master-${{ env.VARIANT }}
         cache-to: |
           type=inline
 
