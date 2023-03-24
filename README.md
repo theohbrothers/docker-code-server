@@ -103,8 +103,9 @@ docker buildx build ...
 docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.11.0-docker-rootless-alpine-3.15
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
+```
 
-To disable password authentication, use `--auth=none`:
+To start code-server without password authentication, use `--auth=none`:
 
 ```sh
 docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.11.0-docker-rootless-alpine-3.15 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
