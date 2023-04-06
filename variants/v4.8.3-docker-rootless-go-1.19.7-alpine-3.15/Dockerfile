@@ -8,7 +8,7 @@ ARG BUILDPLATFORM
 ARG BUILDOS
 ARG BUILDARCH
 ARG BUILDVARIANT
-RUN set -ex; \
+RUN set -eu; \
     echo "TARGETPLATFORM="; \
     echo "TARGETOS="; \
     echo "TARGETARCH="; \
