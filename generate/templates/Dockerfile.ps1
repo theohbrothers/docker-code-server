@@ -303,7 +303,7 @@ RUN set -eux; \
 
 "@
 
-$DOCKER_BUILDX_VERSION = 'v0.9.1'
+$DOCKER_BUILDX_VERSION = 'v0.10.4'
 $checksums = $global:CACHE['docker-buildx-checksums'] = if (!$global:CACHE.Contains('docker-buildx-checksums')) {
     [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/checksums.txt).Content )
 }else {
@@ -315,32 +315,32 @@ USER root
 RUN set -eux; \
     case "`$( uname -m )" in \
         'x86_64')  \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-amd64' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-amd64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-amd64$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-amd64$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
             ;; \
         'armhf')  \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v6' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v6' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v6$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v6$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
             ;; \
         'armv7') \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v7' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v7' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v7$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v7$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
             ;; \
         'aarch64') \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm64' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm64$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm64$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
             ;; \
         'ppc64le') \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
             ;; \
         'riscv64') \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
             ;; \
         's390x') \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-s390x' } | % { $_ -split '\s' } | Select-Object -Last 1 ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-s390x' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
+            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-s390x$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
+            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-s390x$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
             ;; \
         *) \
             echo "Architecture not supported"; \
