@@ -280,32 +280,32 @@ USER root
 RUN set -eux; \
     case "$( uname -m )" in \
         'x86_64')  \
-            URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-amd64; \
-            SHA256=a7fb95177792ca8ffc7243fad7bf2f33738b8b999a184b6201f002a63c43d136; \
+            URL=https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-amd64; \
+            SHA256=dbe68cdc537d0150fc83e3f30974cd0ca11c179dafbf27f32d6f063be26e869b; \
             ;; \
         'armhf')  \
-            URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-arm-v6; \
-            SHA256=159925b4e679eb66e7f0312c7d57a97e68a418c1fa602a00dd8b29b6406768f0; \
+            URL=https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-arm-v6; \
+            SHA256=d50aa01a22a53e5a0eae9918274c9931b813b5336c0e30061a6b1904efb0c5eb; \
             ;; \
         'armv7') \
-            URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-arm-v7; \
-            SHA256=ba8e5359ce9ba24fec6da07f73591c1b20ac0797a2248b0ef8088f57ae3340fc; \
+            URL=https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-arm-v7; \
+            SHA256=aabc8cef5b9221ecbcb0af9846004a30591540be8668504d70814efe870448c8; \
             ;; \
         'aarch64') \
-            URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-arm64; \
-            SHA256=bbf6a76bf9aef9c5759ff225b97ce23a24fc11e4fa3cdcae36e5dcf1de2cffc5; \
+            URL=https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-arm64; \
+            SHA256=e8f666134cf4aa83ec2b1b6afef0c83b1ea1387984d7a40ae6657b7da4d82d91; \
             ;; \
         'ppc64le') \
-            URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-ppc64le; \
-            SHA256=1b2441886e556c720c1bf12f18f240113cc45f9eb404c0f162166ca1c96c1b60; \
+            URL=https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-ppc64le; \
+            SHA256=d107178f36e6c83286f3f9316e2f66b18f08306570cef209cb5840c880bd91ae; \
             ;; \
         'riscv64') \
-            URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-riscv64; \
-            SHA256=c32372dad653fc70eb756b2cffd026e74425e807c01accaeed4559da881ff57c; \
+            URL=https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-riscv64; \
+            SHA256=393db8518aeb442d0ca5f3ccf4800622dfc5eb8993c29bbfccb023cbfde6cdbc; \
             ;; \
         's390x') \
-            URL=https://github.com/docker/buildx/releases/download/v0.9.1/buildx-v0.9.1.linux-s390x; \
-            SHA256=90b0ecf315d741888920dddeac9fe2e141123c4fe79465b7b10fe23521c9c366; \
+            URL=https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-s390x; \
+            SHA256=16ce9071c14293640e9bcd547ff01578c65cfc68fc6c154091abd81daaf10929; \
             ;; \
         *) \
             echo "Architecture not supported"; \
