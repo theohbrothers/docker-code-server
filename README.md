@@ -10,6 +10,9 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 
 | Tag | Dockerfile Build Context |
 |:-------:|:---------:|
+| `:v4.12.0-alpine-3.15`, `:latest` | [View](variants/v4.12.0-alpine-3.15) |
+| `:v4.12.0-docker-alpine-3.15` | [View](variants/v4.12.0-docker-alpine-3.15) |
+| `:v4.12.0-docker-rootless-alpine-3.15` | [View](variants/v4.12.0-docker-rootless-alpine-3.15) |
 | `:v4.11.0-alpine-3.15`, `:latest` | [View](variants/v4.11.0-alpine-3.15) |
 | `:v4.11.0-docker-alpine-3.15` | [View](variants/v4.11.0-docker-alpine-3.15) |
 | `:v4.11.0-docker-rootless-alpine-3.15` | [View](variants/v4.11.0-docker-rootless-alpine-3.15) |
@@ -37,9 +40,9 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 | `:v4.6.1-docker-alpine-3.15` | [View](variants/v4.6.1-docker-alpine-3.15) |
 | `:v4.6.1-docker-rootless-alpine-3.15` | [View](variants/v4.6.1-docker-rootless-alpine-3.15) |
 
-Base variants include `npm 8` and `nodejs 16` to run `code-server`, `pwsh`, and basic tools. E.g. `v4.11.0-alpine-3.15`.
+Base variants include `npm 8` and `nodejs 16` to run `code-server`, `pwsh`, and basic tools. E.g. `v4.12.0-alpine-3.15`.
 
-Incremental variants include additional tools and their `code` extensions. E.g. `v4.11.0-docker-alpine-3.15`:
+Incremental variants include additional tools and their `code` extensions. E.g. `v4.12.0-docker-alpine-3.15`:
 
 - `docker`: [docker](https://docs.docker.com/engine/)
 - `docker-rootless`: [Rootless docker](https://docs.docker.com/engine/security/rootless/)
@@ -50,7 +53,7 @@ Incremental variants include additional tools and their `code` extensions. E.g. 
 ### Base variant(s)
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.11.0-alpine-3.15
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.12.0-alpine-3.15 v4.11.0-alpine-3.15
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file: --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
@@ -58,13 +61,13 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 To disable password authentication, use `--auth=none`:
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.11.0-alpine-3.15 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.12.0-alpine-3.15 v4.11.0-alpine-3.15 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 ```
 
 ### `docker` variant(s)
 
 ```sh
-docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.11.0-docker-alpine-3.15
+docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.12.0-docker-alpine-3.15
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
@@ -72,7 +75,7 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 To disable password authentication, use `--auth=none`:
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.11.0-docker-alpine-3.15 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.12.0-docker-alpine-3.15 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 ```
 
 #### docker buildx
@@ -100,7 +103,7 @@ docker buildx build ...
 ### `docker-rootless` variant(s)
 
 ```sh
-docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.11.0-docker-rootless-alpine-3.15
+docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.12.0-docker-rootless-alpine-3.15
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
@@ -108,7 +111,7 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 To start code-server without password authentication, use `--auth=none`:
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.11.0-docker-rootless-alpine-3.15 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.12.0-docker-rootless-alpine-3.15 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 ```
 
 To build multi-arch images using `docker buildx`, see [here](#docker-buildx).
