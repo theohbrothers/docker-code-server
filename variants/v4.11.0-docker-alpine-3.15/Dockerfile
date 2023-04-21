@@ -187,19 +187,23 @@ VOLUME /var/lib/docker
 USER root
 RUN apk add --no-cache docker-compose
 
-# Install docker compose v2. See: https://github.com/docker/compose/releases/
-USER root
+# Install docker-compose
 RUN set -eux; \
+    DOCKER_COMPOSE_VERSION=v2.15.1; \
     case "$( uname -m )" in \
-        'x86_64')  \
+        'x86') \
             URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-x86_64; \
             SHA256=bcfd9ea51dee4c19dccdfaeef0e7956ef68bf14f3d175933742061a7271ef0f5; \
             ;; \
-        'armhf')  \
+        'x86_64') \
+            URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-x86_64; \
+            SHA256=bcfd9ea51dee4c19dccdfaeef0e7956ef68bf14f3d175933742061a7271ef0f5; \
+            ;; \
+        'armhf') \
             URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-armv6; \
             SHA256=a8934600100af88f535eb50b45c7d8d2ac37835221803ba2910e0b167b3af22e; \
             ;; \
-        'armv7') \
+        'armv7l') \
             URL=https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-armv7; \
             SHA256=e5b03ac1258ad4243af0ac4afcb1c6cc8c9956b2483a50309cdb38cdb8387e37; \
             ;; \
@@ -224,26 +228,28 @@ RUN set -eux; \
             exit 1; \
             ;; \
     esac; \
-    wget -qO- "$URL" > docker-compose \
-    && sha256sum docker-compose | grep "^$SHA256 " \
-    && mkdir -pv /usr/libexec/docker/cli-plugins \
-    && mv -v docker-compose /usr/libexec/docker/cli-plugins/docker-compose \
-    && chmod +x /usr/libexec/docker/cli-plugins/docker-compose \
-    && docker compose version
+    FILE=docker-compose; \
+    wget -q "$URL" -O "$FILE"; \
+    echo "$SHA256  $FILE" | sha256sum -c -; \
+    mkdir -pv /usr/libexec/docker/cli-plugins; \
+    mv -v docker-compose /usr/libexec/docker/cli-plugins/docker-compose; \
+    chmod +x /usr/libexec/docker/cli-plugins/docker-compose; \
+    docker compose version; \
+    :
 
-# Install docker buildx plugin. See: https://github.com/docker/buildx
-USER root
+# Install docker-buildx
 RUN set -eux; \
+    DOCKER_BUILDX_VERSION=v0.10.4; \
     case "$( uname -m )" in \
-        'x86_64')  \
+        'x86_64') \
             URL=https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-amd64; \
             SHA256=dbe68cdc537d0150fc83e3f30974cd0ca11c179dafbf27f32d6f063be26e869b; \
             ;; \
-        'armhf')  \
+        'armhf') \
             URL=https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-arm-v6; \
             SHA256=d50aa01a22a53e5a0eae9918274c9931b813b5336c0e30061a6b1904efb0c5eb; \
             ;; \
-        'armv7') \
+        'armv7l') \
             URL=https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-arm-v7; \
             SHA256=aabc8cef5b9221ecbcb0af9846004a30591540be8668504d70814efe870448c8; \
             ;; \
@@ -268,12 +274,14 @@ RUN set -eux; \
             exit 1; \
             ;; \
     esac; \
-    wget -qO- "$URL" > docker-buildx \
-    && sha256sum docker-buildx | grep "^$SHA256 " \
-    && mkdir -pv /usr/libexec/docker/cli-plugins \
-    && mv -v docker-buildx /usr/libexec/docker/cli-plugins/docker-buildx \
-    && chmod +x /usr/libexec/docker/cli-plugins/docker-buildx \
-    && docker buildx version
+    FILE=docker-buildx; \
+    wget -q "$URL" -O "$FILE"; \
+    echo "$SHA256  $FILE" | sha256sum -c -; \
+    mkdir -pv /usr/libexec/docker/cli-plugins; \
+    mv -v docker-buildx /usr/libexec/docker/cli-plugins/docker-buildx; \
+    chmod +x /usr/libexec/docker/cli-plugins/docker-buildx; \
+    docker buildx version; \
+    :
 
 # Install binary tool(s)
 RUN set -eux; \

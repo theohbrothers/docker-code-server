@@ -1,3 +1,169 @@
+# Global cache for checksums
+function global:Set-Checksums($k, $url) {
+    $global:CHECKSUMS = if (Get-Variable -Scope Global -Name CHECKSUMS -ErrorAction SilentlyContinue) { $global:CHECKSUMS } else { @{} }
+    $global:CHECKSUMS[$k] = if ($global:CHECKSUMS[$k]) { $global:CHECKSUMS[$k] } else { [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest $url).Content ) -split "`n" }
+}
+function global:Get-ChecksumsFile ($k, $keyword) {
+    $file = $global:CHECKSUMS[$k] | ? { $_ -match $keyword } | % { $_ -split "\s" } | Select-Object -Last 1 | % { $_.TrimStart('*') }
+    if ($file) {
+        $file
+    }else {
+        "No file among $k checksums matching regex: $keyword" | Write-Warning
+    }
+}
+function global:Get-ChecksumsSha ($k, $keyword) {
+    $sha = $global:CHECKSUMS[$k] | ? { $_ -match $keyword } | % { $_ -split "\s" } | Select-Object -First 1
+    if ($sha) {
+        $sha
+    }else {
+        "No sha among $k checksums matching regex: $keyword" | Write-Warning
+    }
+}
+
+# Global functions
+function global:Generate-DownloadBinary ($o) {
+    Set-StrictMode -Version Latest
+
+    $releaseUrl = "https://$( $o['project'] )/releases/download/$( $o['version'] )"
+    $checksumsUrl = "$releaseUrl/$( $o['checksums'] )"
+    Set-Checksums $o['binary'] $checksumsUrl
+
+    $shellVariable = "$( $o['binary'].ToUpper() -replace '[^A-Za-z0-9_]', '_' )_VERSION"
+@"
+# Install $( $o['binary'] )
+RUN set -eux; \
+    $shellVariable=$( $o['version'] ); \
+    case "`$( uname -m )" in \
+
+"@
+
+    $o['architectures'] = if ($o.Contains('architectures')) { $o['architectures'] } else { 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x' }
+    foreach ($a in ($o['architectures'] -split ',') ) {
+        $split = $a -split '/'
+        $os = $split[0]
+        $arch = $split[1]
+        $archv = if ($split.Count -gt 2) { $split[2] } else { '' }
+        switch ($a) {
+            "$os/386" {
+                $hardware = 'x86'
+                $regex = "$os[-_](i?$arch|x86(_64)?)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
+            }
+            "$os/amd64" {
+                $hardware = 'x86_64'
+                $regex = "$os[-_]($arch|x86(_64)?)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
+            }
+            "$os/arm/v6" {
+                $hardware = 'armhf'
+                $regex = "$os[-_]($arch|arm)[-_]?($archv)?$( [regex]::Escape($o['archiveformat']) )$"
+            }
+            "$os/arm/v7" {
+                $hardware = 'armv7l'
+                $regex = "$os[-_]($arch|arm)[-_]?($archv)?$( [regex]::Escape($o['archiveformat']) )$"
+            }
+            "$os/arm64" {
+                $hardware = 'aarch64'
+                $regex = "$os[-_]($arch|aarch64)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
+            }
+            "$os/ppc64le" {
+                $hardware = 'ppc64le'
+                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
+            }
+            "$os/riscv64" {
+                $hardware = 'riscv64'
+                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
+            }
+            "$os/s390x" {
+                $hardware = 's390x'
+                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
+            }
+            default {
+                throw "Unsupported architecture: $a"
+            }
+        }
+
+        $file = Get-ChecksumsFile $o['binary'] $regex
+        if ($file) {
+            $sha = Get-ChecksumsSha $o['binary'] $regex
+@"
+        '$hardware') \
+            URL=$releaseUrl/$file; \
+            SHA256=$sha; \
+            ;; \
+
+"@
+        }
+    }
+
+@"
+        *) \
+            echo "Architecture not supported"; \
+            exit 1; \
+            ;; \
+    esac; \
+
+"@
+
+@"
+    FILE=$( $o['binary'] )$( $o['archiveformat'] ); \
+    wget -q "`$URL" -O "`$FILE"; \
+    echo "`$SHA256  `$FILE" | sha256sum -c -; \
+
+"@
+
+
+    if ($o['archiveformat'] -match '\.tar\.gz|\.tgz') {
+        if ($o['archivefiles'].Count -gt 0) {
+@"
+    tar -xvf "`$FILE" --no-same-owner --no-same-permissions -- $( $o['archivefiles'] -join ' ' ); \
+    rm -f "`$FILE"; \
+
+"@
+        }else {
+@"
+    tar -xvf "`$FILE" --no-same-owner --no-same-permissions; \
+    rm -f "`$FILE"; \
+
+"@
+        }
+    }elseif ($o['archiveformat'] -match '\.bz2') {
+@"
+    bzip2 -d "`$FILE"; \
+
+"@
+    }elseif ($o['archiveformat'] -match '\.gz') {
+@"
+    gzip -d "`$FILE"; \
+
+"@
+    }
+
+    $destination = if ($o.Contains('destination')) { $o['destination'] } else { "/usr/local/bin/$( $o['binary'] )" }
+    $destinationDir = Split-Path $destination -Parent
+@"
+    mkdir -pv $destinationDir; \
+    mv -v $( $o['binary'] ) $destination; \
+    chmod +x $destination; \
+    $( $o['testCommand'] ); \
+
+"@
+
+    if ($o.Contains('archivefiles')) {
+        if ($license = $o['archivefiles'] | ? { $_ -match 'LICENSE' }) {
+@"
+    mkdir -p /licenses; \
+    mv -v $license /licenses/$license; \
+
+"@
+        }
+    }
+
+@"
+    :
+
+
+"@
+}
+
 @"
 # syntax=docker/dockerfile:1
 FROM $( $VARIANT['_metadata']['distro'] ):$( $VARIANT['_metadata']['distro_version'] )
@@ -249,111 +415,27 @@ RUN apk add --no-cache docker-compose
 
 "@
 
-$DOCKER_COMPOSE_VERSION = 'v2.15.1'
-$checksums = $global:CACHE['docker-compose-checksums'] = if (!$global:CACHE.Contains('docker-compose-checksums')) {
-    [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/checksums.txt).Content )
-}else {
-    $global:CACHE['docker-compose-checksums']
-}
+        Generate-DownloadBinary @{
+            project = 'github.com/docker/compose'
+            version = 'v2.15.1'
+            binary = 'docker-compose'
+            archiveformat = ''
+            checksums = 'checksums.txt'
+            destination = '/usr/libexec/docker/cli-plugins/docker-compose'
+            testCommand = 'docker compose version'
+        }
+
+        Generate-DownloadBinary @{
+            project = 'github.com/docker/buildx'
+            version = 'v0.10.4'
+            binary = 'docker-buildx'
+            archiveformat = ''
+            checksums = 'checksums.txt'
+            destination = '/usr/libexec/docker/cli-plugins/docker-buildx'
+            testCommand = 'docker buildx version'
+        }
+
 @"
-# Install docker compose v2. See: https://github.com/docker/compose/releases/
-USER root
-RUN set -eux; \
-    case "`$( uname -m )" in \
-        'x86_64')  \
-            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-x86_64' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-x86_64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        'armhf')  \
-            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-armv6' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-armv6' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        'armv7') \
-            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-armv7' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-armv7' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        'aarch64') \
-            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-aarch64' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-aarch64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        'ppc64le') \
-            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        'riscv64') \
-            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        's390x') \
-            URL=https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-s390x' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-s390x' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        *) \
-            echo "Architecture not supported"; \
-            exit 1; \
-            ;; \
-    esac; \
-    wget -qO- "`$URL" > docker-compose \
-    && sha256sum docker-compose | grep "^`$SHA256 " \
-    && mkdir -pv /usr/libexec/docker/cli-plugins \
-    && mv -v docker-compose /usr/libexec/docker/cli-plugins/docker-compose \
-    && chmod +x /usr/libexec/docker/cli-plugins/docker-compose \
-    && docker compose version
-
-
-"@
-
-$DOCKER_BUILDX_VERSION = 'v0.10.4'
-$checksums = $global:CACHE['docker-buildx-checksums'] = if (!$global:CACHE.Contains('docker-buildx-checksums')) {
-    [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/checksums.txt).Content )
-}else {
-    $global:CACHE['docker-buildx-checksums']
-}
-@"
-# Install docker buildx plugin. See: https://github.com/docker/buildx
-USER root
-RUN set -eux; \
-    case "`$( uname -m )" in \
-        'x86_64')  \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-amd64$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-amd64$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        'armhf')  \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v6$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v6$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        'armv7') \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v7$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm-v7$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        'aarch64') \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-arm64$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-arm64$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        'ppc64le') \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-ppc64le$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        'riscv64') \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-riscv64$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        's390x') \
-            URL=https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/$( $checksums -split "`n" | ? { $_ -match 'linux-s390x$' } | % { $_ -split '\s' } | Select-Object -Last 1 | % { $_.TrimStart('*') } ); \
-            SHA256=$( $checksums -split "`n" | ? { $_ -match 'linux-s390x$' } | % { $_ -split '\s' } | Select-Object -First 1 ); \
-            ;; \
-        *) \
-            echo "Architecture not supported"; \
-            exit 1; \
-            ;; \
-    esac; \
-    wget -qO- "`$URL" > docker-buildx \
-    && sha256sum docker-buildx | grep "^`$SHA256 " \
-    && mkdir -pv /usr/libexec/docker/cli-plugins \
-    && mv -v docker-buildx /usr/libexec/docker/cli-plugins/docker-buildx \
-    && chmod +x /usr/libexec/docker/cli-plugins/docker-buildx \
-    && docker buildx version
-
 # Install binary tool(s)
 RUN set -eux; \
     wget https://github.com/GoogleContainerTools/container-diff/releases/download/v0.17.0/container-diff-linux-amd64 -O container-diff; \
