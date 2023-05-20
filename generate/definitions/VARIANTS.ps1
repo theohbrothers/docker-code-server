@@ -146,11 +146,7 @@ $VARIANTS = @(
                         $variant['distro']
                         $variant['distro_version']
                 ) -join '-'
-                tag_as_latest = if ( $subVariant.Contains('tag_as_latest') ) {
-                    $subVariant['tag_as_latest']
-                } else {
-                    $false
-                }
+                tag_as_latest = if ($variant['package_version'] -eq $local:VARIANTS_MATRIX[0]['package_version'] -and $subVariant['components'].Count -eq 0) { $true } else { $false }
             }
         }
     }

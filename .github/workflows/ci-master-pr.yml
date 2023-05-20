@@ -148,6 +148,7 @@ jobs:
           ${{ github.repository }}:${{ env.VARIANT }}
           ${{ github.repository }}:${{ env.REF_VARIANT }}
           ${{ github.repository }}:${{ env.REF_SHA_VARIANT }}
+          ${{ github.repository }}:latest
         secrets: |
           "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         cache-from: |
