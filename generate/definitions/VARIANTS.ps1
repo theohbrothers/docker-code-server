@@ -82,8 +82,8 @@ $local:VARIANTS_MATRIX = @(
             @{ components = @( 'docker-rootless' ) } # Incremental
             @{ components = @( 'docker-rootless', 'go-1.17.13' ) } # Incremental
             @{ components = @( 'docker-rootless', 'go-1.18.10' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'go-1.19.7' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'go-1.20.2' ) } # Incremental
+            @{ components = @( 'docker-rootless', 'go-1.19.10' ) } # Incremental
+            @{ components = @( 'docker-rootless', 'go-1.20.5' ) } # Incremental
         )
     }
     @{
