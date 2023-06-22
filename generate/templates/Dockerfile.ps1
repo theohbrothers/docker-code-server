@@ -417,7 +417,7 @@ RUN apk add --no-cache docker-compose
 
         Generate-DownloadBinary @{
             project = 'github.com/docker/compose'
-            version = 'v2.15.1'
+            version = 'v2.17.3'
             binary = 'docker-compose'
             archiveformat = ''
             checksums = 'checksums.txt'
