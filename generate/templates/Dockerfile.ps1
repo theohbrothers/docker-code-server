@@ -427,7 +427,7 @@ RUN apk add --no-cache docker-compose
 
         Generate-DownloadBinary @{
             project = 'github.com/docker/buildx'
-            version = 'v0.10.4'
+            version = 'v0.11.0'
             binary = 'docker-buildx'
             archiveformat = ''
             checksums = 'checksums.txt'
