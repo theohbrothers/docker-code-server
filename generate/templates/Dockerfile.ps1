@@ -1,7 +1,11 @@
 # Global cache for checksums
 function global:Set-Checksums($k, $url) {
     $global:CHECKSUMS = if (Get-Variable -Scope Global -Name CHECKSUMS -ErrorAction SilentlyContinue) { $global:CHECKSUMS } else { @{} }
-    $global:CHECKSUMS[$k] = if ($global:CHECKSUMS[$k]) { $global:CHECKSUMS[$k] } else { [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest $url).Content ) -split "`n" }
+    $global:CHECKSUMS[$k] = if ($global:CHECKSUMS[$k]) { $global:CHECKSUMS[$k] } else {
+        $r = Invoke-WebRequest $url
+        $c = if ($r.headers['Content-Type'] -eq 'text/plain') { $r.Content } else { [System.Text.Encoding]::UTF8.GetString($r.Content) }
+        $c -split "`n"
+    }
 }
 function global:Get-ChecksumsFile ($k, $keyword) {
     $file = $global:CHECKSUMS[$k] | ? { $_ -match $keyword } | % { $_ -split "\s" } | Select-Object -Last 1 | % { $_.TrimStart('*') }
@@ -24,9 +28,7 @@ function global:Get-ChecksumsSha ($k, $keyword) {
 function global:Generate-DownloadBinary ($o) {
     Set-StrictMode -Version Latest
 
-    $releaseUrl = "https://$( $o['project'] )/releases/download/$( $o['version'] )"
-    $checksumsUrl = "$releaseUrl/$( $o['checksums'] )"
-    Set-Checksums $o['binary'] $checksumsUrl
+    Set-Checksums "$( $o['binary'] )-$( $o['version'] )" $o['checksumsUrl']
 
     $shellVariable = "$( $o['binary'].ToUpper() -replace '[^A-Za-z0-9_]', '_' )_VERSION"
 @"
@@ -81,12 +83,12 @@ RUN set -eux; \
             }
         }
 
-        $file = Get-ChecksumsFile $o['binary'] $regex
+        $file = Get-ChecksumsFile "$( $o['binary'] )-$( $o['version'] )" $regex
         if ($file) {
-            $sha = Get-ChecksumsSha $o['binary'] $regex
+            $sha = Get-ChecksumsSha "$( $o['binary'] )-$( $o['version'] )" $regex
 @"
         '$hardware') \
-            URL=$releaseUrl/$file; \
+            URL=$( Split-Path $o['checksumsUrl'] -Parent )/$file; \
             SHA256=$sha; \
             ;; \
 
@@ -110,7 +112,6 @@ RUN set -eux; \
 
 "@
 
-
     if ($o['archiveformat'] -match '\.tar\.gz|\.tgz') {
         if ($o['archivefiles'].Count -gt 0) {
 @"
@@ -133,6 +134,11 @@ RUN set -eux; \
     }elseif ($o['archiveformat'] -match '\.gz') {
 @"
     gzip -d "`$FILE"; \
+
+"@
+    }elseif ($o['archiveformat'] -match '\.zip') {
+@"
+    unzip "`$FILE" $( $o['binary'] ); \
 
 "@
     }
@@ -415,22 +421,22 @@ RUN apk add --no-cache docker-compose
 
 "@
 
+        $DOCKER_COMPOSE_VERSION = 'v2.17.3'
         Generate-DownloadBinary @{
-            project = 'github.com/docker/compose'
-            version = 'v2.17.3'
             binary = 'docker-compose'
+            version = $DOCKER_COMPOSE_VERSION
+            checksumsUrl = "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/checksums.txt"
             archiveformat = ''
-            checksums = 'checksums.txt'
             destination = '/usr/libexec/docker/cli-plugins/docker-compose'
             testCommand = 'docker compose version'
         }
 
+        $DOCKER_BUILDX_VERSION = 'v0.11.0'
         Generate-DownloadBinary @{
-            project = 'github.com/docker/buildx'
-            version = 'v0.11.0'
             binary = 'docker-buildx'
+            version = $DOCKER_BUILDX_VERSION
             archiveformat = ''
-            checksums = 'checksums.txt'
+            checksumsUrl = "https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/checksums.txt"
             destination = '/usr/libexec/docker/cli-plugins/docker-buildx'
             testCommand = 'docker buildx version'
         }
