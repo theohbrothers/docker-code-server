@@ -52,9 +52,9 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 | `:v4.6.1-docker-alpine-3.15` | [View](variants/v4.6.1-docker-alpine-3.15) |
 | `:v4.6.1-docker-rootless-alpine-3.15` | [View](variants/v4.6.1-docker-rootless-alpine-3.15) |
 
-Base variants include `npm 8` and `nodejs 16` to run `code-server`, `pwsh`, and basic tools. E.g. `v4.16.0-alpine-3.15`.
+Base variants include `npm 8` and `nodejs 16` (to run `code-server`), `pwsh`, and basic tools. E.g. `v4.16.0-alpine-3.15`
 
-Incremental variants include additional tools and their `code` extensions. E.g. `v4.16.0-docker-alpine-3.15`:
+Incremental variants include additional tools and their `code` extensions:
 
 - `docker`: [docker](https://docs.docker.com/engine/)
 - `docker-rootless`: [Rootless docker](https://docs.docker.com/engine/security/rootless/)
