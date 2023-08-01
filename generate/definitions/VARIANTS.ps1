@@ -2,7 +2,7 @@
 $local:VARIANTS_MATRIX = @(
     @{
         package = 'code-server'
-        package_version = '4.16.0'
+        package_version = '4.16.1'
         distro = 'alpine'
         distro_version = '3.15'
         subvariants = @(
