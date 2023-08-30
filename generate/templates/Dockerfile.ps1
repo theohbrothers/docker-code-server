@@ -204,7 +204,7 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
     && apk del `$DEPS
 
 # Install tools
-RUN apk add --no-cache bash bash-completion ca-certificates curl gnupg git git-lfs iotop jq less lsblk make nano openssh-client openssl p7zip rsync tree yq
+RUN apk add --no-cache bash bash-completion ca-certificates curl gnupg git git-lfs github-cli iotop jq less lsblk make nano openssh-client openssl p7zip rsync tree yq
 
 # Install pwsh
 # See: https://learn.microsoft.com/en-us/powershell/scripting/install/install-alpine?view=powershell-7.3
