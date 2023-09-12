@@ -45,19 +45,9 @@ try {
     $env:GITHUB_TOKEN = if ($env:GITHUB_TOKEN) { $env:GITHUB_TOKEN } else { (Get-Content ~/.git-credentials -Encoding utf8 -Force) -split "`n" | % { if ($_ -match '^https://[^:]+:([^:]+)@github.com') { $matches[1] } } | Select-Object -First 1 }
 
     # Get my versions from generate/definitions/versions.json
-    $versions = Get-Content $PSScriptRoot/generate/definitions/versions.json -Encoding utf8 | ConvertFrom-Json -Depth 100
+    $versions = Get-Content $PSScriptRoot/generate/definitions/versions.json -Encoding utf8 | ConvertFrom-Json
     # Get new versions
-    $versionsNew = @(
-        & {
-            $uri = 'https://api.github.com/repos/coder/code-server/releases?per_page=100'
-            while ($uri) {
-                $res = Invoke-WebRequest $uri
-                $uri = $res.Headers.Link.Split(', ') | % { if ($_ -match '<([^>]+)>; rel="next"') { $matches[1] } }
-                $releases = $res.Content | ConvertFrom-Json
-                $releases | % { $_.tag_name } | ? { $_ -match '^v\d+\.\d+\.\d+$' } | % { $_ -replace '^v', '' }
-            }
-        }
-    )
+    $versionsNew = Invoke-WebRequest https://api.github.com/repos/coder/code-server/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', ''} | ? { $_ -match '^\d+\.\d+\.\d+$' } | Sort-Object { [version]$_ } -Descending
     # Get changed versions
     $versionsChanged = Get-VersionsChanged -Versions $versions -VersionsNew $versionsNew -AsObject -Descending
     # Update versions.json, and open PRs with CI disabled
