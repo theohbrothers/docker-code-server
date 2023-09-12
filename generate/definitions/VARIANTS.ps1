@@ -1,144 +1,35 @@
+$local:VERSIONS = Get-Content $PSScriptRoot/versions.json -Encoding utf8 | ConvertFrom-Json -Depth 100
+
 # Docker image variants' definitions
 $local:VARIANTS_MATRIX = @(
-    @{
-        package = 'code-server'
-        package_version = '4.16.1'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @() } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-        )
+    foreach ($v in $VERSIONS) {
+        @{
+            package = 'code-server'
+            package_version = $v
+            distro = 'alpine'
+            distro_version = '3.15'
+            subvariants = @(
+                if ($v -eq '4.8.3') {
+                    @{ components = @() } # Base
+                    @{ components = @( 'docker' ) } # Incremental
+                    # Invoke-RestMethod https://go.dev/dl/?mode=json&include=all
+                    @{ components = @( 'docker', 'go-1.17.13' ) } # Incremental
+                    @{ components = @( 'docker', 'go-1.18.10' ) } # Incremental
+                    @{ components = @( 'docker', 'go-1.19.7' ) } # Incremental
+                    @{ components = @( 'docker', 'go-1.20.2' ) } # Incremental
+                    @{ components = @( 'docker-rootless' ) } # Incremental
+                    @{ components = @( 'docker-rootless', 'go-1.17.13' ) } # Incremental
+                    @{ components = @( 'docker-rootless', 'go-1.18.10' ) } # Incremental
+                    @{ components = @( 'docker-rootless', 'go-1.19.10' ) } # Incremental
+                    @{ components = @( 'docker-rootless', 'go-1.20.5' ) } # Incremental
+                }else {
+                    @{ components = @() } # Base
+                    @{ components = @( 'docker' ) } # Incremental
+                    @{ components = @( 'docker-rootless' ) } # Incremental
+                }
+            )
+        }
     }
-    @{
-        package = 'code-server'
-        package_version = '4.15.0'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @() } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-        )
-    }
-    @{
-        package = 'code-server'
-        package_version = '4.14.1'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @() } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-        )
-    }
-    @{
-        package = 'code-server'
-        package_version = '4.13.0'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @() } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-        )
-    }
-    @{
-        package = 'code-server'
-        package_version = '4.12.0'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @() } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-        )
-    }
-    @{
-        package = 'code-server'
-        package_version = '4.11.0'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @() } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-        )
-    }
-    @{
-        package = 'code-server'
-        package_version = '4.10.1'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @() } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-        )
-    }
-    @{
-        package = 'code-server'
-        package_version = '4.9.1'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @(); } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-        )
-    }
-    @{
-        package = 'code-server'
-        package_version = '4.8.3'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @() } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            # Invoke-RestMethod https://go.dev/dl/?mode=json&include=all
-            @{ components = @( 'docker', 'go-1.17.13' ) } # Incremental
-            @{ components = @( 'docker', 'go-1.18.10' ) } # Incremental
-            @{ components = @( 'docker', 'go-1.19.7' ) } # Incremental
-            @{ components = @( 'docker', 'go-1.20.2' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'go-1.17.13' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'go-1.18.10' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'go-1.19.10' ) } # Incremental
-            @{ components = @( 'docker-rootless', 'go-1.20.5' ) } # Incremental
-        )
-    }
-    @{
-        package = 'code-server'
-        package_version = '4.7.1'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @() } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-        )
-    }
-    @{
-        package = 'code-server'
-        package_version = '4.6.1'
-        distro = 'alpine'
-        distro_version = '3.15'
-        subvariants = @(
-            @{ components = @() } # Base
-            @{ components = @( 'docker' ) } # Incremental
-            @{ components = @( 'docker-rootless' ) } # Incremental
-        )
-    }
-    # @{
-    #     package = 'code-server'
-    #     package_version = '3.12.0'
-    #     distro = 'alpine'
-    #     distro_version = '3.14'
-    #     subvariants = @(
-    #         @{ components = @() } # Base
-    #     )
-    # }
 )
 
 $VARIANTS = @(
