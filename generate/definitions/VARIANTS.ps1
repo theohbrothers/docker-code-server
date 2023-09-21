@@ -13,14 +13,8 @@ $local:VARIANTS_MATRIX = @(
                     @{ components = @() } # Base
                     @{ components = @( 'docker' ) } # Incremental
                     # Invoke-RestMethod https://go.dev/dl/?mode=json&include=all
-                    @{ components = @( 'docker', 'go-1.17.13' ) } # Incremental
-                    @{ components = @( 'docker', 'go-1.18.10' ) } # Incremental
-                    @{ components = @( 'docker', 'go-1.19.7' ) } # Incremental
                     @{ components = @( 'docker', 'go-1.20.2' ) } # Incremental
                     @{ components = @( 'docker-rootless' ) } # Incremental
-                    @{ components = @( 'docker-rootless', 'go-1.17.13' ) } # Incremental
-                    @{ components = @( 'docker-rootless', 'go-1.18.10' ) } # Incremental
-                    @{ components = @( 'docker-rootless', 'go-1.19.10' ) } # Incremental
                     @{ components = @( 'docker-rootless', 'go-1.20.5' ) } # Incremental
                 }else {
                     @{ components = @() } # Base
