@@ -3309,12 +3309,12 @@ jobs:
           type=inline
 
 
-  build-v4-8-3-docker-go-1-20-2-alpine-3-15:
+  build-v4-8-3-docker-go-1-20-8-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-docker-alpine-3-15]
     runs-on: ubuntu-latest
     env:
       BASEVARIANT: v4.8.3-docker-alpine-3.15
-      VARIANT: v4.8.3-docker-go-1.20.2-alpine-3.15
+      VARIANT: v4.8.3-docker-go-1.20.8-alpine-3.15
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -3379,7 +3379,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-go-1.20.2-alpine-3.15
+        context: variants/v4.8.3-docker-go-1.20.8-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -3400,7 +3400,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-go-1.20.2-alpine-3.15
+        context: variants/v4.8.3-docker-go-1.20.8-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -3420,7 +3420,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-go-1.20.2-alpine-3.15
+        context: variants/v4.8.3-docker-go-1.20.8-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -3563,12 +3563,12 @@ jobs:
           type=inline
 
 
-  build-v4-8-3-docker-rootless-go-1-20-5-alpine-3-15:
+  build-v4-8-3-docker-rootless-go-1-20-8-alpine-3-15:
     needs: [test-nogitdiff, build-v4-8-3-docker-rootless-alpine-3-15]
     runs-on: ubuntu-latest
     env:
       BASEVARIANT: v4.8.3-docker-rootless-alpine-3.15
-      VARIANT: v4.8.3-docker-rootless-go-1.20.5-alpine-3.15
+      VARIANT: v4.8.3-docker-rootless-go-1.20.8-alpine-3.15
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -3633,7 +3633,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-go-1.20.5-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-go-1.20.8-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -3654,7 +3654,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-go-1.20.5-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-go-1.20.8-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -3674,7 +3674,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        context: variants/v4.8.3-docker-rootless-go-1.20.5-alpine-3.15
+        context: variants/v4.8.3-docker-rootless-go-1.20.8-alpine-3.15
         platforms: linux/amd64
         push: true
         tags: |
@@ -4447,7 +4447,7 @@ jobs:
 
 
   update-draft-release:
-    needs: [build-v4-16-1-alpine-3-15, build-v4-16-1-docker-alpine-3-15, build-v4-16-1-docker-rootless-alpine-3-15, build-v4-15-0-alpine-3-15, build-v4-15-0-docker-alpine-3-15, build-v4-15-0-docker-rootless-alpine-3-15, build-v4-14-1-alpine-3-15, build-v4-14-1-docker-alpine-3-15, build-v4-14-1-docker-rootless-alpine-3-15, build-v4-13-0-alpine-3-15, build-v4-13-0-docker-alpine-3-15, build-v4-13-0-docker-rootless-alpine-3-15, build-v4-12-0-alpine-3-15, build-v4-12-0-docker-alpine-3-15, build-v4-12-0-docker-rootless-alpine-3-15, build-v4-11-0-alpine-3-15, build-v4-11-0-docker-alpine-3-15, build-v4-11-0-docker-rootless-alpine-3-15, build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-go-1-20-2-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-go-1-20-5-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
+    needs: [build-v4-16-1-alpine-3-15, build-v4-16-1-docker-alpine-3-15, build-v4-16-1-docker-rootless-alpine-3-15, build-v4-15-0-alpine-3-15, build-v4-15-0-docker-alpine-3-15, build-v4-15-0-docker-rootless-alpine-3-15, build-v4-14-1-alpine-3-15, build-v4-14-1-docker-alpine-3-15, build-v4-14-1-docker-rootless-alpine-3-15, build-v4-13-0-alpine-3-15, build-v4-13-0-docker-alpine-3-15, build-v4-13-0-docker-rootless-alpine-3-15, build-v4-12-0-alpine-3-15, build-v4-12-0-docker-alpine-3-15, build-v4-12-0-docker-rootless-alpine-3-15, build-v4-11-0-alpine-3-15, build-v4-11-0-docker-alpine-3-15, build-v4-11-0-docker-rootless-alpine-3-15, build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-go-1-20-8-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-go-1-20-8-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
@@ -4460,7 +4460,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-draft-release:
-    needs: [build-v4-16-1-alpine-3-15, build-v4-16-1-docker-alpine-3-15, build-v4-16-1-docker-rootless-alpine-3-15, build-v4-15-0-alpine-3-15, build-v4-15-0-docker-alpine-3-15, build-v4-15-0-docker-rootless-alpine-3-15, build-v4-14-1-alpine-3-15, build-v4-14-1-docker-alpine-3-15, build-v4-14-1-docker-rootless-alpine-3-15, build-v4-13-0-alpine-3-15, build-v4-13-0-docker-alpine-3-15, build-v4-13-0-docker-rootless-alpine-3-15, build-v4-12-0-alpine-3-15, build-v4-12-0-docker-alpine-3-15, build-v4-12-0-docker-rootless-alpine-3-15, build-v4-11-0-alpine-3-15, build-v4-11-0-docker-alpine-3-15, build-v4-11-0-docker-rootless-alpine-3-15, build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-go-1-20-2-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-go-1-20-5-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
+    needs: [build-v4-16-1-alpine-3-15, build-v4-16-1-docker-alpine-3-15, build-v4-16-1-docker-rootless-alpine-3-15, build-v4-15-0-alpine-3-15, build-v4-15-0-docker-alpine-3-15, build-v4-15-0-docker-rootless-alpine-3-15, build-v4-14-1-alpine-3-15, build-v4-14-1-docker-alpine-3-15, build-v4-14-1-docker-rootless-alpine-3-15, build-v4-13-0-alpine-3-15, build-v4-13-0-docker-alpine-3-15, build-v4-13-0-docker-rootless-alpine-3-15, build-v4-12-0-alpine-3-15, build-v4-12-0-docker-alpine-3-15, build-v4-12-0-docker-rootless-alpine-3-15, build-v4-11-0-alpine-3-15, build-v4-11-0-docker-alpine-3-15, build-v4-11-0-docker-rootless-alpine-3-15, build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-go-1-20-8-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-go-1-20-8-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -4475,7 +4475,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   update-dockerhub-description:
-    needs: [build-v4-16-1-alpine-3-15, build-v4-16-1-docker-alpine-3-15, build-v4-16-1-docker-rootless-alpine-3-15, build-v4-15-0-alpine-3-15, build-v4-15-0-docker-alpine-3-15, build-v4-15-0-docker-rootless-alpine-3-15, build-v4-14-1-alpine-3-15, build-v4-14-1-docker-alpine-3-15, build-v4-14-1-docker-rootless-alpine-3-15, build-v4-13-0-alpine-3-15, build-v4-13-0-docker-alpine-3-15, build-v4-13-0-docker-rootless-alpine-3-15, build-v4-12-0-alpine-3-15, build-v4-12-0-docker-alpine-3-15, build-v4-12-0-docker-rootless-alpine-3-15, build-v4-11-0-alpine-3-15, build-v4-11-0-docker-alpine-3-15, build-v4-11-0-docker-rootless-alpine-3-15, build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-go-1-20-2-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-go-1-20-5-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
+    needs: [build-v4-16-1-alpine-3-15, build-v4-16-1-docker-alpine-3-15, build-v4-16-1-docker-rootless-alpine-3-15, build-v4-15-0-alpine-3-15, build-v4-15-0-docker-alpine-3-15, build-v4-15-0-docker-rootless-alpine-3-15, build-v4-14-1-alpine-3-15, build-v4-14-1-docker-alpine-3-15, build-v4-14-1-docker-rootless-alpine-3-15, build-v4-13-0-alpine-3-15, build-v4-13-0-docker-alpine-3-15, build-v4-13-0-docker-rootless-alpine-3-15, build-v4-12-0-alpine-3-15, build-v4-12-0-docker-alpine-3-15, build-v4-12-0-docker-rootless-alpine-3-15, build-v4-11-0-alpine-3-15, build-v4-11-0-docker-alpine-3-15, build-v4-11-0-docker-rootless-alpine-3-15, build-v4-10-1-alpine-3-15, build-v4-10-1-docker-alpine-3-15, build-v4-10-1-docker-rootless-alpine-3-15, build-v4-9-1-alpine-3-15, build-v4-9-1-docker-alpine-3-15, build-v4-9-1-docker-rootless-alpine-3-15, build-v4-8-3-alpine-3-15, build-v4-8-3-docker-alpine-3-15, build-v4-8-3-docker-go-1-20-8-alpine-3-15, build-v4-8-3-docker-rootless-alpine-3-15, build-v4-8-3-docker-rootless-go-1-20-8-alpine-3-15, build-v4-7-1-alpine-3-15, build-v4-7-1-docker-alpine-3-15, build-v4-7-1-docker-rootless-alpine-3-15, build-v4-6-1-alpine-3-15, build-v4-6-1-docker-alpine-3-15, build-v4-6-1-docker-rootless-alpine-3-15]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
