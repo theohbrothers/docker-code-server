@@ -1,13 +1,19 @@
-[
-  "4.16.1",
-  "4.15.0",
-  "4.14.1",
-  "4.13.0",
-  "4.12.0",
-  "4.11.0",
-  "4.10.1",
-  "4.9.1",
-  "4.8.3",
-  "4.7.1",
-  "4.6.1"
-]
+{
+  "code-server": {
+    "versions": [
+      "4.16.1",
+      "4.15.0",
+      "4.14.1",
+      "4.13.0",
+      "4.12.0",
+      "4.11.0",
+      "4.10.1",
+      "4.9.1",
+      "4.8.3",
+      "4.7.1",
+      "4.6.1"
+    ],
+    "versionsChangeScope": "minor",
+    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/coder/code-server/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', ''} | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending"
+  }
+}
