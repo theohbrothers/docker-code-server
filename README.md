@@ -36,9 +36,9 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 | `:v4.9.1-docker-rootless-alpine-3.15` | [View](variants/v4.9.1-docker-rootless-alpine-3.15) |
 | `:v4.8.3-alpine-3.15` | [View](variants/v4.8.3-alpine-3.15) |
 | `:v4.8.3-docker-alpine-3.15` | [View](variants/v4.8.3-docker-alpine-3.15) |
-| `:v4.8.3-docker-go-1.20.2-alpine-3.15` | [View](variants/v4.8.3-docker-go-1.20.2-alpine-3.15) |
+| `:v4.8.3-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.8.3-docker-go-1.20.8-alpine-3.15) |
 | `:v4.8.3-docker-rootless-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-alpine-3.15) |
-| `:v4.8.3-docker-rootless-go-1.20.5-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-go-1.20.5-alpine-3.15) |
+| `:v4.8.3-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.7.1-alpine-3.15` | [View](variants/v4.7.1-alpine-3.15) |
 | `:v4.7.1-docker-alpine-3.15` | [View](variants/v4.7.1-docker-alpine-3.15) |
 | `:v4.7.1-docker-rootless-alpine-3.15` | [View](variants/v4.7.1-docker-rootless-alpine-3.15) |
