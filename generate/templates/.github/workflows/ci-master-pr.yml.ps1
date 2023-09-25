@@ -15,7 +15,7 @@ jobs:
   test-nogitdiff:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/powershell:7.2.2-alpine-3.14-20220318
+      image: mcr.microsoft.com/powershell:lts-7.2-alpine-3.17
     steps:
     - run: |
         apk add --no-cache git
@@ -35,20 +35,15 @@ jobs:
         git diff --exit-code
 '@
 
-$local:WORKFLOW_JOB_NAMES = $VARIANTS | % { "build-$( $_['tag'].Replace('.', '-') )" }
-$VARIANTS | % {
+# Group variants by the package version
+$groups = $VARIANTS | Group-Object -Property { $_['_metadata']['job_group_key'] } | Sort-Object { [version]$_.Name.Split('-')[0] } -Descending
+$WORKFLOW_JOB_NAMES = $groups | % { "build-$( $_.Name.Replace('.', '-') )" }
+foreach ($g in $groups) {
 @"
 
 
-  build-$( $_['tag'].Replace('.', '-') ):
-    needs: [test-nogitdiff$( if ($_['_metadata']['base_tag']) { ", build-$( $_['_metadata']['base_tag'] )".Replace('.', '-') } else {} )]
+  build-$( $g.Name.Replace('.', '-') ):
     runs-on: ubuntu-latest
-    env:
-      BASEVARIANT: $( if ($_['_metadata']['base_tag']) { $_['_metadata']['base_tag'] } else { "''" } )
-      VARIANT: $( $_['tag'] )
-"@
-@'
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -74,172 +69,125 @@ $VARIANTS | % {
       id: buildx
       uses: docker/setup-buildx-action@v2
 
+    - name: Cache Docker layers
+      uses: actions/cache@v3
+      with:
+        path: /tmp/.buildx-cache
+        key: `${{ runner.os }}-buildx-$( $g.Name )-`${{ github.sha }}
+        restore-keys: |
+          `${{ runner.os }}-buildx-$( $g.Name )-
+          `${{ runner.os }}-buildx-
+
+    - name: Login to Docker Hub registry
+      # Run on master and tags
+      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+      uses: docker/login-action@v2
+      with:
+        username: `${{ secrets.DOCKERHUB_REGISTRY_USER }}
+        password: `${{ secrets.DOCKERHUB_REGISTRY_PASSWORD }}
+
+
+"@
+
+foreach ($v in $g.Group) {
+@"
     # This step generates the docker tags
     - name: Prepare
-      id: prep
+      id: prep-$( $v['tag' ].Replace('.', '-') )
       run: |
         set -e
 
         # Get ref, i.e. <branch_name> from refs/heads/<branch_name>, or <tag-name> from refs/tags/<tag_name>. E.g. 'master' or 'v0.0.0'
-        REF=$( echo "${GITHUB_REF}" | rev | cut -d '/' -f 1 | rev )
+        REF=`$( echo "`${GITHUB_REF}" | rev | cut -d '/' -f 1 | rev )
 
         # Get short commit hash E.g. 'abc0123'
-        SHA=$( echo "${GITHUB_SHA}" | cut -c1-7 )
+        SHA=`$( echo "`${GITHUB_SHA}" | cut -c1-7 )
 
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        REF_SHA_BASEVARIANT="${REF}-${SHA}-${BASEVARIANT}"
-        REF_VARIANT="${REF}-${VARIANT}"
-        REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
+        VARIANT="$( $v['tag'] )"
+        REF_VARIANT="`${REF}-`${VARIANT}"
+        REF_SHA_VARIANT="`${REF}-`${SHA}-`${VARIANT}"
 
         # Pass variables to next step
-        echo "REF_SHA_BASEVARIANT=$REF_SHA_BASEVARIANT" >> $GITHUB_ENV
-        echo "VARIANT=$VARIANT" >> $GITHUB_ENV
-        echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_ENV
-        echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_ENV
+        echo "VARIANT_BUILD_DIR=`$VARIANT_BUILD_DIR" >> `$GITHUB_OUTPUT
+        echo "VARIANT=`$VARIANT" >> `$GITHUB_OUTPUT
+        echo "REF_VARIANT=`$REF_VARIANT" >> `$GITHUB_OUTPUT
+        echo "REF_SHA_VARIANT=`$REF_SHA_VARIANT" >> `$GITHUB_OUTPUT
 
-    - name: Login to Docker Hub registry
-      # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
-        password: ${{ secrets.DOCKERHUB_REGISTRY_PASSWORD }}
-
-
-'@
-@"
-    - name: Build (PRs)
+    - name: $( $v['tag' ] ) - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
-      env:
-        GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
-        context: $( $_['build_dir_rel'] )
-        platforms: $( $_['_metadata']['platforms'] -join ',' )
-        push: true
+        context: $( $v['build_dir_rel'] )
+        platforms: $( $v['_metadata']['platforms'] -join ',' )
+        push: false
         tags: |
-          `${{ github.repository }}:`${{ env.REF_VARIANT }}
-          `${{ github.repository }}:`${{ env.REF_SHA_VARIANT }}
-        secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
+          `${{ github.repository }}:`${{ steps.prep-$( $v['tag'].Replace('.', '-') ).outputs.REF_VARIANT }}
+          `${{ github.repository }}:`${{ steps.prep-$( $v['tag'].Replace('.', '-') ).outputs.REF_SHA_VARIANT }}
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-"@
-if ($_['_metadata']['base_tag']) {
-# Incremental: If most recent master image exists, use it as cache. If not, use base image (built in earlier [needs] job) as cache
-@'
-        cache-from: |
-          ${{ github.repository }}:master-${{ env.VARIANT }}
-          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        cache-to: |
-          type=inline
-
-'@
-}else {
-# Base: If master image exists, use it as cache. If not, build from scratch
-@'
-        cache-from: |
-          ${{ github.repository }}:master-${{ env.VARIANT }}
-        cache-to: |
-          type=inline
-
-'@
-}
-@"
-
-    - name: Build and push (master)
+    - name: $( $v['tag' ] ) - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
-      env:
-        GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
-        context: $( $_['build_dir_rel'] )
-        platforms: $( $_['_metadata']['platforms'] -join ',' )
+        context: $( $v['build_dir_rel'] )
+        platforms: $( $v['_metadata']['platforms'] -join ',' )
         push: true
         tags: |
-          `${{ github.repository }}:`${{ env.REF_VARIANT }}
-          `${{ github.repository }}:`${{ env.REF_SHA_VARIANT }}
-        secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
+          `${{ github.repository }}:`${{ steps.prep-$( $v['tag'].Replace('.', '-') ).outputs.REF_VARIANT }}
+          `${{ github.repository }}:`${{ steps.prep-$( $v['tag'].Replace('.', '-') ).outputs.REF_SHA_VARIANT }}
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-"@
-if ($_['_metadata']['base_tag']) {
-# Incremental: If most recent master image exists, use it as cache. If not, use base image (built in earlier [needs] job) as cache
-@'
-        cache-from: |
-          ${{ github.repository }}:master-${{ env.VARIANT }}
-          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        cache-to: |
-          type=inline
-
-'@
-}else {
-# Base: If master image exists, use it as cache. If not, build from scratch
-@'
-        cache-from: |
-          ${{ github.repository }}:master-${{ env.VARIANT }}
-        cache-to: |
-          type=inline
-
-'@
-}
-@"
-
-    - name: Build and push (release)
+    - name: $( $v['tag' ] ) - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
-      env:
-        GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
       with:
-        context: $( $_['build_dir_rel'] )
-        platforms: $( $_['_metadata']['platforms'] -join ',' )
+        context: $( $v['build_dir_rel'] )
+        platforms: $( $v['_metadata']['platforms'] -join ',' )
         push: true
         tags: |
-          `${{ github.repository }}:`${{ env.VARIANT }}
-          `${{ github.repository }}:`${{ env.REF_VARIANT }}
-          `${{ github.repository }}:`${{ env.REF_SHA_VARIANT }}
+          `${{ github.repository }}:`${{ steps.prep-$( $v['tag'].Replace('.', '-') ).outputs.VARIANT }}
+          `${{ github.repository }}:`${{ steps.prep-$( $v['tag'].Replace('.', '-') ).outputs.REF_VARIANT }}
+          `${{ github.repository }}:`${{ steps.prep-$( $v['tag'].Replace('.', '-') ).outputs.REF_SHA_VARIANT }}
 
 "@
-if ( $_['tag_as_latest'] ) {
+
+if ( $v['tag_as_latest'] ) {
 @'
           ${{ github.repository }}:latest
 
 '@
 }
-@"
-        secrets: |
-          "GITHUB_TOKEN=`${{ secrets.GITHUB_TOKEN }}"
-
-"@
-if ($_['_metadata']['base_tag']) {
-# Incremental: If most recent master image exists, use it as cache. If not, use base image (built in earlier [needs] job) as cache
 @'
-        cache-from: |
-          ${{ github.repository }}:master-${{ env.VARIANT }}
-          ${{ github.repository }}:${{ env.REF_SHA_BASEVARIANT }}
-        cache-to: |
-          type=inline
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-'@
-}else {
-# Base: If master image exists, use it as cache. If not, build from scratch
-@'
-        cache-from: |
-          ${{ github.repository }}:master-${{ env.VARIANT }}
-        cache-to: |
-          type=inline
 
 '@
 }
+@'
+    # Temp fix
+    # https://github.com/docker/build-push-action/issues/252
+    # https://github.com/moby/buildkit/issues/1896
+    - name: Move cache
+      run: |
+        rm -rf /tmp/.buildx-cache
+        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+'@
 }
 
 @"
 
 
   update-draft-release:
-    needs: [$( $local:WORKFLOW_JOB_NAMES -join ', ' )]
+    needs:
+      - $( $WORKFLOW_JOB_NAMES -join "`n      - " )
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
@@ -252,7 +200,8 @@ if ($_['_metadata']['base_tag']) {
           GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
 
   publish-draft-release:
-    needs: [$( $local:WORKFLOW_JOB_NAMES -join ', ' )]
+    needs:
+      - $( $WORKFLOW_JOB_NAMES -join "`n      - " )
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -267,7 +216,8 @@ if ($_['_metadata']['base_tag']) {
           GITHUB_TOKEN: `${{ secrets.GITHUB_TOKEN }}
 
   update-dockerhub-description:
-    needs: [$( $local:WORKFLOW_JOB_NAMES -join ', ' )]
+    needs:
+      - $( $WORKFLOW_JOB_NAMES -join "`n      - " )
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
