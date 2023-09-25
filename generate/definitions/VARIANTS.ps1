@@ -56,6 +56,7 @@ $VARIANTS = @(
                     }
                     platforms = 'linux/amd64'
                     components = $subVariant['components']
+                    job_group_key = $variant['package_version']
                 }
                 # Docker image tag. E.g. 'v2.3.0-alpine-3.6'
                 tag = @(
