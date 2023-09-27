@@ -33,24 +33,6 @@ $VARIANTS = @(
                     package_version = $variant['package_version']
                     distro = $variant['distro']
                     distro_version = $variant['distro_version']
-                    base_tag = if ($subVariant['components'].Count -eq 0) {
-                        '' # Base image has no base
-                    }elseif ($subVariant['components'].Count -eq 1) {
-                        # 1st incremental should point to base
-                        @(
-                            "v$( $variant['package_version'] )"
-                            $variant['distro']
-                            $variant['distro_version']
-                        ) -join '-'
-                    }else {
-                        # 2nd or greater incremental should point to prior incremental
-                        @(
-                            "v$( $variant['package_version'] )"
-                            $subVariant['components'][0..($subVariant['components'].Count - 2)]
-                            $variant['distro']
-                            $variant['distro_version']
-                        ) -join '-'
-                    }
                     platforms = 'linux/amd64'
                     components = $subVariant['components']
                     job_group_key = $variant['package_version']
