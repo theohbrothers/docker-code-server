@@ -9,21 +9,14 @@ $local:VARIANTS_MATRIX = @(
             distro = 'alpine'
             distro_version = '3.15'
             subvariants = @(
-                if ($v -eq '4.8.3') {
-                    @{ components = @() }
-                    @{ components = @( 'docker' ) }
-                    # Invoke-RestMethod https://go.dev/dl/?mode=json&include=all
-                    foreach ($v in $local:VERSIONS.go.versions) {
-                        @{ components = @( 'docker', "go-$v" ) }
-                    }
-                    @{ components = @( 'docker-rootless' ) }
-                    foreach ($v in $local:VERSIONS.go.versions) {
-                        @{ components = @( 'docker-rootless', "go-$v" ) }
-                    }
-                }else {
-                    @{ components = @() }
-                    @{ components = @( 'docker' ) }
-                    @{ components = @( 'docker-rootless' ) }
+                @{ components = @() }
+                @{ components = @( 'docker' ) }
+                foreach ($v in $local:VERSIONS.go.versions) {
+                    @{ components = @( 'docker', "go-$v" ) }
+                }
+                @{ components = @( 'docker-rootless' ) }
+                foreach ($v in $local:VERSIONS.go.versions) {
+                    @{ components = @( 'docker-rootless', "go-$v" ) }
                 }
             )
         }

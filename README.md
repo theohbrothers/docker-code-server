@@ -12,28 +12,44 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 |:-------:|:---------:|
 | `:v4.16.1-alpine-3.15`, `:latest` | [View](variants/v4.16.1-alpine-3.15) |
 | `:v4.16.1-docker-alpine-3.15` | [View](variants/v4.16.1-docker-alpine-3.15) |
+| `:v4.16.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.16.1-docker-go-1.20.8-alpine-3.15) |
 | `:v4.16.1-docker-rootless-alpine-3.15` | [View](variants/v4.16.1-docker-rootless-alpine-3.15) |
+| `:v4.16.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.16.1-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.15.0-alpine-3.15` | [View](variants/v4.15.0-alpine-3.15) |
 | `:v4.15.0-docker-alpine-3.15` | [View](variants/v4.15.0-docker-alpine-3.15) |
+| `:v4.15.0-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.15.0-docker-go-1.20.8-alpine-3.15) |
 | `:v4.15.0-docker-rootless-alpine-3.15` | [View](variants/v4.15.0-docker-rootless-alpine-3.15) |
+| `:v4.15.0-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.15.0-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.14.1-alpine-3.15` | [View](variants/v4.14.1-alpine-3.15) |
 | `:v4.14.1-docker-alpine-3.15` | [View](variants/v4.14.1-docker-alpine-3.15) |
+| `:v4.14.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.14.1-docker-go-1.20.8-alpine-3.15) |
 | `:v4.14.1-docker-rootless-alpine-3.15` | [View](variants/v4.14.1-docker-rootless-alpine-3.15) |
+| `:v4.14.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.14.1-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.13.0-alpine-3.15` | [View](variants/v4.13.0-alpine-3.15) |
 | `:v4.13.0-docker-alpine-3.15` | [View](variants/v4.13.0-docker-alpine-3.15) |
+| `:v4.13.0-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.13.0-docker-go-1.20.8-alpine-3.15) |
 | `:v4.13.0-docker-rootless-alpine-3.15` | [View](variants/v4.13.0-docker-rootless-alpine-3.15) |
+| `:v4.13.0-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.13.0-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.12.0-alpine-3.15` | [View](variants/v4.12.0-alpine-3.15) |
 | `:v4.12.0-docker-alpine-3.15` | [View](variants/v4.12.0-docker-alpine-3.15) |
+| `:v4.12.0-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.12.0-docker-go-1.20.8-alpine-3.15) |
 | `:v4.12.0-docker-rootless-alpine-3.15` | [View](variants/v4.12.0-docker-rootless-alpine-3.15) |
+| `:v4.12.0-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.12.0-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.11.0-alpine-3.15` | [View](variants/v4.11.0-alpine-3.15) |
 | `:v4.11.0-docker-alpine-3.15` | [View](variants/v4.11.0-docker-alpine-3.15) |
+| `:v4.11.0-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.11.0-docker-go-1.20.8-alpine-3.15) |
 | `:v4.11.0-docker-rootless-alpine-3.15` | [View](variants/v4.11.0-docker-rootless-alpine-3.15) |
+| `:v4.11.0-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.11.0-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.10.1-alpine-3.15` | [View](variants/v4.10.1-alpine-3.15) |
 | `:v4.10.1-docker-alpine-3.15` | [View](variants/v4.10.1-docker-alpine-3.15) |
+| `:v4.10.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.10.1-docker-go-1.20.8-alpine-3.15) |
 | `:v4.10.1-docker-rootless-alpine-3.15` | [View](variants/v4.10.1-docker-rootless-alpine-3.15) |
+| `:v4.10.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.10.1-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.9.1-alpine-3.15` | [View](variants/v4.9.1-alpine-3.15) |
 | `:v4.9.1-docker-alpine-3.15` | [View](variants/v4.9.1-docker-alpine-3.15) |
+| `:v4.9.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.9.1-docker-go-1.20.8-alpine-3.15) |
 | `:v4.9.1-docker-rootless-alpine-3.15` | [View](variants/v4.9.1-docker-rootless-alpine-3.15) |
+| `:v4.9.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.9.1-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.8.3-alpine-3.15` | [View](variants/v4.8.3-alpine-3.15) |
 | `:v4.8.3-docker-alpine-3.15` | [View](variants/v4.8.3-docker-alpine-3.15) |
 | `:v4.8.3-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.8.3-docker-go-1.20.8-alpine-3.15) |
@@ -41,10 +57,14 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 | `:v4.8.3-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.7.1-alpine-3.15` | [View](variants/v4.7.1-alpine-3.15) |
 | `:v4.7.1-docker-alpine-3.15` | [View](variants/v4.7.1-docker-alpine-3.15) |
+| `:v4.7.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.7.1-docker-go-1.20.8-alpine-3.15) |
 | `:v4.7.1-docker-rootless-alpine-3.15` | [View](variants/v4.7.1-docker-rootless-alpine-3.15) |
+| `:v4.7.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.7.1-docker-rootless-go-1.20.8-alpine-3.15) |
 | `:v4.6.1-alpine-3.15` | [View](variants/v4.6.1-alpine-3.15) |
 | `:v4.6.1-docker-alpine-3.15` | [View](variants/v4.6.1-docker-alpine-3.15) |
+| `:v4.6.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.6.1-docker-go-1.20.8-alpine-3.15) |
 | `:v4.6.1-docker-rootless-alpine-3.15` | [View](variants/v4.6.1-docker-rootless-alpine-3.15) |
+| `:v4.6.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.6.1-docker-rootless-go-1.20.8-alpine-3.15) |
 
 Base variants include `npm 8` and `nodejs 16` (to run `code-server`), `pwsh`, and basic tools. E.g. `v4.16.1-alpine-3.15`
 
