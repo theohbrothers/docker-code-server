@@ -26,7 +26,7 @@ $(
     }
 }) -join ''
 )
-Base variants include ``npm 8`` and ``nodejs 16`` (to run ``code-server``), ``pwsh``, and basic tools. E.g. ``$( $VARIANTS | ? { $_['tag_as_latest'] } | Select-Object -First 1 | Select-Object -ExpandProperty tag )``
+Base variants are based on ``alpine``, and include ``npm 8`` and ``nodejs 16`` (to run ``code-server``), ``pwsh``, and basic tools. E.g. ``$( $VARIANTS | ? { $_['tag_as_latest'] } | Select-Object -First 1 | Select-Object -ExpandProperty tag )``
 
 Incremental variants include additional tools and their ``code`` extensions:
 
