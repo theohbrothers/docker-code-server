@@ -39,7 +39,7 @@ $VARIANTS = @(
                 }
                 # Docker image tag. E.g. 'v2.17.0[-component..]'
                 tag = @(
-                        "v$( $variant['package_version'] )"
+                        $variant['package_version']
                         $subVariant['components'] | ? { $_ }
                 ) -join '-'
                 tag_as_latest = if ($variant['package_version'] -eq $local:VARIANTS_MATRIX[0]['package_version'] -and $subVariant['components'].Count -eq 0) { $true } else { $false }
