@@ -10,63 +10,63 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 
 | Tag | Dockerfile Build Context |
 |:-------:|:---------:|
-| `:v4.16.1-alpine-3.15`, `:latest` | [View](variants/v4.16.1-alpine-3.15) |
-| `:v4.16.1-docker-alpine-3.15` | [View](variants/v4.16.1-docker-alpine-3.15) |
-| `:v4.16.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.16.1-docker-go-1.20.8-alpine-3.15) |
-| `:v4.16.1-docker-rootless-alpine-3.15` | [View](variants/v4.16.1-docker-rootless-alpine-3.15) |
-| `:v4.16.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.16.1-docker-rootless-go-1.20.8-alpine-3.15) |
-| `:v4.15.0-alpine-3.15` | [View](variants/v4.15.0-alpine-3.15) |
-| `:v4.15.0-docker-alpine-3.15` | [View](variants/v4.15.0-docker-alpine-3.15) |
-| `:v4.15.0-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.15.0-docker-go-1.20.8-alpine-3.15) |
-| `:v4.15.0-docker-rootless-alpine-3.15` | [View](variants/v4.15.0-docker-rootless-alpine-3.15) |
-| `:v4.15.0-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.15.0-docker-rootless-go-1.20.8-alpine-3.15) |
-| `:v4.14.1-alpine-3.15` | [View](variants/v4.14.1-alpine-3.15) |
-| `:v4.14.1-docker-alpine-3.15` | [View](variants/v4.14.1-docker-alpine-3.15) |
-| `:v4.14.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.14.1-docker-go-1.20.8-alpine-3.15) |
-| `:v4.14.1-docker-rootless-alpine-3.15` | [View](variants/v4.14.1-docker-rootless-alpine-3.15) |
-| `:v4.14.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.14.1-docker-rootless-go-1.20.8-alpine-3.15) |
-| `:v4.13.0-alpine-3.15` | [View](variants/v4.13.0-alpine-3.15) |
-| `:v4.13.0-docker-alpine-3.15` | [View](variants/v4.13.0-docker-alpine-3.15) |
-| `:v4.13.0-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.13.0-docker-go-1.20.8-alpine-3.15) |
-| `:v4.13.0-docker-rootless-alpine-3.15` | [View](variants/v4.13.0-docker-rootless-alpine-3.15) |
-| `:v4.13.0-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.13.0-docker-rootless-go-1.20.8-alpine-3.15) |
-| `:v4.12.0-alpine-3.15` | [View](variants/v4.12.0-alpine-3.15) |
-| `:v4.12.0-docker-alpine-3.15` | [View](variants/v4.12.0-docker-alpine-3.15) |
-| `:v4.12.0-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.12.0-docker-go-1.20.8-alpine-3.15) |
-| `:v4.12.0-docker-rootless-alpine-3.15` | [View](variants/v4.12.0-docker-rootless-alpine-3.15) |
-| `:v4.12.0-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.12.0-docker-rootless-go-1.20.8-alpine-3.15) |
-| `:v4.11.0-alpine-3.15` | [View](variants/v4.11.0-alpine-3.15) |
-| `:v4.11.0-docker-alpine-3.15` | [View](variants/v4.11.0-docker-alpine-3.15) |
-| `:v4.11.0-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.11.0-docker-go-1.20.8-alpine-3.15) |
-| `:v4.11.0-docker-rootless-alpine-3.15` | [View](variants/v4.11.0-docker-rootless-alpine-3.15) |
-| `:v4.11.0-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.11.0-docker-rootless-go-1.20.8-alpine-3.15) |
-| `:v4.10.1-alpine-3.15` | [View](variants/v4.10.1-alpine-3.15) |
-| `:v4.10.1-docker-alpine-3.15` | [View](variants/v4.10.1-docker-alpine-3.15) |
-| `:v4.10.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.10.1-docker-go-1.20.8-alpine-3.15) |
-| `:v4.10.1-docker-rootless-alpine-3.15` | [View](variants/v4.10.1-docker-rootless-alpine-3.15) |
-| `:v4.10.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.10.1-docker-rootless-go-1.20.8-alpine-3.15) |
-| `:v4.9.1-alpine-3.15` | [View](variants/v4.9.1-alpine-3.15) |
-| `:v4.9.1-docker-alpine-3.15` | [View](variants/v4.9.1-docker-alpine-3.15) |
-| `:v4.9.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.9.1-docker-go-1.20.8-alpine-3.15) |
-| `:v4.9.1-docker-rootless-alpine-3.15` | [View](variants/v4.9.1-docker-rootless-alpine-3.15) |
-| `:v4.9.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.9.1-docker-rootless-go-1.20.8-alpine-3.15) |
-| `:v4.8.3-alpine-3.15` | [View](variants/v4.8.3-alpine-3.15) |
-| `:v4.8.3-docker-alpine-3.15` | [View](variants/v4.8.3-docker-alpine-3.15) |
-| `:v4.8.3-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.8.3-docker-go-1.20.8-alpine-3.15) |
-| `:v4.8.3-docker-rootless-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-alpine-3.15) |
-| `:v4.8.3-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.8.3-docker-rootless-go-1.20.8-alpine-3.15) |
-| `:v4.7.1-alpine-3.15` | [View](variants/v4.7.1-alpine-3.15) |
-| `:v4.7.1-docker-alpine-3.15` | [View](variants/v4.7.1-docker-alpine-3.15) |
-| `:v4.7.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.7.1-docker-go-1.20.8-alpine-3.15) |
-| `:v4.7.1-docker-rootless-alpine-3.15` | [View](variants/v4.7.1-docker-rootless-alpine-3.15) |
-| `:v4.7.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.7.1-docker-rootless-go-1.20.8-alpine-3.15) |
-| `:v4.6.1-alpine-3.15` | [View](variants/v4.6.1-alpine-3.15) |
-| `:v4.6.1-docker-alpine-3.15` | [View](variants/v4.6.1-docker-alpine-3.15) |
-| `:v4.6.1-docker-go-1.20.8-alpine-3.15` | [View](variants/v4.6.1-docker-go-1.20.8-alpine-3.15) |
-| `:v4.6.1-docker-rootless-alpine-3.15` | [View](variants/v4.6.1-docker-rootless-alpine-3.15) |
-| `:v4.6.1-docker-rootless-go-1.20.8-alpine-3.15` | [View](variants/v4.6.1-docker-rootless-go-1.20.8-alpine-3.15) |
+| `:v4.16.1`, `:latest` | [View](variants/v4.16.1) |
+| `:v4.16.1-docker` | [View](variants/v4.16.1-docker) |
+| `:v4.16.1-docker-go-1.20.8` | [View](variants/v4.16.1-docker-go-1.20.8) |
+| `:v4.16.1-docker-rootless` | [View](variants/v4.16.1-docker-rootless) |
+| `:v4.16.1-docker-rootless-go-1.20.8` | [View](variants/v4.16.1-docker-rootless-go-1.20.8) |
+| `:v4.15.0` | [View](variants/v4.15.0) |
+| `:v4.15.0-docker` | [View](variants/v4.15.0-docker) |
+| `:v4.15.0-docker-go-1.20.8` | [View](variants/v4.15.0-docker-go-1.20.8) |
+| `:v4.15.0-docker-rootless` | [View](variants/v4.15.0-docker-rootless) |
+| `:v4.15.0-docker-rootless-go-1.20.8` | [View](variants/v4.15.0-docker-rootless-go-1.20.8) |
+| `:v4.14.1` | [View](variants/v4.14.1) |
+| `:v4.14.1-docker` | [View](variants/v4.14.1-docker) |
+| `:v4.14.1-docker-go-1.20.8` | [View](variants/v4.14.1-docker-go-1.20.8) |
+| `:v4.14.1-docker-rootless` | [View](variants/v4.14.1-docker-rootless) |
+| `:v4.14.1-docker-rootless-go-1.20.8` | [View](variants/v4.14.1-docker-rootless-go-1.20.8) |
+| `:v4.13.0` | [View](variants/v4.13.0) |
+| `:v4.13.0-docker` | [View](variants/v4.13.0-docker) |
+| `:v4.13.0-docker-go-1.20.8` | [View](variants/v4.13.0-docker-go-1.20.8) |
+| `:v4.13.0-docker-rootless` | [View](variants/v4.13.0-docker-rootless) |
+| `:v4.13.0-docker-rootless-go-1.20.8` | [View](variants/v4.13.0-docker-rootless-go-1.20.8) |
+| `:v4.12.0` | [View](variants/v4.12.0) |
+| `:v4.12.0-docker` | [View](variants/v4.12.0-docker) |
+| `:v4.12.0-docker-go-1.20.8` | [View](variants/v4.12.0-docker-go-1.20.8) |
+| `:v4.12.0-docker-rootless` | [View](variants/v4.12.0-docker-rootless) |
+| `:v4.12.0-docker-rootless-go-1.20.8` | [View](variants/v4.12.0-docker-rootless-go-1.20.8) |
+| `:v4.11.0` | [View](variants/v4.11.0) |
+| `:v4.11.0-docker` | [View](variants/v4.11.0-docker) |
+| `:v4.11.0-docker-go-1.20.8` | [View](variants/v4.11.0-docker-go-1.20.8) |
+| `:v4.11.0-docker-rootless` | [View](variants/v4.11.0-docker-rootless) |
+| `:v4.11.0-docker-rootless-go-1.20.8` | [View](variants/v4.11.0-docker-rootless-go-1.20.8) |
+| `:v4.10.1` | [View](variants/v4.10.1) |
+| `:v4.10.1-docker` | [View](variants/v4.10.1-docker) |
+| `:v4.10.1-docker-go-1.20.8` | [View](variants/v4.10.1-docker-go-1.20.8) |
+| `:v4.10.1-docker-rootless` | [View](variants/v4.10.1-docker-rootless) |
+| `:v4.10.1-docker-rootless-go-1.20.8` | [View](variants/v4.10.1-docker-rootless-go-1.20.8) |
+| `:v4.9.1` | [View](variants/v4.9.1) |
+| `:v4.9.1-docker` | [View](variants/v4.9.1-docker) |
+| `:v4.9.1-docker-go-1.20.8` | [View](variants/v4.9.1-docker-go-1.20.8) |
+| `:v4.9.1-docker-rootless` | [View](variants/v4.9.1-docker-rootless) |
+| `:v4.9.1-docker-rootless-go-1.20.8` | [View](variants/v4.9.1-docker-rootless-go-1.20.8) |
+| `:v4.8.3` | [View](variants/v4.8.3) |
+| `:v4.8.3-docker` | [View](variants/v4.8.3-docker) |
+| `:v4.8.3-docker-go-1.20.8` | [View](variants/v4.8.3-docker-go-1.20.8) |
+| `:v4.8.3-docker-rootless` | [View](variants/v4.8.3-docker-rootless) |
+| `:v4.8.3-docker-rootless-go-1.20.8` | [View](variants/v4.8.3-docker-rootless-go-1.20.8) |
+| `:v4.7.1` | [View](variants/v4.7.1) |
+| `:v4.7.1-docker` | [View](variants/v4.7.1-docker) |
+| `:v4.7.1-docker-go-1.20.8` | [View](variants/v4.7.1-docker-go-1.20.8) |
+| `:v4.7.1-docker-rootless` | [View](variants/v4.7.1-docker-rootless) |
+| `:v4.7.1-docker-rootless-go-1.20.8` | [View](variants/v4.7.1-docker-rootless-go-1.20.8) |
+| `:v4.6.1` | [View](variants/v4.6.1) |
+| `:v4.6.1-docker` | [View](variants/v4.6.1-docker) |
+| `:v4.6.1-docker-go-1.20.8` | [View](variants/v4.6.1-docker-go-1.20.8) |
+| `:v4.6.1-docker-rootless` | [View](variants/v4.6.1-docker-rootless) |
+| `:v4.6.1-docker-rootless-go-1.20.8` | [View](variants/v4.6.1-docker-rootless-go-1.20.8) |
 
-Base variants include `npm 8` and `nodejs 16` (to run `code-server`), `pwsh`, and basic tools. E.g. `v4.16.1-alpine-3.15`
+Base variants are based on `alpine`, and include `npm 8` and `nodejs 16` (to run `code-server`), `pwsh`, and basic tools. E.g. `v4.16.1`
 
 Incremental variants include additional tools and their `code` extensions:
 
@@ -79,7 +79,7 @@ Incremental variants include additional tools and their `code` extensions:
 ### Base variant(s)
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1-alpine-3.15
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file: --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
@@ -87,13 +87,13 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 To disable password authentication, use `--auth=none`:
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1-alpine-3.15 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 ```
 
 ### `docker` variant(s)
 
 ```sh
-docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1-docker-alpine-3.15
+docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1-docker
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
@@ -101,7 +101,7 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 To disable password authentication, use `--auth=none`:
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1-docker-alpine-3.15 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1-docker --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 ```
 
 #### docker buildx
@@ -129,7 +129,7 @@ docker buildx build ...
 ### `docker-rootless` variant(s)
 
 ```sh
-docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1-docker-rootless-alpine-3.15
+docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1-docker-rootless
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
@@ -137,7 +137,7 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 To start code-server without password authentication, use `--auth=none`:
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1-docker-rootless-alpine-3.15 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:v4.16.1-docker-rootless --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 ```
 
 To build multi-arch images using `docker buildx`, see [here](#docker-buildx).
