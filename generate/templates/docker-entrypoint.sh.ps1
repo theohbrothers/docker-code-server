@@ -10,18 +10,16 @@ if [ "$1" = 'code-server' ]; then
 
 '@
 
-if ($VARIANT['_metadata']['base_tag']) {
-    # Incremental build
-    foreach ($c in $VARIANT['_metadata']['components']) {
-        if ($c -eq 'docker') {
+foreach ($c in $VARIANT['_metadata']['components']) {
+    if ($c -eq 'docker') {
 @'
     echo "Starting dockerd"
     sudo rm -fv /var/run/docker.pid
     sudo dockerd &
 
 '@
-        }
-        if ($c -eq 'docker-rootless') {
+    }
+    if ($c -eq 'docker-rootless') {
 @'
     # Start rootless docker
     # See: https://github.com/moby/moby/blob/v20.10.22/contrib/dockerd-rootless.sh
@@ -39,7 +37,6 @@ if ($VARIANT['_metadata']['base_tag']) {
         dockerd &
 
 '@
-        }
     }
 }
 
