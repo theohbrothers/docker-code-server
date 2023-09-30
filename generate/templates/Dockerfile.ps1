@@ -196,7 +196,7 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
     && apk add --no-cache `$DEPS \
     # Constraint to npm 8, or else npm will fail with 'npm ERR! `python` is not a valid npm option'. See: https://stackoverflow.com/questions/74522956/python-is-not-a-valid-npm-option and https://jubianchi.github.io/semver-check/#/~8/8
     && $( if ([version]$VARIANT['_metadata']['package_version'] -ge [version]'4.17') {
-        "apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/v3.15/main npm~8 && apk add --no-cache nodejs~18"
+        "apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/v3.15/main npm~8 && apk add --no-cache nodejs~18 krb5-dev"
     } else {
         "apk add --no-cache 'npm~8' 'nodejs~16'"
     } ) \
