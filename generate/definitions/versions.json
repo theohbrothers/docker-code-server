@@ -18,7 +18,7 @@
     "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/coder/code-server/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', ''} | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending"
   },
   "go": {
-    "versions": "1.20.9",
+    "versions": "1.20.10",
     "versionsChangeScope": "minor",
     "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/golang/go/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/go', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | ? { [version]$_ -lt [version]'1.21' } | Sort-Object { [version]$_ } -Descending     # Alternatively, use: https://go.dev/dl/?mode=json&include=all"
   }
