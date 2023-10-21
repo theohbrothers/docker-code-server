@@ -80,5 +80,8 @@ $VARIANTS_SHARED = @{
     }
 }
 
+# Global versions
+$global:VERSIONS = $local:VERSIONS
+
 # Global cache for remote file content
 $global:CACHE = @{}

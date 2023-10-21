@@ -17,6 +17,13 @@
     "versionsChangeScope": "minor",
     "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/coder/code-server/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', ''} | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { [version]$_ -ge [version]'4.6' }"
   },
+  "docker": {
+    "versions": [
+      "20.10.23"
+    ],
+    "versionsChangeScope": "minor",
+    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/moby/moby/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { $v = [version]$_; $v.Major -eq '20' -and $v.Minor -eq '10' }"
+  },
   "go": {
     "versions": [
       "1.20.10"
