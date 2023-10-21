@@ -291,7 +291,7 @@ RUN code-server --install-extension redhat.vscode-yaml@1.9.1
 "@
 foreach ($c in $VARIANT['_metadata']['components']) {
     if ($c -eq 'docker' -or $c -eq 'docker-rootless') {
-        $DOCKER_VERSION = '20.10.23'
+        $DOCKER_VERSION = $global:VERSIONS.docker.versions[0]
 @"
 # Install docker
 # See: https://github.com/moby/moby/blob/v20.10.22/project/PACKAGERS.md
