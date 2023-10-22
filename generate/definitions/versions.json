@@ -23,7 +23,7 @@
       "20.10.23"
     ],
     "versionsChangeScope": "minor",
-    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/moby/moby/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { $v = [version]$_; $v.Major -eq '20' -and $v.Minor -eq '10' }"
+    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/moby/moby/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { $v = [version]$_; $v.Major -eq '20' -and $v.Minor -eq '10' -and $v.Build -eq '24' }"
   },
   "go": {
     "versions": [
