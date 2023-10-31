@@ -425,7 +425,7 @@ RUN apk add --no-cache docker-compose
 
 "@
 
-        $DOCKER_COMPOSE_VERSION = 'v2.17.3'
+        $DOCKER_COMPOSE_VERSION = 'v2.23.0'
         Generate-DownloadBinary @{
             binary = 'docker-compose'
             version = $DOCKER_COMPOSE_VERSION
