@@ -176,7 +176,7 @@ RUN set -eux; \
     dockerd --version; \
     runc --version
 # Install bash completion
-RUN wget -q https://raw.githubusercontent.com/docker/cli/v20.10.24/contrib/completion/bash/docker -O /usr/share/bash-completion/completions/docker
+RUN wget -q https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker -O /usr/share/bash-completion/completions/docker
 # Post-install docker. See: https://docs.docker.com/engine/install/linux-postinstall/
 RUN set -eux; \
     addgroup docker; \
