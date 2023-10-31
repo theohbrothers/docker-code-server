@@ -435,7 +435,7 @@ RUN apk add --no-cache docker-compose
             testCommand = 'docker compose version'
         }
 
-        $DOCKER_BUILDX_VERSION = 'v0.11.0'
+        $DOCKER_BUILDX_VERSION = 'v0.11.2'
         Generate-DownloadBinary @{
             binary = 'docker-buildx'
             version = $DOCKER_BUILDX_VERSION
