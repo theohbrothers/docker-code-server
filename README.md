@@ -55,31 +55,6 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 | `:4.11.0-docker-go-1.20.11` | [View](variants/4.11.0-docker-go-1.20.11) |
 | `:4.11.0-docker-rootless` | [View](variants/4.11.0-docker-rootless) |
 | `:4.11.0-docker-rootless-go-1.20.11` | [View](variants/4.11.0-docker-rootless-go-1.20.11) |
-| `:4.10.1` | [View](variants/4.10.1) |
-| `:4.10.1-docker` | [View](variants/4.10.1-docker) |
-| `:4.10.1-docker-go-1.20.11` | [View](variants/4.10.1-docker-go-1.20.11) |
-| `:4.10.1-docker-rootless` | [View](variants/4.10.1-docker-rootless) |
-| `:4.10.1-docker-rootless-go-1.20.11` | [View](variants/4.10.1-docker-rootless-go-1.20.11) |
-| `:4.9.1` | [View](variants/4.9.1) |
-| `:4.9.1-docker` | [View](variants/4.9.1-docker) |
-| `:4.9.1-docker-go-1.20.11` | [View](variants/4.9.1-docker-go-1.20.11) |
-| `:4.9.1-docker-rootless` | [View](variants/4.9.1-docker-rootless) |
-| `:4.9.1-docker-rootless-go-1.20.11` | [View](variants/4.9.1-docker-rootless-go-1.20.11) |
-| `:4.8.3` | [View](variants/4.8.3) |
-| `:4.8.3-docker` | [View](variants/4.8.3-docker) |
-| `:4.8.3-docker-go-1.20.11` | [View](variants/4.8.3-docker-go-1.20.11) |
-| `:4.8.3-docker-rootless` | [View](variants/4.8.3-docker-rootless) |
-| `:4.8.3-docker-rootless-go-1.20.11` | [View](variants/4.8.3-docker-rootless-go-1.20.11) |
-| `:4.7.1` | [View](variants/4.7.1) |
-| `:4.7.1-docker` | [View](variants/4.7.1-docker) |
-| `:4.7.1-docker-go-1.20.11` | [View](variants/4.7.1-docker-go-1.20.11) |
-| `:4.7.1-docker-rootless` | [View](variants/4.7.1-docker-rootless) |
-| `:4.7.1-docker-rootless-go-1.20.11` | [View](variants/4.7.1-docker-rootless-go-1.20.11) |
-| `:4.6.1` | [View](variants/4.6.1) |
-| `:4.6.1-docker` | [View](variants/4.6.1-docker) |
-| `:4.6.1-docker-go-1.20.11` | [View](variants/4.6.1-docker-go-1.20.11) |
-| `:4.6.1-docker-rootless` | [View](variants/4.6.1-docker-rootless) |
-| `:4.6.1-docker-rootless-go-1.20.11` | [View](variants/4.6.1-docker-rootless-go-1.20.11) |
 
 Base variants are based on `alpine`, and include `npm 8` and `nodejs 16` (to run `code-server`), `pwsh`, and basic tools. E.g. `4.19.0`
 
