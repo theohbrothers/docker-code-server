@@ -143,23 +143,23 @@ RUN set -eux; \
 RUN set -eux; \
     case "$( uname -m )" in \
         'x86_64') \
-            URL='https://download.docker.com/linux/static/stable/x86_64/docker-20.10.24.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/x86_64/docker-24.0.7.tgz'; \
             ;; \
         'armhf') \
-            URL='https://download.docker.com/linux/static/stable/armel/docker-20.10.24.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/armel/docker-24.0.7.tgz'; \
             ;; \
         'armv7') \
-            URL='https://download.docker.com/linux/static/stable/armhf/docker-20.10.24.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/armhf/docker-24.0.7.tgz'; \
             ;; \
         'aarch64') \
-            URL='https://download.docker.com/linux/static/stable/aarch64/docker-20.10.24.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/aarch64/docker-24.0.7.tgz'; \
             ;; \
         # These architectures are no longer supported as of docker 20.10.x
         # 'ppc64le') \
-        # 	URL='https://download.docker.com/linux/static/stable/ppc64le/docker-20.10.24.tgz'; \
+        # 	URL='https://download.docker.com/linux/static/stable/ppc64le/docker-24.0.7.tgz'; \
         # 	;; \
         # 's390x') \
-        # 	URL='https://download.docker.com/linux/static/stable/s390x/docker-20.10.24.tgz'; \
+        # 	URL='https://download.docker.com/linux/static/stable/s390x/docker-24.0.7.tgz'; \
         # 	;; \
         *) \
             echo "Architecture not supported"; \
@@ -192,16 +192,16 @@ RUN set -eux; \
 RUN set -eux; \
     case "$( uname -m )" in \
         'x86_64') \
-            URL='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-20.10.24.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-24.0.7.tgz'; \
             ;; \
         'aarch64') \
-            URL='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-20.10.24.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-24.0.7.tgz'; \
             ;; \
         'armv7') \
-            URL='https://download.docker.com/linux/static/stable/armhf/docker-rootless-extras-20.10.24.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/armhf/docker-rootless-extras-24.0.7.tgz'; \
             ;; \
         'aarch64') \
-            URL='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-20.10.24.tgz'; \
+            URL='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-24.0.7.tgz'; \
             ;; \
         *) \
             echo "Architecture not supported"; \

@@ -16,10 +16,10 @@
   },
   "docker": {
     "versions": [
-      "20.10.24"
+      "24.0.7"
     ],
     "versionsChangeScope": "minor",
-    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/moby/moby/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { $v = [version]$_; $v.Major -eq '20' -and $v.Minor -eq '10' -and $v.Build -eq '24' }"
+    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/moby/moby/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { $v = [version]$_; $v.Major -eq '24' -and $v.Minor -eq '0' }"
   },
   "go": {
     "versions": [
