@@ -236,35 +236,35 @@ RUN set -eux; \
     DOCKER_COMPOSE_VERSION=v2.23.0; \
     case "$( uname -m )" in \
         'x86') \
-            URL=https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64; \
+            URL="https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64"; \
             SHA256=6e06123399e5428fbd603564afdac74821fa0a7b4465e8a1a2359b362fc42fc4; \
             ;; \
         'x86_64') \
-            URL=https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64; \
+            URL="https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64"; \
             SHA256=6e06123399e5428fbd603564afdac74821fa0a7b4465e8a1a2359b362fc42fc4; \
             ;; \
         'armhf') \
-            URL=https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-armv6; \
+            URL="https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-armv6"; \
             SHA256=75889ad81c5b0b07805920e398eaa7fb41c1321c81942daa07a5b5c5a1a27bdb; \
             ;; \
         'armv7l') \
-            URL=https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-armv7; \
+            URL="https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-armv7"; \
             SHA256=2cd4af627462720384cfd2ba24d951854707d7c1fa37618c9e0319139f8a2012; \
             ;; \
         'aarch64') \
-            URL=https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-aarch64; \
+            URL="https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-aarch64"; \
             SHA256=5c09e2c6b1cd9fc1be535690ee62712687ad12f0d08b14c27d30442f0e85b955; \
             ;; \
         'ppc64le') \
-            URL=https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-ppc64le; \
+            URL="https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-ppc64le"; \
             SHA256=ff524f6d11050483abda01c5b1b33626c6c2f1b835df8514db6a42148d5095fc; \
             ;; \
         'riscv64') \
-            URL=https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-riscv64; \
+            URL="https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-riscv64"; \
             SHA256=00302be14ad7d981eb86b834c09deb8186231b416c16454f9971bfcc0ec7e22f; \
             ;; \
         's390x') \
-            URL=https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-s390x; \
+            URL="https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-s390x"; \
             SHA256=323c2e92b3150ef94dc4201770e06ed7bacbe811abd77a23108cceea032fcf63; \
             ;; \
         *) \
@@ -286,31 +286,31 @@ RUN set -eux; \
     DOCKER_BUILDX_VERSION=v0.11.2; \
     case "$( uname -m )" in \
         'x86_64') \
-            URL=https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-amd64; \
+            URL="https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-amd64"; \
             SHA256=311568ee69715abc46163fd688e56c77ab0144ff32e116d0f293bfc3470e75b7; \
             ;; \
         'armhf') \
-            URL=https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-arm-v6; \
+            URL="https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-arm-v6"; \
             SHA256=c1bab0c7374406d5069f60b291971d71161fbd3c00e8a8fb1b68b9053eda8a4e; \
             ;; \
         'armv7l') \
-            URL=https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-arm-v7; \
+            URL="https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-arm-v7"; \
             SHA256=4defdf463ca2516d3f58fef69a6f78cbbb8baf16d936cdfc54df4a4be0d48f7f; \
             ;; \
         'aarch64') \
-            URL=https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-arm64; \
+            URL="https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-arm64"; \
             SHA256=565e36085a35bba5104f37365ba796c111338eea1a0902b3a7ff42e2e1248815; \
             ;; \
         'ppc64le') \
-            URL=https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-ppc64le; \
+            URL="https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-ppc64le"; \
             SHA256=c5f5cb9957890873a537c7ff5c4eef36132339622baeabb37a4b9b7251ddf836; \
             ;; \
         'riscv64') \
-            URL=https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-riscv64; \
+            URL="https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-riscv64"; \
             SHA256=c0adc4b4625f7e3df7dcdec840568f918673f2ed4bcd03ca1e63ea2a5627ca35; \
             ;; \
         's390x') \
-            URL=https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-s390x; \
+            URL="https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-s390x"; \
             SHA256=02916c76c3872fd0b3fa57e71403fee92b6be10f350b96a5ff99e7914dd277b8; \
             ;; \
         *) \
