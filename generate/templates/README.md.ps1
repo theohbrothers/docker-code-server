@@ -56,7 +56,7 @@ docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/dock
 ### ``docker`` variant(s)
 
 ``````sh
-docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:$( $VARIANTS | ? { $_['_metadata']['components'] -contains 'docker' } | Select-Object -First 1 | Select-Object -ExpandProperty tag )
+docker run --name code-server --rm -it --privileged -v docker:/var/lib/docker -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:$( $VARIANTS | ? { $_['_metadata']['components'] -contains 'docker' } | Select-Object -First 1 | Select-Object -ExpandProperty tag )
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ``````
