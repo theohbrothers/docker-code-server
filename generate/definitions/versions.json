@@ -21,6 +21,20 @@
     "versionsChangeScope": "minor",
     "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/moby/moby/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { $v = [version]$_; $v.Major -eq '24' -and $v.Minor -eq '0' }"
   },
+  "docker-buildx": {
+    "versions": [
+      "0.12.0"
+    ],
+    "versionsChangeScope": "minor",
+    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/docker/buildx/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { $v = [version]$_; $v.Major -eq '0' -and $v.Minor -eq '12'}"
+  },
+  "docker-compose": {
+    "versions": [
+      "2.23.3"
+    ],
+    "versionsChangeScope": "minor",
+    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/docker/compose/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { $v = [version]$_; $v.Major -eq '2' } | Select-Object -First 1"
+  },
   "go": {
     "versions": [
       "1.20.11"
