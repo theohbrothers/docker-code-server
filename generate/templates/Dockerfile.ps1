@@ -1,3 +1,5 @@
+$local:VERSIONS = @( Get-Content $PSScriptRoot/../definitions/versions.json -Encoding utf8 -raw | ConvertFrom-Json )
+
 @"
 # syntax=docker/dockerfile:1
 FROM $( $VARIANT['_metadata']['distro'] ):$( $VARIANT['_metadata']['distro_version'] )
@@ -253,7 +255,7 @@ RUN apk add --no-cache docker-compose
 
 "@
 
-        $DOCKER_COMPOSE_VERSION = 'v2.23.0'
+        $DOCKER_COMPOSE_VERSION = "v$( $local:VERSIONS.'docker-compose'.versions[0] )"
         Generate-DownloadBinary @{
             binary = 'docker-compose'
             version = $DOCKER_COMPOSE_VERSION
@@ -263,7 +265,7 @@ RUN apk add --no-cache docker-compose
             testCommand = 'docker compose version'
         }
 
-        $DOCKER_BUILDX_VERSION = 'v0.11.2'
+        $DOCKER_BUILDX_VERSION = "v$( $local:VERSIONS.'docker-buildx'.versions[0] )"
         Generate-DownloadBinary @{
             binary = 'docker-buildx'
             version = $DOCKER_BUILDX_VERSION
