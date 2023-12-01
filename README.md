@@ -70,7 +70,7 @@ Incremental variants include additional tools and their `code` extensions:
 
 ```sh
 docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.19.1
-# code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file: --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
+# code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
 
@@ -134,9 +134,10 @@ To build multi-arch images using `docker buildx`, see [here](#docker-buildx).
 
 ## Notes
 
+- See official docs for code-server configuration: https://github.com/coder/code-server/blob/main/docs/FAQ.md#how-does-the-config-file-work
 - The default user is named `user` with UID `1000`. To escalate as `root`, use `sudo`.
 - Users should provision their own configuration files at entrypoint. Examples include dotfiles such as `~/.bash_aliases`, `~/.gitconfig`, and `code` configs such as `~/.local/share/code-server/User/keybindings.json` and `~/.local/share/code-server/User/settings.json`. It is recommended to use any of these [utilities](https://dotfiles.github.io/utilities/) for managing dotfiles.
-- To ensure `bash-completion` works, ensure `/etc/profile.d/bash_completion.sh` is sourced by `~/.bashrc`. When `exec`ing into the container, use a login shell (E.g. `docker exec -it <container> bash -l`).
+<!-- - To ensure `bash-completion` works, ensure `/etc/profile.d/bash_completion.sh` is sourced by `~/.bashrc`. When `exec`ing into the container, use a login shell (E.g. `docker exec -it <container> bash -l`). -->
 - To install a custom version of a `code` extension, set `"extensions.autoCheckUpdates": true` in `settings.json`. Under `Extensions` view, click the extension's cogwheel and select `Install Another Version...`.
 
 ## Development
