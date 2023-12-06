@@ -12,49 +12,49 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 |:-------:|:---------:|
 | `:4.19.1`, `:latest` | [View](variants/4.19.1) |
 | `:4.19.1-docker` | [View](variants/4.19.1-docker) |
-| `:4.19.1-docker-go-1.20.11` | [View](variants/4.19.1-docker-go-1.20.11) |
+| `:4.19.1-docker-go-1.20.12` | [View](variants/4.19.1-docker-go-1.20.12) |
 | `:4.19.1-docker-rootless` | [View](variants/4.19.1-docker-rootless) |
-| `:4.19.1-docker-rootless-go-1.20.11` | [View](variants/4.19.1-docker-rootless-go-1.20.11) |
+| `:4.19.1-docker-rootless-go-1.20.12` | [View](variants/4.19.1-docker-rootless-go-1.20.12) |
 | `:4.18.0` | [View](variants/4.18.0) |
 | `:4.18.0-docker` | [View](variants/4.18.0-docker) |
-| `:4.18.0-docker-go-1.20.11` | [View](variants/4.18.0-docker-go-1.20.11) |
+| `:4.18.0-docker-go-1.20.12` | [View](variants/4.18.0-docker-go-1.20.12) |
 | `:4.18.0-docker-rootless` | [View](variants/4.18.0-docker-rootless) |
-| `:4.18.0-docker-rootless-go-1.20.11` | [View](variants/4.18.0-docker-rootless-go-1.20.11) |
+| `:4.18.0-docker-rootless-go-1.20.12` | [View](variants/4.18.0-docker-rootless-go-1.20.12) |
 | `:4.17.1` | [View](variants/4.17.1) |
 | `:4.17.1-docker` | [View](variants/4.17.1-docker) |
-| `:4.17.1-docker-go-1.20.11` | [View](variants/4.17.1-docker-go-1.20.11) |
+| `:4.17.1-docker-go-1.20.12` | [View](variants/4.17.1-docker-go-1.20.12) |
 | `:4.17.1-docker-rootless` | [View](variants/4.17.1-docker-rootless) |
-| `:4.17.1-docker-rootless-go-1.20.11` | [View](variants/4.17.1-docker-rootless-go-1.20.11) |
+| `:4.17.1-docker-rootless-go-1.20.12` | [View](variants/4.17.1-docker-rootless-go-1.20.12) |
 | `:4.16.1` | [View](variants/4.16.1) |
 | `:4.16.1-docker` | [View](variants/4.16.1-docker) |
-| `:4.16.1-docker-go-1.20.11` | [View](variants/4.16.1-docker-go-1.20.11) |
+| `:4.16.1-docker-go-1.20.12` | [View](variants/4.16.1-docker-go-1.20.12) |
 | `:4.16.1-docker-rootless` | [View](variants/4.16.1-docker-rootless) |
-| `:4.16.1-docker-rootless-go-1.20.11` | [View](variants/4.16.1-docker-rootless-go-1.20.11) |
+| `:4.16.1-docker-rootless-go-1.20.12` | [View](variants/4.16.1-docker-rootless-go-1.20.12) |
 | `:4.15.0` | [View](variants/4.15.0) |
 | `:4.15.0-docker` | [View](variants/4.15.0-docker) |
-| `:4.15.0-docker-go-1.20.11` | [View](variants/4.15.0-docker-go-1.20.11) |
+| `:4.15.0-docker-go-1.20.12` | [View](variants/4.15.0-docker-go-1.20.12) |
 | `:4.15.0-docker-rootless` | [View](variants/4.15.0-docker-rootless) |
-| `:4.15.0-docker-rootless-go-1.20.11` | [View](variants/4.15.0-docker-rootless-go-1.20.11) |
+| `:4.15.0-docker-rootless-go-1.20.12` | [View](variants/4.15.0-docker-rootless-go-1.20.12) |
 | `:4.14.1` | [View](variants/4.14.1) |
 | `:4.14.1-docker` | [View](variants/4.14.1-docker) |
-| `:4.14.1-docker-go-1.20.11` | [View](variants/4.14.1-docker-go-1.20.11) |
+| `:4.14.1-docker-go-1.20.12` | [View](variants/4.14.1-docker-go-1.20.12) |
 | `:4.14.1-docker-rootless` | [View](variants/4.14.1-docker-rootless) |
-| `:4.14.1-docker-rootless-go-1.20.11` | [View](variants/4.14.1-docker-rootless-go-1.20.11) |
+| `:4.14.1-docker-rootless-go-1.20.12` | [View](variants/4.14.1-docker-rootless-go-1.20.12) |
 | `:4.13.0` | [View](variants/4.13.0) |
 | `:4.13.0-docker` | [View](variants/4.13.0-docker) |
-| `:4.13.0-docker-go-1.20.11` | [View](variants/4.13.0-docker-go-1.20.11) |
+| `:4.13.0-docker-go-1.20.12` | [View](variants/4.13.0-docker-go-1.20.12) |
 | `:4.13.0-docker-rootless` | [View](variants/4.13.0-docker-rootless) |
-| `:4.13.0-docker-rootless-go-1.20.11` | [View](variants/4.13.0-docker-rootless-go-1.20.11) |
+| `:4.13.0-docker-rootless-go-1.20.12` | [View](variants/4.13.0-docker-rootless-go-1.20.12) |
 | `:4.12.0` | [View](variants/4.12.0) |
 | `:4.12.0-docker` | [View](variants/4.12.0-docker) |
-| `:4.12.0-docker-go-1.20.11` | [View](variants/4.12.0-docker-go-1.20.11) |
+| `:4.12.0-docker-go-1.20.12` | [View](variants/4.12.0-docker-go-1.20.12) |
 | `:4.12.0-docker-rootless` | [View](variants/4.12.0-docker-rootless) |
-| `:4.12.0-docker-rootless-go-1.20.11` | [View](variants/4.12.0-docker-rootless-go-1.20.11) |
+| `:4.12.0-docker-rootless-go-1.20.12` | [View](variants/4.12.0-docker-rootless-go-1.20.12) |
 | `:4.11.0` | [View](variants/4.11.0) |
 | `:4.11.0-docker` | [View](variants/4.11.0-docker) |
-| `:4.11.0-docker-go-1.20.11` | [View](variants/4.11.0-docker-go-1.20.11) |
+| `:4.11.0-docker-go-1.20.12` | [View](variants/4.11.0-docker-go-1.20.12) |
 | `:4.11.0-docker-rootless` | [View](variants/4.11.0-docker-rootless) |
-| `:4.11.0-docker-rootless-go-1.20.11` | [View](variants/4.11.0-docker-rootless-go-1.20.11) |
+| `:4.11.0-docker-rootless-go-1.20.12` | [View](variants/4.11.0-docker-rootless-go-1.20.12) |
 
 Base variants are based on `alpine`, and include `npm 8` and `nodejs 16` (to run `code-server`), `pwsh`, and basic tools. E.g. `4.19.1`
 
