@@ -38,7 +38,7 @@
   },
   "go": {
     "versions": [
-      "1.20.12"
+      "1.20.13"
     ],
     "versionsChangeScope": "minor",
     "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/golang/go/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/go', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { [version]$_ -gt [version]'1.20' -and [version]$_ -lt [version]'1.21' }     # Alternatively, use: https://go.dev/dl/?mode=json&include=all"
