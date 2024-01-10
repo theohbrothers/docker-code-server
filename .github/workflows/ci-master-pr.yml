@@ -214,7 +214,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-20-0-docker-go-1-20-12
+      id: prep-4-20-0-docker-go-1-20-13
       run: |
         set -e
 
@@ -227,7 +227,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.20.0-docker-go-1.20.12"
+        VARIANT="4.20.0-docker-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -237,45 +237,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.20.0-docker-go-1.20.12 - Build (PRs)
+    - name: 4.20.0-docker-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.20.0-docker-go-1.20.12
+        context: variants/4.20.0-docker-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.20.0-docker-go-1.20.12 - Build and push (master)
+    - name: 4.20.0-docker-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.20.0-docker-go-1.20.12
+        context: variants/4.20.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.20.0-docker-go-1.20.12 - Build and push (release)
+    - name: 4.20.0-docker-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.20.0-docker-go-1.20.12
+        context: variants/4.20.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -348,7 +348,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-20-0-docker-rootless-go-1-20-12
+      id: prep-4-20-0-docker-rootless-go-1-20-13
       run: |
         set -e
 
@@ -361,7 +361,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.20.0-docker-rootless-go-1.20.12"
+        VARIANT="4.20.0-docker-rootless-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -371,45 +371,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.20.0-docker-rootless-go-1.20.12 - Build (PRs)
+    - name: 4.20.0-docker-rootless-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.20.0-docker-rootless-go-1.20.12
+        context: variants/4.20.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.20.0-docker-rootless-go-1.20.12 - Build and push (master)
+    - name: 4.20.0-docker-rootless-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.20.0-docker-rootless-go-1.20.12
+        context: variants/4.20.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.20.0-docker-rootless-go-1.20.12 - Build and push (release)
+    - name: 4.20.0-docker-rootless-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.20.0-docker-rootless-go-1.20.12
+        context: variants/4.20.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-20-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -601,7 +601,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-19-1-docker-go-1-20-12
+      id: prep-4-19-1-docker-go-1-20-13
       run: |
         set -e
 
@@ -614,7 +614,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.19.1-docker-go-1.20.12"
+        VARIANT="4.19.1-docker-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -624,45 +624,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.19.1-docker-go-1.20.12 - Build (PRs)
+    - name: 4.19.1-docker-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.19.1-docker-go-1.20.12
+        context: variants/4.19.1-docker-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.19.1-docker-go-1.20.12 - Build and push (master)
+    - name: 4.19.1-docker-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.19.1-docker-go-1.20.12
+        context: variants/4.19.1-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.19.1-docker-go-1.20.12 - Build and push (release)
+    - name: 4.19.1-docker-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.19.1-docker-go-1.20.12
+        context: variants/4.19.1-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -735,7 +735,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-19-1-docker-rootless-go-1-20-12
+      id: prep-4-19-1-docker-rootless-go-1-20-13
       run: |
         set -e
 
@@ -748,7 +748,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.19.1-docker-rootless-go-1.20.12"
+        VARIANT="4.19.1-docker-rootless-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -758,45 +758,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.19.1-docker-rootless-go-1.20.12 - Build (PRs)
+    - name: 4.19.1-docker-rootless-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.19.1-docker-rootless-go-1.20.12
+        context: variants/4.19.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.19.1-docker-rootless-go-1.20.12 - Build and push (master)
+    - name: 4.19.1-docker-rootless-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.19.1-docker-rootless-go-1.20.12
+        context: variants/4.19.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.19.1-docker-rootless-go-1.20.12 - Build and push (release)
+    - name: 4.19.1-docker-rootless-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.19.1-docker-rootless-go-1.20.12
+        context: variants/4.19.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-19-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -988,7 +988,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-18-0-docker-go-1-20-12
+      id: prep-4-18-0-docker-go-1-20-13
       run: |
         set -e
 
@@ -1001,7 +1001,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.18.0-docker-go-1.20.12"
+        VARIANT="4.18.0-docker-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -1011,45 +1011,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.18.0-docker-go-1.20.12 - Build (PRs)
+    - name: 4.18.0-docker-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.18.0-docker-go-1.20.12
+        context: variants/4.18.0-docker-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.18.0-docker-go-1.20.12 - Build and push (master)
+    - name: 4.18.0-docker-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.18.0-docker-go-1.20.12
+        context: variants/4.18.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.18.0-docker-go-1.20.12 - Build and push (release)
+    - name: 4.18.0-docker-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.18.0-docker-go-1.20.12
+        context: variants/4.18.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -1122,7 +1122,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-18-0-docker-rootless-go-1-20-12
+      id: prep-4-18-0-docker-rootless-go-1-20-13
       run: |
         set -e
 
@@ -1135,7 +1135,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.18.0-docker-rootless-go-1.20.12"
+        VARIANT="4.18.0-docker-rootless-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -1145,45 +1145,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.18.0-docker-rootless-go-1.20.12 - Build (PRs)
+    - name: 4.18.0-docker-rootless-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.18.0-docker-rootless-go-1.20.12
+        context: variants/4.18.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.18.0-docker-rootless-go-1.20.12 - Build and push (master)
+    - name: 4.18.0-docker-rootless-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.18.0-docker-rootless-go-1.20.12
+        context: variants/4.18.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.18.0-docker-rootless-go-1.20.12 - Build and push (release)
+    - name: 4.18.0-docker-rootless-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.18.0-docker-rootless-go-1.20.12
+        context: variants/4.18.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-18-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -1375,7 +1375,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-17-1-docker-go-1-20-12
+      id: prep-4-17-1-docker-go-1-20-13
       run: |
         set -e
 
@@ -1388,7 +1388,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.17.1-docker-go-1.20.12"
+        VARIANT="4.17.1-docker-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -1398,45 +1398,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.17.1-docker-go-1.20.12 - Build (PRs)
+    - name: 4.17.1-docker-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.17.1-docker-go-1.20.12
+        context: variants/4.17.1-docker-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.17.1-docker-go-1.20.12 - Build and push (master)
+    - name: 4.17.1-docker-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.17.1-docker-go-1.20.12
+        context: variants/4.17.1-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.17.1-docker-go-1.20.12 - Build and push (release)
+    - name: 4.17.1-docker-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.17.1-docker-go-1.20.12
+        context: variants/4.17.1-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -1509,7 +1509,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-17-1-docker-rootless-go-1-20-12
+      id: prep-4-17-1-docker-rootless-go-1-20-13
       run: |
         set -e
 
@@ -1522,7 +1522,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.17.1-docker-rootless-go-1.20.12"
+        VARIANT="4.17.1-docker-rootless-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -1532,45 +1532,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.17.1-docker-rootless-go-1.20.12 - Build (PRs)
+    - name: 4.17.1-docker-rootless-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.17.1-docker-rootless-go-1.20.12
+        context: variants/4.17.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.17.1-docker-rootless-go-1.20.12 - Build and push (master)
+    - name: 4.17.1-docker-rootless-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.17.1-docker-rootless-go-1.20.12
+        context: variants/4.17.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.17.1-docker-rootless-go-1.20.12 - Build and push (release)
+    - name: 4.17.1-docker-rootless-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.17.1-docker-rootless-go-1.20.12
+        context: variants/4.17.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-17-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -1762,7 +1762,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-16-1-docker-go-1-20-12
+      id: prep-4-16-1-docker-go-1-20-13
       run: |
         set -e
 
@@ -1775,7 +1775,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.16.1-docker-go-1.20.12"
+        VARIANT="4.16.1-docker-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -1785,45 +1785,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.16.1-docker-go-1.20.12 - Build (PRs)
+    - name: 4.16.1-docker-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.16.1-docker-go-1.20.12
+        context: variants/4.16.1-docker-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.16.1-docker-go-1.20.12 - Build and push (master)
+    - name: 4.16.1-docker-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.16.1-docker-go-1.20.12
+        context: variants/4.16.1-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.16.1-docker-go-1.20.12 - Build and push (release)
+    - name: 4.16.1-docker-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.16.1-docker-go-1.20.12
+        context: variants/4.16.1-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -1896,7 +1896,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-16-1-docker-rootless-go-1-20-12
+      id: prep-4-16-1-docker-rootless-go-1-20-13
       run: |
         set -e
 
@@ -1909,7 +1909,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.16.1-docker-rootless-go-1.20.12"
+        VARIANT="4.16.1-docker-rootless-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -1919,45 +1919,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.16.1-docker-rootless-go-1.20.12 - Build (PRs)
+    - name: 4.16.1-docker-rootless-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.16.1-docker-rootless-go-1.20.12
+        context: variants/4.16.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.16.1-docker-rootless-go-1.20.12 - Build and push (master)
+    - name: 4.16.1-docker-rootless-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.16.1-docker-rootless-go-1.20.12
+        context: variants/4.16.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.16.1-docker-rootless-go-1.20.12 - Build and push (release)
+    - name: 4.16.1-docker-rootless-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.16.1-docker-rootless-go-1.20.12
+        context: variants/4.16.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-16-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -2149,7 +2149,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-15-0-docker-go-1-20-12
+      id: prep-4-15-0-docker-go-1-20-13
       run: |
         set -e
 
@@ -2162,7 +2162,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.15.0-docker-go-1.20.12"
+        VARIANT="4.15.0-docker-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -2172,45 +2172,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.15.0-docker-go-1.20.12 - Build (PRs)
+    - name: 4.15.0-docker-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.15.0-docker-go-1.20.12
+        context: variants/4.15.0-docker-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.15.0-docker-go-1.20.12 - Build and push (master)
+    - name: 4.15.0-docker-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.15.0-docker-go-1.20.12
+        context: variants/4.15.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.15.0-docker-go-1.20.12 - Build and push (release)
+    - name: 4.15.0-docker-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.15.0-docker-go-1.20.12
+        context: variants/4.15.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -2283,7 +2283,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-15-0-docker-rootless-go-1-20-12
+      id: prep-4-15-0-docker-rootless-go-1-20-13
       run: |
         set -e
 
@@ -2296,7 +2296,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.15.0-docker-rootless-go-1.20.12"
+        VARIANT="4.15.0-docker-rootless-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -2306,45 +2306,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.15.0-docker-rootless-go-1.20.12 - Build (PRs)
+    - name: 4.15.0-docker-rootless-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.15.0-docker-rootless-go-1.20.12
+        context: variants/4.15.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.15.0-docker-rootless-go-1.20.12 - Build and push (master)
+    - name: 4.15.0-docker-rootless-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.15.0-docker-rootless-go-1.20.12
+        context: variants/4.15.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.15.0-docker-rootless-go-1.20.12 - Build and push (release)
+    - name: 4.15.0-docker-rootless-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.15.0-docker-rootless-go-1.20.12
+        context: variants/4.15.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-15-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -2536,7 +2536,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-14-1-docker-go-1-20-12
+      id: prep-4-14-1-docker-go-1-20-13
       run: |
         set -e
 
@@ -2549,7 +2549,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.14.1-docker-go-1.20.12"
+        VARIANT="4.14.1-docker-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -2559,45 +2559,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.14.1-docker-go-1.20.12 - Build (PRs)
+    - name: 4.14.1-docker-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.14.1-docker-go-1.20.12
+        context: variants/4.14.1-docker-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.14.1-docker-go-1.20.12 - Build and push (master)
+    - name: 4.14.1-docker-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.14.1-docker-go-1.20.12
+        context: variants/4.14.1-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.14.1-docker-go-1.20.12 - Build and push (release)
+    - name: 4.14.1-docker-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.14.1-docker-go-1.20.12
+        context: variants/4.14.1-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -2670,7 +2670,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-14-1-docker-rootless-go-1-20-12
+      id: prep-4-14-1-docker-rootless-go-1-20-13
       run: |
         set -e
 
@@ -2683,7 +2683,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.14.1-docker-rootless-go-1.20.12"
+        VARIANT="4.14.1-docker-rootless-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -2693,45 +2693,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.14.1-docker-rootless-go-1.20.12 - Build (PRs)
+    - name: 4.14.1-docker-rootless-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.14.1-docker-rootless-go-1.20.12
+        context: variants/4.14.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.14.1-docker-rootless-go-1.20.12 - Build and push (master)
+    - name: 4.14.1-docker-rootless-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.14.1-docker-rootless-go-1.20.12
+        context: variants/4.14.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.14.1-docker-rootless-go-1.20.12 - Build and push (release)
+    - name: 4.14.1-docker-rootless-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.14.1-docker-rootless-go-1.20.12
+        context: variants/4.14.1-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-14-1-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -2923,7 +2923,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-13-0-docker-go-1-20-12
+      id: prep-4-13-0-docker-go-1-20-13
       run: |
         set -e
 
@@ -2936,7 +2936,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.13.0-docker-go-1.20.12"
+        VARIANT="4.13.0-docker-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -2946,45 +2946,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.13.0-docker-go-1.20.12 - Build (PRs)
+    - name: 4.13.0-docker-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.13.0-docker-go-1.20.12
+        context: variants/4.13.0-docker-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.13.0-docker-go-1.20.12 - Build and push (master)
+    - name: 4.13.0-docker-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.13.0-docker-go-1.20.12
+        context: variants/4.13.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.13.0-docker-go-1.20.12 - Build and push (release)
+    - name: 4.13.0-docker-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.13.0-docker-go-1.20.12
+        context: variants/4.13.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -3057,7 +3057,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-13-0-docker-rootless-go-1-20-12
+      id: prep-4-13-0-docker-rootless-go-1-20-13
       run: |
         set -e
 
@@ -3070,7 +3070,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.13.0-docker-rootless-go-1.20.12"
+        VARIANT="4.13.0-docker-rootless-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -3080,45 +3080,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.13.0-docker-rootless-go-1.20.12 - Build (PRs)
+    - name: 4.13.0-docker-rootless-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.13.0-docker-rootless-go-1.20.12
+        context: variants/4.13.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.13.0-docker-rootless-go-1.20.12 - Build and push (master)
+    - name: 4.13.0-docker-rootless-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.13.0-docker-rootless-go-1.20.12
+        context: variants/4.13.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.13.0-docker-rootless-go-1.20.12 - Build and push (release)
+    - name: 4.13.0-docker-rootless-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.13.0-docker-rootless-go-1.20.12
+        context: variants/4.13.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-13-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -3310,7 +3310,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-12-0-docker-go-1-20-12
+      id: prep-4-12-0-docker-go-1-20-13
       run: |
         set -e
 
@@ -3323,7 +3323,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.12.0-docker-go-1.20.12"
+        VARIANT="4.12.0-docker-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -3333,45 +3333,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.12.0-docker-go-1.20.12 - Build (PRs)
+    - name: 4.12.0-docker-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.12.0-docker-go-1.20.12
+        context: variants/4.12.0-docker-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.12.0-docker-go-1.20.12 - Build and push (master)
+    - name: 4.12.0-docker-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.12.0-docker-go-1.20.12
+        context: variants/4.12.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.12.0-docker-go-1.20.12 - Build and push (release)
+    - name: 4.12.0-docker-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.12.0-docker-go-1.20.12
+        context: variants/4.12.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -3444,7 +3444,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-12-0-docker-rootless-go-1-20-12
+      id: prep-4-12-0-docker-rootless-go-1-20-13
       run: |
         set -e
 
@@ -3457,7 +3457,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.12.0-docker-rootless-go-1.20.12"
+        VARIANT="4.12.0-docker-rootless-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -3467,45 +3467,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.12.0-docker-rootless-go-1.20.12 - Build (PRs)
+    - name: 4.12.0-docker-rootless-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.12.0-docker-rootless-go-1.20.12
+        context: variants/4.12.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.12.0-docker-rootless-go-1.20.12 - Build and push (master)
+    - name: 4.12.0-docker-rootless-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.12.0-docker-rootless-go-1.20.12
+        context: variants/4.12.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.12.0-docker-rootless-go-1.20.12 - Build and push (release)
+    - name: 4.12.0-docker-rootless-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.12.0-docker-rootless-go-1.20.12
+        context: variants/4.12.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-12-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -3697,7 +3697,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-11-0-docker-go-1-20-12
+      id: prep-4-11-0-docker-go-1-20-13
       run: |
         set -e
 
@@ -3710,7 +3710,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.11.0-docker-go-1.20.12"
+        VARIANT="4.11.0-docker-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -3720,45 +3720,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.11.0-docker-go-1.20.12 - Build (PRs)
+    - name: 4.11.0-docker-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.11.0-docker-go-1.20.12
+        context: variants/4.11.0-docker-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.11.0-docker-go-1.20.12 - Build and push (master)
+    - name: 4.11.0-docker-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.11.0-docker-go-1.20.12
+        context: variants/4.11.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.11.0-docker-go-1.20.12 - Build and push (release)
+    - name: 4.11.0-docker-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.11.0-docker-go-1.20.12
+        context: variants/4.11.0-docker-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -3831,7 +3831,7 @@ jobs:
 
     # This step generates the docker tags
     - name: Prepare
-      id: prep-4-11-0-docker-rootless-go-1-20-12
+      id: prep-4-11-0-docker-rootless-go-1-20-13
       run: |
         set -e
 
@@ -3844,7 +3844,7 @@ jobs:
         # Generate docker image tags
         # E.g. 'v0.0.0-<variant>' and 'v0.0.0-abc0123-<variant>'
         # E.g. 'master-<variant>' and 'master-abc0123-<variant>'
-        VARIANT="4.11.0-docker-rootless-go-1.20.12"
+        VARIANT="4.11.0-docker-rootless-go-1.20.13"
         REF_VARIANT="${REF}-${VARIANT}"
         REF_SHA_VARIANT="${REF}-${SHA}-${VARIANT}"
 
@@ -3854,45 +3854,45 @@ jobs:
         echo "REF_VARIANT=$REF_VARIANT" >> $GITHUB_OUTPUT
         echo "REF_SHA_VARIANT=$REF_SHA_VARIANT" >> $GITHUB_OUTPUT
 
-    - name: 4.11.0-docker-rootless-go-1.20.12 - Build (PRs)
+    - name: 4.11.0-docker-rootless-go-1.20.13 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.11.0-docker-rootless-go-1.20.12
+        context: variants/4.11.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.11.0-docker-rootless-go-1.20.12 - Build and push (master)
+    - name: 4.11.0-docker-rootless-go-1.20.13 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.11.0-docker-rootless-go-1.20.12
+        context: variants/4.11.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: 4.11.0-docker-rootless-go-1.20.12 - Build and push (release)
+    - name: 4.11.0-docker-rootless-go-1.20.13 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        context: variants/4.11.0-docker-rootless-go-1.20.12
+        context: variants/4.11.0-docker-rootless-go-1.20.13
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-12.outputs.VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-12.outputs.REF_VARIANT }}
-          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-12.outputs.REF_SHA_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-13.outputs.VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-13.outputs.REF_VARIANT }}
+          ${{ github.repository }}:${{ steps.prep-4-11-0-docker-rootless-go-1-20-13.outputs.REF_SHA_VARIANT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
