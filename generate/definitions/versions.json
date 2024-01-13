@@ -24,7 +24,7 @@
   },
   "docker-buildx": {
     "versions": [
-      "0.12.0"
+      "0.12.1"
     ],
     "versionsChangeScope": "minor",
     "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/docker/buildx/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { $v = [version]$_; $v.Major -eq '0' -and $v.Minor -eq '12'}"
