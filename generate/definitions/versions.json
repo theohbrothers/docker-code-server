@@ -31,7 +31,7 @@
   },
   "docker-compose": {
     "versions": [
-      "2.24.4",
+      "2.24.5",
       "2.23.3"
     ],
     "versionsChangeScope": "minor",
