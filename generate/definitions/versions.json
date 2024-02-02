@@ -17,7 +17,7 @@
   },
   "docker": {
     "versions": [
-      "24.0.8"
+      "24.0.9"
     ],
     "versionsChangeScope": "minor",
     "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/moby/moby/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending | ? { $v = [version]$_; $v.Major -eq '24' -and $v.Minor -eq '0' }"
