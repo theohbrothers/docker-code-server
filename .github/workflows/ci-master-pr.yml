@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -61,7 +61,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.21.1-${{ github.sha }}
@@ -105,7 +105,7 @@ jobs:
     - name: 4.21.1 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1
         platforms: linux/amd64
@@ -119,7 +119,7 @@ jobs:
     - name: 4.21.1 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1
         platforms: linux/amd64
@@ -132,7 +132,7 @@ jobs:
 
     - name: 4.21.1 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1
         platforms: linux/amd64
@@ -173,7 +173,7 @@ jobs:
     - name: 4.21.1-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker
         platforms: linux/amd64
@@ -187,7 +187,7 @@ jobs:
     - name: 4.21.1-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker
         platforms: linux/amd64
@@ -200,7 +200,7 @@ jobs:
 
     - name: 4.21.1-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker
         platforms: linux/amd64
@@ -240,7 +240,7 @@ jobs:
     - name: 4.21.1-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -254,7 +254,7 @@ jobs:
     - name: 4.21.1-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -267,7 +267,7 @@ jobs:
 
     - name: 4.21.1-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -307,7 +307,7 @@ jobs:
     - name: 4.21.1-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker-rootless
         platforms: linux/amd64
@@ -321,7 +321,7 @@ jobs:
     - name: 4.21.1-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker-rootless
         platforms: linux/amd64
@@ -334,7 +334,7 @@ jobs:
 
     - name: 4.21.1-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker-rootless
         platforms: linux/amd64
@@ -374,7 +374,7 @@ jobs:
     - name: 4.21.1-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -388,7 +388,7 @@ jobs:
     - name: 4.21.1-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -401,7 +401,7 @@ jobs:
 
     - name: 4.21.1-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.21.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -425,7 +425,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -449,7 +449,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.20.1-${{ github.sha }}
@@ -493,7 +493,7 @@ jobs:
     - name: 4.20.1 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1
         platforms: linux/amd64
@@ -507,7 +507,7 @@ jobs:
     - name: 4.20.1 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1
         platforms: linux/amd64
@@ -520,7 +520,7 @@ jobs:
 
     - name: 4.20.1 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1
         platforms: linux/amd64
@@ -560,7 +560,7 @@ jobs:
     - name: 4.20.1-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker
         platforms: linux/amd64
@@ -574,7 +574,7 @@ jobs:
     - name: 4.20.1-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker
         platforms: linux/amd64
@@ -587,7 +587,7 @@ jobs:
 
     - name: 4.20.1-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker
         platforms: linux/amd64
@@ -627,7 +627,7 @@ jobs:
     - name: 4.20.1-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -641,7 +641,7 @@ jobs:
     - name: 4.20.1-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -654,7 +654,7 @@ jobs:
 
     - name: 4.20.1-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -694,7 +694,7 @@ jobs:
     - name: 4.20.1-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker-rootless
         platforms: linux/amd64
@@ -708,7 +708,7 @@ jobs:
     - name: 4.20.1-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker-rootless
         platforms: linux/amd64
@@ -721,7 +721,7 @@ jobs:
 
     - name: 4.20.1-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker-rootless
         platforms: linux/amd64
@@ -761,7 +761,7 @@ jobs:
     - name: 4.20.1-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -775,7 +775,7 @@ jobs:
     - name: 4.20.1-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -788,7 +788,7 @@ jobs:
 
     - name: 4.20.1-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.20.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -812,7 +812,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -836,7 +836,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.19.1-${{ github.sha }}
@@ -880,7 +880,7 @@ jobs:
     - name: 4.19.1 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1
         platforms: linux/amd64
@@ -894,7 +894,7 @@ jobs:
     - name: 4.19.1 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1
         platforms: linux/amd64
@@ -907,7 +907,7 @@ jobs:
 
     - name: 4.19.1 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1
         platforms: linux/amd64
@@ -947,7 +947,7 @@ jobs:
     - name: 4.19.1-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker
         platforms: linux/amd64
@@ -961,7 +961,7 @@ jobs:
     - name: 4.19.1-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker
         platforms: linux/amd64
@@ -974,7 +974,7 @@ jobs:
 
     - name: 4.19.1-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker
         platforms: linux/amd64
@@ -1014,7 +1014,7 @@ jobs:
     - name: 4.19.1-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -1028,7 +1028,7 @@ jobs:
     - name: 4.19.1-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -1041,7 +1041,7 @@ jobs:
 
     - name: 4.19.1-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -1081,7 +1081,7 @@ jobs:
     - name: 4.19.1-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker-rootless
         platforms: linux/amd64
@@ -1095,7 +1095,7 @@ jobs:
     - name: 4.19.1-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker-rootless
         platforms: linux/amd64
@@ -1108,7 +1108,7 @@ jobs:
 
     - name: 4.19.1-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker-rootless
         platforms: linux/amd64
@@ -1148,7 +1148,7 @@ jobs:
     - name: 4.19.1-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -1162,7 +1162,7 @@ jobs:
     - name: 4.19.1-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -1175,7 +1175,7 @@ jobs:
 
     - name: 4.19.1-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.19.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -1199,7 +1199,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -1223,7 +1223,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.18.0-${{ github.sha }}
@@ -1267,7 +1267,7 @@ jobs:
     - name: 4.18.0 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0
         platforms: linux/amd64
@@ -1281,7 +1281,7 @@ jobs:
     - name: 4.18.0 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0
         platforms: linux/amd64
@@ -1294,7 +1294,7 @@ jobs:
 
     - name: 4.18.0 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0
         platforms: linux/amd64
@@ -1334,7 +1334,7 @@ jobs:
     - name: 4.18.0-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker
         platforms: linux/amd64
@@ -1348,7 +1348,7 @@ jobs:
     - name: 4.18.0-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker
         platforms: linux/amd64
@@ -1361,7 +1361,7 @@ jobs:
 
     - name: 4.18.0-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker
         platforms: linux/amd64
@@ -1401,7 +1401,7 @@ jobs:
     - name: 4.18.0-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -1415,7 +1415,7 @@ jobs:
     - name: 4.18.0-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -1428,7 +1428,7 @@ jobs:
 
     - name: 4.18.0-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -1468,7 +1468,7 @@ jobs:
     - name: 4.18.0-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker-rootless
         platforms: linux/amd64
@@ -1482,7 +1482,7 @@ jobs:
     - name: 4.18.0-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker-rootless
         platforms: linux/amd64
@@ -1495,7 +1495,7 @@ jobs:
 
     - name: 4.18.0-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker-rootless
         platforms: linux/amd64
@@ -1535,7 +1535,7 @@ jobs:
     - name: 4.18.0-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -1549,7 +1549,7 @@ jobs:
     - name: 4.18.0-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -1562,7 +1562,7 @@ jobs:
 
     - name: 4.18.0-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.18.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -1586,7 +1586,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -1610,7 +1610,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.17.1-${{ github.sha }}
@@ -1654,7 +1654,7 @@ jobs:
     - name: 4.17.1 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1
         platforms: linux/amd64
@@ -1668,7 +1668,7 @@ jobs:
     - name: 4.17.1 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1
         platforms: linux/amd64
@@ -1681,7 +1681,7 @@ jobs:
 
     - name: 4.17.1 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1
         platforms: linux/amd64
@@ -1721,7 +1721,7 @@ jobs:
     - name: 4.17.1-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker
         platforms: linux/amd64
@@ -1735,7 +1735,7 @@ jobs:
     - name: 4.17.1-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker
         platforms: linux/amd64
@@ -1748,7 +1748,7 @@ jobs:
 
     - name: 4.17.1-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker
         platforms: linux/amd64
@@ -1788,7 +1788,7 @@ jobs:
     - name: 4.17.1-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -1802,7 +1802,7 @@ jobs:
     - name: 4.17.1-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -1815,7 +1815,7 @@ jobs:
 
     - name: 4.17.1-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -1855,7 +1855,7 @@ jobs:
     - name: 4.17.1-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker-rootless
         platforms: linux/amd64
@@ -1869,7 +1869,7 @@ jobs:
     - name: 4.17.1-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker-rootless
         platforms: linux/amd64
@@ -1882,7 +1882,7 @@ jobs:
 
     - name: 4.17.1-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker-rootless
         platforms: linux/amd64
@@ -1922,7 +1922,7 @@ jobs:
     - name: 4.17.1-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -1936,7 +1936,7 @@ jobs:
     - name: 4.17.1-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -1949,7 +1949,7 @@ jobs:
 
     - name: 4.17.1-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.17.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -1973,7 +1973,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -1997,7 +1997,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.16.1-${{ github.sha }}
@@ -2041,7 +2041,7 @@ jobs:
     - name: 4.16.1 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1
         platforms: linux/amd64
@@ -2055,7 +2055,7 @@ jobs:
     - name: 4.16.1 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1
         platforms: linux/amd64
@@ -2068,7 +2068,7 @@ jobs:
 
     - name: 4.16.1 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1
         platforms: linux/amd64
@@ -2108,7 +2108,7 @@ jobs:
     - name: 4.16.1-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker
         platforms: linux/amd64
@@ -2122,7 +2122,7 @@ jobs:
     - name: 4.16.1-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker
         platforms: linux/amd64
@@ -2135,7 +2135,7 @@ jobs:
 
     - name: 4.16.1-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker
         platforms: linux/amd64
@@ -2175,7 +2175,7 @@ jobs:
     - name: 4.16.1-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -2189,7 +2189,7 @@ jobs:
     - name: 4.16.1-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -2202,7 +2202,7 @@ jobs:
 
     - name: 4.16.1-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -2242,7 +2242,7 @@ jobs:
     - name: 4.16.1-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker-rootless
         platforms: linux/amd64
@@ -2256,7 +2256,7 @@ jobs:
     - name: 4.16.1-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker-rootless
         platforms: linux/amd64
@@ -2269,7 +2269,7 @@ jobs:
 
     - name: 4.16.1-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker-rootless
         platforms: linux/amd64
@@ -2309,7 +2309,7 @@ jobs:
     - name: 4.16.1-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -2323,7 +2323,7 @@ jobs:
     - name: 4.16.1-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -2336,7 +2336,7 @@ jobs:
 
     - name: 4.16.1-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.16.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -2360,7 +2360,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -2384,7 +2384,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.15.0-${{ github.sha }}
@@ -2428,7 +2428,7 @@ jobs:
     - name: 4.15.0 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0
         platforms: linux/amd64
@@ -2442,7 +2442,7 @@ jobs:
     - name: 4.15.0 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0
         platforms: linux/amd64
@@ -2455,7 +2455,7 @@ jobs:
 
     - name: 4.15.0 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0
         platforms: linux/amd64
@@ -2495,7 +2495,7 @@ jobs:
     - name: 4.15.0-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker
         platforms: linux/amd64
@@ -2509,7 +2509,7 @@ jobs:
     - name: 4.15.0-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker
         platforms: linux/amd64
@@ -2522,7 +2522,7 @@ jobs:
 
     - name: 4.15.0-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker
         platforms: linux/amd64
@@ -2562,7 +2562,7 @@ jobs:
     - name: 4.15.0-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -2576,7 +2576,7 @@ jobs:
     - name: 4.15.0-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -2589,7 +2589,7 @@ jobs:
 
     - name: 4.15.0-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -2629,7 +2629,7 @@ jobs:
     - name: 4.15.0-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker-rootless
         platforms: linux/amd64
@@ -2643,7 +2643,7 @@ jobs:
     - name: 4.15.0-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker-rootless
         platforms: linux/amd64
@@ -2656,7 +2656,7 @@ jobs:
 
     - name: 4.15.0-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker-rootless
         platforms: linux/amd64
@@ -2696,7 +2696,7 @@ jobs:
     - name: 4.15.0-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -2710,7 +2710,7 @@ jobs:
     - name: 4.15.0-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -2723,7 +2723,7 @@ jobs:
 
     - name: 4.15.0-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.15.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -2747,7 +2747,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -2771,7 +2771,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.14.1-${{ github.sha }}
@@ -2815,7 +2815,7 @@ jobs:
     - name: 4.14.1 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1
         platforms: linux/amd64
@@ -2829,7 +2829,7 @@ jobs:
     - name: 4.14.1 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1
         platforms: linux/amd64
@@ -2842,7 +2842,7 @@ jobs:
 
     - name: 4.14.1 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1
         platforms: linux/amd64
@@ -2882,7 +2882,7 @@ jobs:
     - name: 4.14.1-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker
         platforms: linux/amd64
@@ -2896,7 +2896,7 @@ jobs:
     - name: 4.14.1-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker
         platforms: linux/amd64
@@ -2909,7 +2909,7 @@ jobs:
 
     - name: 4.14.1-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker
         platforms: linux/amd64
@@ -2949,7 +2949,7 @@ jobs:
     - name: 4.14.1-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -2963,7 +2963,7 @@ jobs:
     - name: 4.14.1-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -2976,7 +2976,7 @@ jobs:
 
     - name: 4.14.1-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker-go-1.20.14
         platforms: linux/amd64
@@ -3016,7 +3016,7 @@ jobs:
     - name: 4.14.1-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker-rootless
         platforms: linux/amd64
@@ -3030,7 +3030,7 @@ jobs:
     - name: 4.14.1-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker-rootless
         platforms: linux/amd64
@@ -3043,7 +3043,7 @@ jobs:
 
     - name: 4.14.1-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker-rootless
         platforms: linux/amd64
@@ -3083,7 +3083,7 @@ jobs:
     - name: 4.14.1-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -3097,7 +3097,7 @@ jobs:
     - name: 4.14.1-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -3110,7 +3110,7 @@ jobs:
 
     - name: 4.14.1-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.14.1-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -3134,7 +3134,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -3158,7 +3158,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.13.0-${{ github.sha }}
@@ -3202,7 +3202,7 @@ jobs:
     - name: 4.13.0 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0
         platforms: linux/amd64
@@ -3216,7 +3216,7 @@ jobs:
     - name: 4.13.0 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0
         platforms: linux/amd64
@@ -3229,7 +3229,7 @@ jobs:
 
     - name: 4.13.0 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0
         platforms: linux/amd64
@@ -3269,7 +3269,7 @@ jobs:
     - name: 4.13.0-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker
         platforms: linux/amd64
@@ -3283,7 +3283,7 @@ jobs:
     - name: 4.13.0-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker
         platforms: linux/amd64
@@ -3296,7 +3296,7 @@ jobs:
 
     - name: 4.13.0-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker
         platforms: linux/amd64
@@ -3336,7 +3336,7 @@ jobs:
     - name: 4.13.0-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -3350,7 +3350,7 @@ jobs:
     - name: 4.13.0-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -3363,7 +3363,7 @@ jobs:
 
     - name: 4.13.0-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -3403,7 +3403,7 @@ jobs:
     - name: 4.13.0-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker-rootless
         platforms: linux/amd64
@@ -3417,7 +3417,7 @@ jobs:
     - name: 4.13.0-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker-rootless
         platforms: linux/amd64
@@ -3430,7 +3430,7 @@ jobs:
 
     - name: 4.13.0-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker-rootless
         platforms: linux/amd64
@@ -3470,7 +3470,7 @@ jobs:
     - name: 4.13.0-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -3484,7 +3484,7 @@ jobs:
     - name: 4.13.0-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -3497,7 +3497,7 @@ jobs:
 
     - name: 4.13.0-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.13.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -3521,7 +3521,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -3545,7 +3545,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.12.0-${{ github.sha }}
@@ -3589,7 +3589,7 @@ jobs:
     - name: 4.12.0 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0
         platforms: linux/amd64
@@ -3603,7 +3603,7 @@ jobs:
     - name: 4.12.0 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0
         platforms: linux/amd64
@@ -3616,7 +3616,7 @@ jobs:
 
     - name: 4.12.0 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0
         platforms: linux/amd64
@@ -3656,7 +3656,7 @@ jobs:
     - name: 4.12.0-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker
         platforms: linux/amd64
@@ -3670,7 +3670,7 @@ jobs:
     - name: 4.12.0-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker
         platforms: linux/amd64
@@ -3683,7 +3683,7 @@ jobs:
 
     - name: 4.12.0-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker
         platforms: linux/amd64
@@ -3723,7 +3723,7 @@ jobs:
     - name: 4.12.0-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -3737,7 +3737,7 @@ jobs:
     - name: 4.12.0-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -3750,7 +3750,7 @@ jobs:
 
     - name: 4.12.0-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -3790,7 +3790,7 @@ jobs:
     - name: 4.12.0-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker-rootless
         platforms: linux/amd64
@@ -3804,7 +3804,7 @@ jobs:
     - name: 4.12.0-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker-rootless
         platforms: linux/amd64
@@ -3817,7 +3817,7 @@ jobs:
 
     - name: 4.12.0-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker-rootless
         platforms: linux/amd64
@@ -3857,7 +3857,7 @@ jobs:
     - name: 4.12.0-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -3871,7 +3871,7 @@ jobs:
     - name: 4.12.0-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -3884,7 +3884,7 @@ jobs:
 
     - name: 4.12.0-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.12.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -3908,7 +3908,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -3932,7 +3932,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-4.11.0-${{ github.sha }}
@@ -3976,7 +3976,7 @@ jobs:
     - name: 4.11.0 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0
         platforms: linux/amd64
@@ -3990,7 +3990,7 @@ jobs:
     - name: 4.11.0 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0
         platforms: linux/amd64
@@ -4003,7 +4003,7 @@ jobs:
 
     - name: 4.11.0 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0
         platforms: linux/amd64
@@ -4043,7 +4043,7 @@ jobs:
     - name: 4.11.0-docker - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker
         platforms: linux/amd64
@@ -4057,7 +4057,7 @@ jobs:
     - name: 4.11.0-docker - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker
         platforms: linux/amd64
@@ -4070,7 +4070,7 @@ jobs:
 
     - name: 4.11.0-docker - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker
         platforms: linux/amd64
@@ -4110,7 +4110,7 @@ jobs:
     - name: 4.11.0-docker-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -4124,7 +4124,7 @@ jobs:
     - name: 4.11.0-docker-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -4137,7 +4137,7 @@ jobs:
 
     - name: 4.11.0-docker-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker-go-1.20.14
         platforms: linux/amd64
@@ -4177,7 +4177,7 @@ jobs:
     - name: 4.11.0-docker-rootless - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker-rootless
         platforms: linux/amd64
@@ -4191,7 +4191,7 @@ jobs:
     - name: 4.11.0-docker-rootless - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker-rootless
         platforms: linux/amd64
@@ -4204,7 +4204,7 @@ jobs:
 
     - name: 4.11.0-docker-rootless - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker-rootless
         platforms: linux/amd64
@@ -4244,7 +4244,7 @@ jobs:
     - name: 4.11.0-docker-rootless-go-1.20.14 - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -4258,7 +4258,7 @@ jobs:
     - name: 4.11.0-docker-rootless-go-1.20.14 - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
@@ -4271,7 +4271,7 @@ jobs:
 
     - name: 4.11.0-docker-rootless-go-1.20.14 - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: variants/4.11.0-docker-rootless-go-1.20.14
         platforms: linux/amd64
