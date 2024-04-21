@@ -19,23 +19,27 @@ RUN set -eu; \
     echo "BUILDVARIANT=$BUILDVARIANT";
 
 RUN --mount=type=secret,id=GITHUB_TOKEN \
-    DEPS='alpine-sdk bash libstdc++ libc6-compat python3' \
-    && apk add --no-cache $DEPS \
+    set -eux; \
+    DEPS='alpine-sdk bash libstdc++ libc6-compat python3'; \
+    apk add --no-cache $DEPS; \
     # Constraint to npm 8, or else npm will fail with 'npm ERR! python is not a valid npm option'. See: https://stackoverflow.com/questions/74522956/python-is-not-a-valid-npm-option and https://jubianchi.github.io/semver-check/#/~8/8
-    && apk add --no-cache 'npm~8' 'nodejs~16' \
-    && npm config set python python3 \
-    && GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ) npm install --global code-server@4.11.0 --unsafe-perm \
+    apk add --no-cache npm~8 nodejs~16; \
+    npm config set python python3; \
+    ( set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; npm install --global code-server@4.11.0 --unsafe-perm ); \
     # Fix missing dependencies. See: https://github.com/coder/code-server/issues/5530
-    && cd /usr/local/lib/node_modules/code-server/lib/vscode && GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ) npm install --legacy-peer-deps \
-    && code-server --version \
-    && apk del $DEPS
+    cd /usr/local/lib/node_modules/code-server/lib/vscode; \
+    ( set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; npm install --legacy-peer-deps ); \
+    code-server --version; \
+    apk del $DEPS
 
 # Install tools
-RUN apk add --no-cache bash bash-completion ca-certificates curl gnupg git git-lfs github-cli iotop jq less lsblk make nano openssh-client openssl p7zip rsync tree yq
+RUN set -eux; \
+    apk add --no-cache bash bash-completion ca-certificates curl gnupg git git-lfs github-cli iotop jq less lsblk make nano openssh-client openssl p7zip rsync tree yq
 
 # Install pwsh
 # See: https://learn.microsoft.com/en-us/powershell/scripting/install/install-alpine?view=powershell-7.3
-RUN apk add --no-cache \
+RUN set -eux; \
+    apk add --no-cache \
     ca-certificates \
     less \
     ncurses-terminfo-base \
@@ -50,10 +54,11 @@ RUN apk add --no-cache \
     icu-libs \
     curl
 RUN apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache lttng-ust
-RUN mkdir -p /opt/microsoft/powershell/7 \
-    && curl -sSL https://github.com/PowerShell/PowerShell/releases/download/v7.2.8/powershell-7.2.8-linux-alpine-x64.tar.gz | tar -C /opt/microsoft/powershell/7 -zxf - \
-    && chmod +x /opt/microsoft/powershell/7/pwsh \
-    && ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+RUN set -eux; \
+    mkdir -p /opt/microsoft/powershell/7; \
+    curl -sSL https://github.com/PowerShell/PowerShell/releases/download/v7.2.8/powershell-7.2.8-linux-alpine-x64.tar.gz | tar -C /opt/microsoft/powershell/7 -zxf -; \
+    chmod +x /opt/microsoft/powershell/7/pwsh; \
+    ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
 # Disable telemetry for powershell 7.0.0 and above and .NET core: https://github.com/PowerShell/PowerShell/issues/16234#issuecomment-942139350
 ENV POWERSHELL_CLI_TELEMETRY_OPTOUT=1
 ENV POWERSHELL_TELEMETRY_OPTOUT=1
