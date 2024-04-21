@@ -25,10 +25,10 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
     # Constraint to npm 8, or else npm will fail with 'npm ERR! python is not a valid npm option'. See: https://stackoverflow.com/questions/74522956/python-is-not-a-valid-npm-option and https://jubianchi.github.io/semver-check/#/~8/8
     apk add --no-cache npm~8 nodejs~16; \
     npm config set python python3; \
-    ( set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; npm install --global code-server@4.15.0 --unsafe-perm ); \
+    # Use 'NODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT' to fix node 18.20 and 20.12 making experimental API the default, which breaks builds
+    ( set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; CXXFLAGS='-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT' npm install --global code-server@4.15.0 --unsafe-perm ); \
     # Fix missing dependencies. See: https://github.com/coder/code-server/issues/5530
-    cd /usr/local/lib/node_modules/code-server/lib/vscode; \
-    ( set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; npm install --legacy-peer-deps ); \
+    ( cd /usr/local/lib/node_modules/code-server/lib/vscode; set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; CXXFLAGS='-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT' npm install --legacy-peer-deps ); \
     code-server --version; \
     apk del $DEPS
 
