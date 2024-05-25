@@ -243,39 +243,39 @@ RUN apk add --no-cache docker-compose
 
 # Install docker-compose
 RUN set -eux; \
-    DOCKER_COMPOSE_VERSION=v2.27.0; \
+    DOCKER_COMPOSE_VERSION=v2.27.1; \
     case "$( uname -m )" in \
         'x86') \
-            URL="https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64"; \
-            SHA256=f3ba3bf1e4ab18e96c2d36526a075a02a78fb5f8e80d3e3ca9c5bf256d81d0a0; \
+            URL="https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-linux-x86_64"; \
+            SHA256=ddc876fe2a89d5b7ea455146b0975bfe52904eecba9b192193377d6f99d69ad9; \
             ;; \
         'x86_64') \
-            URL="https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64"; \
-            SHA256=f3ba3bf1e4ab18e96c2d36526a075a02a78fb5f8e80d3e3ca9c5bf256d81d0a0; \
+            URL="https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-linux-x86_64"; \
+            SHA256=ddc876fe2a89d5b7ea455146b0975bfe52904eecba9b192193377d6f99d69ad9; \
             ;; \
         'armhf') \
-            URL="https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-armv6"; \
-            SHA256=ee467093d138f9c4d189b774552ef86ba253107bd91226b28f0c54edf62fe949; \
+            URL="https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-linux-armv6"; \
+            SHA256=5f244291153cdd7facfe5007aa37f393d139c245b870025b8e86ef88a8de2705; \
             ;; \
         'armv7l') \
-            URL="https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-armv7"; \
-            SHA256=8461b4d4a58eaaf04c4f482f0dabe57db9ef63229311a9583c6548b417f33c76; \
+            URL="https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-linux-armv7"; \
+            SHA256=9dcfa9523dc912370417b7ccc3d81900bbb98dd9addbff0d218398bbe9078bbd; \
             ;; \
         'aarch64') \
-            URL="https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-aarch64"; \
-            SHA256=37a1c197fef5fda2a3df2d5ae0d7762ad2a00e30946ad06d4ad9fa8cef16d9e7; \
+            URL="https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-linux-aarch64"; \
+            SHA256=16e93b9c2fc147d29ca1acbb8ceab6a50a0e26af777f43dc7a753cb883142617; \
             ;; \
         'ppc64le') \
-            URL="https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-ppc64le"; \
-            SHA256=faed2dd8f0568922dadf1a8fa155898d5be1feaa67568f2aa730a594ba6a44ec; \
+            URL="https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-linux-ppc64le"; \
+            SHA256=f351bfdbb6bb9d18b33672ccba6dd31c53a3bd1b81f9e9052fc6d9125e7d5719; \
             ;; \
         'riscv64') \
-            URL="https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-riscv64"; \
-            SHA256=71a09bd1980505a5f194cfab5df53bba55e493edf246f3ebb28cbfef8caf7715; \
+            URL="https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-linux-riscv64"; \
+            SHA256=9940bd7533bcbd087d5301b8348136bc8922aa75739e3e359d8367e2f6dd7005; \
             ;; \
         's390x') \
-            URL="https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-s390x"; \
-            SHA256=d38522261b481d7f20da7f80af67824afe2a1b54dd19215690febb0c49ad932d; \
+            URL="https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-linux-s390x"; \
+            SHA256=6f4b6bb51987b2f61b91cfe4017a8d162e86b82ba3ae074b99b06a1ebe4387ed; \
             ;; \
         *) \
             echo "Architecture not supported"; \
