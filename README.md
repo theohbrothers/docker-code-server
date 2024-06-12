@@ -10,7 +10,12 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 
 | Tag | Dockerfile Build Context |
 |:-------:|:---------:|
-| `:4.89.1`, `:latest` | [View](variants/4.89.1) |
+| `:4.90.0`, `:latest` | [View](variants/4.90.0) |
+| `:4.90.0-docker` | [View](variants/4.90.0-docker) |
+| `:4.90.0-docker-go-1.20.14` | [View](variants/4.90.0-docker-go-1.20.14) |
+| `:4.90.0-docker-rootless` | [View](variants/4.90.0-docker-rootless) |
+| `:4.90.0-docker-rootless-go-1.20.14` | [View](variants/4.90.0-docker-rootless-go-1.20.14) |
+| `:4.89.1` | [View](variants/4.89.1) |
 | `:4.89.1-docker` | [View](variants/4.89.1-docker) |
 | `:4.89.1-docker-go-1.20.14` | [View](variants/4.89.1-docker-go-1.20.14) |
 | `:4.89.1-docker-rootless` | [View](variants/4.89.1-docker-rootless) |
@@ -81,7 +86,7 @@ Dockerized [`code-server`](https://github.com/coder/code-server).
 | `:4.11.0-docker-rootless` | [View](variants/4.11.0-docker-rootless) |
 | `:4.11.0-docker-rootless-go-1.20.14` | [View](variants/4.11.0-docker-rootless-go-1.20.14) |
 
-Base variants are based on `alpine`, and include `npm 8` and `nodejs 16` (to run `code-server`), `pwsh`, and basic tools. E.g. `4.89.1`
+Base variants are based on `alpine`, and include `npm 8` and `nodejs 16` (to run `code-server`), `pwsh`, and basic tools. E.g. `4.90.0`
 
 Incremental variants include additional tools and their `code` extensions:
 
@@ -94,7 +99,7 @@ Incremental variants include additional tools and their `code` extensions:
 ### Base variant(s)
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.89.1
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.90.0
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
@@ -102,13 +107,13 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 To disable password authentication, use `--auth=none`:
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.89.1 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.90.0 --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 ```
 
 ### `docker` variant(s)
 
 ```sh
-docker run --name code-server --rm -it --privileged -v docker:/var/lib/docker -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.89.1-docker
+docker run --name code-server --rm -it --privileged -v docker:/var/lib/docker -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.90.0-docker
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
@@ -116,7 +121,7 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 To disable password authentication, use `--auth=none`:
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.89.1-docker --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.90.0-docker --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 ```
 
 #### docker buildx
@@ -144,7 +149,7 @@ docker buildx build ...
 ### `docker-rootless` variant(s)
 
 ```sh
-docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.89.1-docker-rootless
+docker run --name code-server --rm -it --privileged -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.90.0-docker-rootless
 # code-server is now available at http://127.0.0.1:8080. To login, use the password in the config file:
 docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 ```
@@ -152,7 +157,7 @@ docker exec code-server sh -c 'cat ~/.config/code-server/config.yaml'
 To start code-server without password authentication, use `--auth=none`:
 
 ```sh
-docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.89.1-docker-rootless --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
+docker run --name code-server --rm -it -p 127.0.0.1:8080:8080 theohbrothers/docker-code-server:4.90.0-docker-rootless --bind-addr=0.0.0.0:8080 --auth=none --disable-telemetry --disable-update-check
 ```
 
 To build multi-arch images using `docker buildx`, see [here](#docker-buildx).
