@@ -26,7 +26,15 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
     DEPS='alpine-sdk bash libstdc++ libc6-compat python3'; \
     apk add --no-cache `$DEPS; \
     # Constraint to npm 8, or else npm will fail with 'npm ERR! `python` is not a valid npm option'. See: https://stackoverflow.com/questions/74522956/python-is-not-a-valid-npm-option and https://jubianchi.github.io/semver-check/#/~8/8
-$( if ([version]$VARIANT['_metadata']['package_version'] -ge [version]'4.17') {
+$( if ([version]$VARIANT['_metadata']['package_version'] -ge [version]'4.90') {
+@"
+    apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/v3.15/main npm~8; \
+    apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/v3.20/main nodejs~20; \
+    # Install kerberos dependencies https://github.com/coder/code-server/issues/6535
+    apk add --no-cache krb5-dev; \
+    # apk add --no-cache spdlog; \
+"@
+} elseif ([version]$VARIANT['_metadata']['package_version'] -ge [version]'4.17' -and [version]$VARIANT['_metadata']['package_version'] -lt [version]'4.90') {
 @"
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/v3.15/main npm~8; \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/v3.17/main nodejs~18; \
@@ -40,7 +48,7 @@ $( if ([version]$VARIANT['_metadata']['package_version'] -ge [version]'4.17') {
 } )
     npm config set python python3; \
     # Use 'NODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT' to fix node 18.20 and 20.12 making experimental API the default, which breaks builds
-    ( set +x; export GITHUB_TOKEN=`$( cat /run/secrets/GITHUB_TOKEN ); set -x; CXXFLAGS='-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT' npm install --global code-server@$( $VARIANT['_metadata']['package_version'] ) --unsafe-perm ); \
+    ( set +x; export GITHUB_TOKEN=`$( cat /run/secrets/GITHUB_TOKEN ); set -x; CXXFLAGS='-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT -DUSE_IPO=OFF -DWHOLE_PROGRAM_OPTIMISATION=OFF' npm install --global code-server@$( $VARIANT['_metadata']['package_version'] ) --unsafe-perm ); \
     # Fix missing dependencies. See: https://github.com/coder/code-server/issues/5530
     ( cd /usr/local/lib/node_modules/code-server/lib/vscode; set +x; export GITHUB_TOKEN=`$( cat /run/secrets/GITHUB_TOKEN ); set -x; CXXFLAGS='-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT' npm install --legacy-peer-deps ); \
     code-server --version; \
