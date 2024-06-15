@@ -29,6 +29,8 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
     apk add --no-cache krb5-dev; \
     npm config set python python3; \
     # Use 'NODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT' to fix node 18.20 and 20.12 making experimental API the default, which breaks builds
+    # Use '-U_FORTIFY_SOURCE' to fix vsnprintf errors in alpine: https://gitlab.alpinelinux.org/alpine/aports/-/issues/8626
+    # Use '-DUSE_IPO=OFF -DWHOLE_PROGRAM_OPTIMISATION=OFF' to fix lto-wrapper errors?
     ( set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; CXXFLAGS='-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT' npm install --global code-server@4.89.1 --unsafe-perm ); \
     # Fix missing dependencies. See: https://github.com/coder/code-server/issues/5530
     ( cd /usr/local/lib/node_modules/code-server/lib/vscode; set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; CXXFLAGS='-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT' npm install --legacy-peer-deps ); \
