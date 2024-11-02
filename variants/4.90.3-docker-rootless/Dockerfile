@@ -37,7 +37,7 @@ RUN --mount=type=secret,id=GITHUB_TOKEN \
     # Use '-DUSE_IPO=OFF -DWHOLE_PROGRAM_OPTIMISATION=OFF' to fix lto-wrapper errors?
     ( set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; CXXFLAGS='-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT -U_FORTIFY_SOURCE' npm install --global code-server@4.90.3 --unsafe-perm ); \
     # Fix missing dependencies. See: https://github.com/coder/code-server/issues/5530
-    ( cd /usr/local/lib/node_modules/code-server/lib/vscode; set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; CXXFLAGS='-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT' npm install --legacy-peer-deps ); \
+    ( cd /usr/local/lib/node_modules/code-server/lib/vscode; set +x; export GITHUB_TOKEN=$( cat /run/secrets/GITHUB_TOKEN ); set -x; CXXFLAGS='-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT -U_FORTIFY_SOURCE' npm install --legacy-peer-deps ); \
     code-server --version; \
     apk del $DEPS
 
