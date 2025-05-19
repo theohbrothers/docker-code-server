@@ -294,8 +294,9 @@ RUN set -eux; \
     FILE=docker-compose; \
     wget -q "$URL" -O "$FILE"; \
     echo "$SHA256  $FILE" | sha256sum -c -; \
+    BIN=docker-compose; \
     mkdir -pv /usr/libexec/docker/cli-plugins; \
-    mv -v docker-compose /usr/libexec/docker/cli-plugins/docker-compose; \
+    mv -v "$BIN" /usr/libexec/docker/cli-plugins/docker-compose; \
     chmod +x /usr/libexec/docker/cli-plugins/docker-compose; \
     docker compose version; \
     :
@@ -340,8 +341,9 @@ RUN set -eux; \
     FILE=docker-buildx; \
     wget -q "$URL" -O "$FILE"; \
     echo "$SHA256  $FILE" | sha256sum -c -; \
+    BIN=docker-buildx; \
     mkdir -pv /usr/libexec/docker/cli-plugins; \
-    mv -v docker-buildx /usr/libexec/docker/cli-plugins/docker-buildx; \
+    mv -v "$BIN" /usr/libexec/docker/cli-plugins/docker-buildx; \
     chmod +x /usr/libexec/docker/cli-plugins/docker-buildx; \
     docker buildx version; \
     :
