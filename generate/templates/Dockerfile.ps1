@@ -299,7 +299,6 @@ RUN apk add --no-cache docker-compose
             binary = 'docker-compose'
             version = $DOCKER_COMPOSE_VERSION
             checksumsUrl = "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/checksums.txt"
-            archiveformat = ''
             destination = '/usr/libexec/docker/cli-plugins/docker-compose'
             testCommand = 'docker compose version'
         }
@@ -308,7 +307,6 @@ RUN apk add --no-cache docker-compose
         Generate-DownloadBinary @{
             binary = 'docker-buildx'
             version = $DOCKER_BUILDX_VERSION
-            archiveformat = ''
             checksumsUrl = "https://github.com/docker/buildx/releases/download/$DOCKER_BUILDX_VERSION/checksums.txt"
             destination = '/usr/libexec/docker/cli-plugins/docker-buildx'
             testCommand = 'docker buildx version'
